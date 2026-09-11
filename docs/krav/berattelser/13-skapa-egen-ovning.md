@@ -19,4 +19,4 @@ Status: utkast
 ## Utanför denna berättelse
 
 - Att skicka in övningen till den gemensamma banken (se berättelse 15).
-- Att generatorn använder klubbens egna övningar automatiskt tillsammans med de godkända – se berättelse 14 för hur egna övningar hanteras i klubben. Om och hur egna, ej godkända övningar ska kunna väljas av generatorn för det egna laget beskrivs i berättelse 14.
+- Att generatorn automatiskt väljer klubbens egna övningar när ett pass genereras. Generatorn använder bara övningar med status `godkand` ur den gemensamma banken (R-022). Ledaren kan i stället själv byta in en av klubbens egna övningar i ett redan genererat pass, se berättelse 04.

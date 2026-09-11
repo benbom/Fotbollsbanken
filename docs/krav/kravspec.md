@@ -31,13 +31,13 @@ En och samma person kan ha flera roller (till exempel vara klubbadmin och ledare
 
 Version 1 byggs i sju inkrement, i den ordning som anges i `CLAUDE.md`:
 
-1. **Generatorn** – ledaren anger ålder, nivå, antal spelare, antal ledare, passets längd och fokusområde (spelform föreslås utifrån åldern) och får ett träningspass, som kan justeras (byta ut en övning) och sparas.
+1. **Generatorn** – ledaren anger ålder, nivå, antal spelare, antal ledare, passets längd och fokusområde (spelform föreslås utifrån åldern; yta kan anges men är valfri) och får ett träningspass, som kan justeras (byta ut en övning, även mot en egen övning i klubben) och sparas.
 2. **Planskisser** – övningar och pass visas med planskisser ritade som SVG från skissdata.
 3. **Konton med klubbar och lag** – ledare och klubbadmin har konton, klubbadmin skapar klubb och lag och bjuder in ledare, sparade pass delas inom laget.
 4. **Egna och inskickade övningar med redaktörskö** – ledare skapar egna övningar som delas inom klubben, kan skicka in dem till den gemensamma banken och redaktören granskar dem.
 5. **Planläge med timer** – ett pass körs på planen, en övning i taget, med timer.
 6. **Utskrift/PDF** – ett pass kan skrivas ut eller exporteras med planskisser.
-7. **Säsongsplanering** – pass planeras över veckor och perioder med progression i tema och fokusområden.
+7. **Säsongsplanering** – pass, ett eller flera per vecka, planeras över veckor, och veckans fokusområden visas så att progressionen över tid blir synlig.
 
 ## Avgränsningar – vad ingår inte i version 1
 
@@ -61,13 +61,23 @@ Dessa beskriver behov, inte lösningar. Hur de uppfylls tekniskt avgörs vid K2.
 - **Kostnad:** drift ska rymmas inom gratisnivåer. Nya kostnader kräver användarens beslut.
 - **Språk:** gränssnitt och innehåll är på svenska.
 
-## Öppna frågor till K1
+## Beslut vid K1 (2026-09-11)
 
-Dessa frågor kan inte avgöras av produktägaren och läggs fram för beställaren, se även *Beslut som behövs* i produktägarens rapport till K1.
+De här frågorna kunde inte avgöras av produktägaren eller fotbollsexperten. Användaren har fattat följande beslut, som kraven i `berattelser/` och reglerna i `docs/doman/generatorregler.md` nu bygger på:
 
-1. **Yta och material i generatorn:** ska generatorn ta hänsyn till tillgänglig yta (till exempel hel/halv plan) och material (antal bollar, koner, mål) när den väljer övningar? Se rekommendation i produktägarens rapport.
-2. **Granskning av ledares inskickade övningar:** appen har bara rollerna ledare, klubbadmin och redaktör – ingen egen apparoll för "fotbollsexpert". Berättelse 16 föreslår att redaktören ensam avgör om en inskickad övning godkänns eller behöver åtgärdas i appen. Se rekommendation i produktägarens rapport.
-3. **Vem får utse fler redaktörer:** berättelse 18 föreslår att en befintlig redaktör kan utse fler. Se rekommendation i produktägarens rapport.
+1. **Yta:** generatorn har ett valfritt ytfilter i version 1. Ledaren kan ange hel, halv eller kvarts plan, men måste inte. Inget materialfilter (bollar, koner, mål) i version 1. Inomhushall som yta kommer i en senare version. Se R-090 till R-094 och berättelse 01–02.
+2. **Nickning:** SvFF:s linje följs. Ingen nickträning före 13 år. Högst 10 minuter nickspel per pass för 13–14 år och högst 20 minuter för 15–19 år. Se R-080 till R-083 och berättelse 01.
+3. **Åldersfaserna** i `docs/doman/aldrar-och-fokus.md` godkänns som fotbollsexpertens bedömning för version 1. De ska kontrolleras mot SvFF:s spelarutbildningsplan innan lansering (K5), se backloggen.
+4. **Klubbens egna övningar:** generatorn väljer bara godkända övningar ur den gemensamma banken (R-022). Ledaren kan själv byta in en av klubbens egna övningar i ett pass, när ledaren byter ut en övning (se berättelse 04, 13, 14).
+5. **Nivåer:** tre nivåer (`niva-1` Grund, `niva-2` Fortsättning, `niva-3` Fördjupning). En övning har en nivålista, och nivån matchar när listan innehåller den valda nivån. Angränsande nivåer används aldrig av generatorn (R-025, R-026).
+6. **Ålder** anges som den ålder spelarna fyller i år. I en blandad grupp anger ledaren den ålder som flest spelare har (R-010).
+7. **Fokusområden:** ledaren väljer 1–3, och minst ett är obligatoriskt. Listan visar bara de fokusområden som passar den angivna åldern (R-019).
+8. **Spelform:** ledaren kan välja den föreslagna spelformen eller den som ligger närmast före eller efter den (R-014). Högst 40 spelare och 10 ledare (R-017). Passlängden har gränser per åldersfas (R-018).
+9. **Tips vid många spelare per ledare:** appen visar ett tips, men genererar passet ändå (R-021).
+10. **Säsongsplanen:** stöd för flera pass per vecka är Must i version 1. Att ledaren kan skriva in perioder och teman för ett block, innan passen finns, är Could och läggs i backloggen.
+11. **Inskickade övningar:** redaktören granskar ensam i appen, med stegen inskickad och sedan godkänd eller åtgärda (se berättelse 16). En befintlig redaktör kan utse fler redaktörer (se berättelse 18).
+
+Roll- och behörighetsmodellen som besluten bygger på (bara ledare, klubbadmin och redaktör i appen) beslutas slutgiltigt vid K2.
 
 ## Källor
 

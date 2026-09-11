@@ -6,7 +6,7 @@ Status: utkast
 
 **Som** redaktör **vill jag** kunna utse en annan registrerad person till redaktör, **så att** fler kan hjälpa till att granska inskickade övningar när banken växer.
 
-> **Obs:** det finns ingen apparoll motsvarande "systemägare" i version 1. Den här berättelsen utgår från att en befintlig redaktör kan utse fler. Se `kravspec.md` – öppna frågor, punkt 3, och *Beslut som behövs* i produktägarens rapport.
+> **Obs:** det finns ingen apparoll motsvarande "systemägare" i version 1. Användaren beslutade vid K1 (2026-09-11, se `kravspec.md`) att en befintlig redaktör kan utse fler.
 
 ## Acceptanskriterier
 

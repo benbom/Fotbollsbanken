@@ -21,3 +21,4 @@ Status: utkast
 
 - Att klubbens egna, ej godkända övningar delas med andra klubbar (det sker först vid godkännande, se berättelse 16).
 - Behörighetsnivåer för vem i klubben som får redigera vems övning – i version 1 kan alla ledare i klubben redigera klubbens egna övningar.
+- Att generatorn automatiskt tar med klubbens egna övningar när ett pass genereras. Generatorn använder bara godkända övningar ur den gemensamma banken (R-022). Ledaren kan själv byta in en av klubbens egna övningar i ett genererat pass, se berättelse 04.

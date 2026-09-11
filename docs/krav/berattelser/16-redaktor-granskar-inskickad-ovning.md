@@ -6,7 +6,7 @@ Status: utkast
 
 **Som** redaktör **vill jag** se en kö av inskickade övningar och kunna godkänna eller skicka tillbaka dem, **så att** bara granskat innehåll blir en del av den gemensamma banken.
 
-> **Obs:** appens roller är ledare, klubbadmin och redaktör – det finns ingen egen apparoll för "fotbollsexpert" (den rollen finns i utvecklingsteamet, för att bygga upp banken i fas 3). Den här berättelsen utgår därför från att redaktören i appen ensam avgör om en inskickad övning godkänns eller behöver åtgärdas. Se `kravspec.md` – öppna frågor, punkt 2, och *Beslut som behövs* i produktägarens rapport.
+> **Obs:** appens roller är ledare, klubbadmin och redaktör – det finns ingen egen apparoll för "fotbollsexpert" (den rollen finns i utvecklingsteamet, för att bygga upp banken i fas 3). Användaren beslutade vid K1 (2026-09-11, se `kravspec.md`) att redaktören i appen ensam avgör om en inskickad övning godkänns eller behöver åtgärdas.
 
 ## Acceptanskriterier
 
@@ -21,5 +21,5 @@ Status: utkast
 
 ## Utanför denna berättelse
 
-- Att fler än en person granskar samma övning innan beslut (till exempel en separat fotbollsfacklig granskning i appen) – se öppen fråga ovan.
+- Att fler än en person granskar samma övning innan beslut (till exempel en separat fotbollsfacklig granskning i appen) – se beslutet ovan.
 - Att redaktören redigerar övningens innehåll direkt i stället för att skicka tillbaka den (i version 1 skickas den tillbaka till ledaren för ändring).

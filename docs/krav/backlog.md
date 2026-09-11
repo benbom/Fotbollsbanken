@@ -13,10 +13,13 @@ Prioritering enligt MoSCoW (Must, Should, Could, Won't), grupperad efter de sju 
 | 03 | [Inget matchande resultat](berattelser/03-inget-matchande-resultat.md) | Must |
 | 04 | [Byta ut en övning i passet](berattelser/04-byta-ovning-i-pass.md) | Must |
 | 05 | [Spara ett pass](berattelser/05-spara-pass.md) | Must |
-| – | Generatorn tar hänsyn till tillgänglig yta (t.ex. hel/halv plan) | Avvaktar beslut, se `kravspec.md` – öppna frågor, punkt 1. Rekommendation: Should. |
-| – | Generatorn tar hänsyn till tillgängligt material (bollar, koner, mål) | Avvaktar beslut, se `kravspec.md` – öppna frågor, punkt 1. Rekommendation: Could. |
+| – | Materialfilter (antal bollar, koner, mål) i generatorn | Could. Kräver att material blir ett fält på övningen och i underlaget – ny fotbollsfråga innan den kan byggas. |
+| – | Inomhushall som yta | Could. Kräver egna måttregler för inomhusytor (kompletterar R-091), som fotbollsexperten inte har tagit fram än. |
+| – | Antal målvakter som eget fält i underlaget | Could. Skulle kunna styra hur många spelare som räknas i utespelargrupper och om ett eget målvaktsmoment väljs, men kräver att fotbollsexperten och senior-systemutvecklare först definierar hur målvakter påverkar grupp- och ledarreglerna. |
 | – | Ändra ordningen på övningarna i ett genererat pass | Could |
 | – | Appen förklarar varför en viss övning valdes ut | Could |
+
+Beslutat vid K1 (2026-09-11, se `kravspec.md`): generatorn har ett valfritt ytfilter (hel/halv/kvarts plan) i version 1, inbyggt i berättelse 01 och 02 (R-090–R-094). Inget materialfilter i version 1.
 
 ## Inkrement 2 – Planskisser
 
@@ -72,10 +75,18 @@ Prioritering enligt MoSCoW (Must, Should, Could, Won't), grupperad efter de sju 
 | # | Berättelse | Prioritet |
 |---|---|---|
 | 23 | [Skapa en säsongsplan](berattelser/23-skapa-sasongsplan.md) | Must |
-| 24 | [Lägga pass i säsongsplanen med progression](berattelser/24-lagga-pass-i-sasongsplan-med-progression.md) | Must |
+| 24 | [Lägga pass i säsongsplanen med progression](berattelser/24-lagga-pass-i-sasongsplan-med-progression.md), inklusive flera pass per vecka (R-110) och ålder över årsskifte (R-113) | Must |
 | 25 | [Se översikt över säsongsplanen](berattelser/25-se-oversikt-over-sasongsplan.md) | Must |
 | – | Dela en säsongsplan mellan flera lag i samma årgång | Could |
-| – | Varning om ett fokusområde inte förekommit på länge | Could |
+| – | Ledaren skriver in perioder och teman för ett block innan passen finns (`docs/doman/sasongsprogression.md`) | Could. Beslutat vid K1 (2026-09-11): Must är stödet för flera pass per vecka (se berättelse 24); perioder och teman är en tilläggsfunktion. |
+| – | Varning om ett fokusområde (kärnområde) inte förekommit på länge (R-112) | Could |
+| – | Appen anpassar eller föreslår ett kortare, lättare pass inför en match (`docs/doman/sasongsprogression.md`) | Could. Kräver att appen känner till lagets matchdatum, vilket inte finns i underlaget eller datamodellen för version 1. |
+
+## Innan lansering (fas 5)
+
+| # | Uppgift | Prioritet |
+|---|---|---|
+| – | Kontrollera åldersfaserna i `docs/doman/aldrar-och-fokus.md` mot SvFF:s spelarutbildningsplan, och justera fokusområdenas K/R-tabell i `docs/doman/fokusomraden.md` vid behov | Must, innan K5. Se `kravspec.md` – Beslut vid K1, punkt 3. |
 
 ## Won't – uttryckligen utanför version 1
 
