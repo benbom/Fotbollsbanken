@@ -1,4 +1,4 @@
-Status: utkast
+Status: godkänd (K1, 2026-09-11)
 
 # 22. Skriva ut ett pass som PDF
 

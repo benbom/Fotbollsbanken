@@ -1,4 +1,4 @@
-Status: utkast
+Status: godkänd (K1, 2026-09-11)
 
 # 02. Generera ett träningspass
 

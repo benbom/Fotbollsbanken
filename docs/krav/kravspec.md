@@ -1,4 +1,4 @@
-Status: utkast
+Status: godkänd (K1, 2026-09-11)
 
 # Kravspecifikation – Fotbollsbanken
 
@@ -76,12 +76,10 @@ De här frågorna kunde inte avgöras av produktägaren eller fotbollsexperten. 
 9. **Tips vid många spelare per ledare:** appen visar ett tips, men genererar passet ändå (R-021).
 10. **Säsongsplanen:** stöd för flera pass per vecka är Must i version 1. Att ledaren kan skriva in perioder och teman för ett block, innan passen finns, är Could och läggs i backloggen.
 11. **Inskickade övningar:** redaktören granskar ensam i appen, med stegen inskickad och sedan godkänd eller åtgärda (se berättelse 16). En befintlig redaktör kan utse fler redaktörer (se berättelse 18).
+12. **Varning om ålder i säsongsplanen (Must):** enligt R-113 behåller ett sparat pass sin ålder även när det kopplas till en vecka i säsongsplanen. Appen varnar när passets ålder inte stämmer med veckans ålder, och varnar alltid när passet innehåller en övning märkt `nickspel` och veckans ålder är under 13 år. Se berättelse 24, kriterium 5.
+13. **Fråga om nickning i formuläret för egna övningar (Could):** ingår inte i version 1 och ligger i backloggen. I version 1 bygger nickreglerna (R-080 till R-083) för egna övningar på att ledaren själv märker övningen med fokusområdet `nickspel`. Egna övningar granskas inte av fotbollsexpert eller redaktör.
 
 Roll- och behörighetsmodellen som besluten bygger på (bara ledare, klubbadmin och redaktör i appen) beslutas slutgiltigt vid K2.
-
-**A. Varning om ålder i säsongsplanen. Förslag, godkänns vid K1.** Enligt R-113 behåller ett sparat pass sin ålder även när det kopplas till en vecka i säsongsplanen. Förslaget är att appen ska varna när passets ålder inte stämmer med veckans ålder, och att den alltid ska varna när passet innehåller en övning märkt `nickspel` och veckans ålder är under 13 år. Se berättelse 24, kriterium 5.
-
-**B. Fråga om nickning i formuläret för egna övningar. Förslag, godkänns vid K1.** Egna övningar granskas inte av fotbollsexpert eller redaktör, och nickreglerna (R-080 till R-083) förutsätter att en övning som innehåller nickning är märkt `nickspel`. Förslaget är att formuläret för egna övningar rakt ut ska fråga om övningen innehåller nickning, och att ett ja automatiskt ska ge märkningen `nickspel`. Se berättelse 13, kriterium 4.
 
 ## Källor
 

@@ -1,4 +1,4 @@
-Status: utkast
+Status: godkänd (K1, 2026-09-11)
 
 # Backlog – Fotbollsbanken
 
@@ -50,6 +50,7 @@ Beslutat vid K1 (2026-09-11, se `kravspec.md`): generatorn har ett valfritt ytfi
 | 16 | [Redaktören granskar en inskickad övning](berattelser/16-redaktor-granskar-inskickad-ovning.md) | Must |
 | 17 | [Åtgärda och skicka in igen](berattelser/17-atgarda-och-skicka-in-igen.md) | Must |
 | 18 | [Utse ytterligare redaktör](berattelser/18-utse-ytterligare-redaktor.md) | Should |
+| – | Formuläret för egna övningar frågar rakt ut om övningen innehåller nickning och märker den då med `nickspel` (beslut vid K1, punkt 13) | Could |
 | – | Kommentera/diskutera en inskickad övning innan beslut | Could |
 | – | Statistik över hur många övningar en klubb har fått godkända | Could |
 

@@ -41,13 +41,13 @@ Huvudsessionen leder arbetet. Den delegerar till agenterna, samlar in deras rapp
 | Fas | Innehåll | Kontrollpunkt |
 |---|---|---|
 | 0 Grund | Agenter, `CLAUDE.md`, mappstruktur | K0: agentlaget. Godkänd 2026-09-11 |
-| 1 Krav och domän | Krav och backlog, domänmodell, generatorregler | K1 |
+| 1 Krav och domän | Krav och backlog, domänmodell, generatorregler | K1: godkänd 2026-09-11 |
 | 2 Design och arkitektur | Flöden, teknikval, datamodell, skissformat, behörighetsmodell | K2 |
 | 3 Övningsbank | Övningar i omgångar per spelform. Pågår parallellt med fas 4 | K3 per omgång |
 | 4 Bygge i inkrement | Se ordningen nedan | K4 per inkrement |
-| 5 Lansering | Säkerhets- och GDPR-genomgång, integritetspolicy, driftsättning | K5 |
+| 5 Lansering | Säkerhets- och GDPR-genomgång, integritetspolicy, kontroll av åldersfaserna mot SvFF:s spelarutbildningsplan, driftsättning | K5 |
 
-**Aktuell fas: 1, krav och domän.**
+**Aktuell fas: 2, design och arkitektur.** Krav och domänmodell i `docs/krav/` och `docs/doman/` är godkända och styr arbetet. Generatorreglernas nummer är frysta: nya regler får lediga nummer och överflödiga regler markeras som *Utgår*.
 
 Inkrementen i fas 4, i tur och ordning:
 
@@ -102,7 +102,7 @@ Varje agent avslutar sitt uppdrag med:
 
 ## Domänfakta i korthet
 
-SvFF:s nationella spelformer (2025 års versioner, hämtade 2026-09-11). När `docs/doman/spelformer.md` har godkänts vid K1 är det den filen som gäller.
+SvFF:s nationella spelformer (2025 års versioner, hämtade 2026-09-11). Den fullständiga och gällande beskrivningen finns i `docs/doman/spelformer.md`, godkänd vid K1.
 
 | Spelform | Ålder | Plan (m) | Spelare per lag | Mål (m) |
 |---|---|---|---|---|
