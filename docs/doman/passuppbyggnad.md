@@ -20,7 +20,7 @@ Ett pass har fem delar i fast ordning. Nyckeln används i övningarnas nya fält
 
 | Ordning | Nyckel | Namn för ledaren | Fylls från banken | Vad som händer |
 |---|---|---|---|---|
-| 1 | `del-uppvarmning` | Uppvärmning | Ja | Kroppen och huvudet kommer igång. Lek, bollkänsla, rörelse och från 10 år skadeförebyggande moment. Alla är aktiva direkt, nästan ingen genomgång. |
+| 1 | `del-uppvarmning` | Uppvärmning | Ja | Kroppen och huvudet kommer igång. Lek, bollkänsla, rörelse och från 8 år skadeförebyggande moment. Alla är aktiva direkt, nästan ingen genomgång. |
 | 2 | `del-ovning` | Öva | Ja | Dagens fokus övas med många upprepningar. Ingen eller begränsad motståndare, så att spelarna hinner lyckas. |
 | 3 | `del-spelovning` | Spelövning | Ja | Samma fokus används i spel med motståndare, riktning och mål. Reglerna i spelet gör att fokuset händer ofta. |
 | 4 | `del-spel` | Spel | Ja | Spel med två lag och mål, i dagens spelform eller mindre. Friare, med mycket speltid för alla. |
@@ -39,7 +39,7 @@ Riktlinjer till övningsförfattaren:
 - `del-spelovning`: motståndare, riktning och mål. Regler som gör att fokuset händer ofta (till exempel poäng för en passning till en kantspelare).
 - `del-spel`: två lag, mål och riktning. Övningen ska ha grupptypen `tva-lag` (se nedan och R-008).
 
-Det här är nytt jämfört med fältlistan i `content/ovningar/README.md`. Se rapporten.
+Fältet saknas i dag i fältlistan i `content/ovningar/README.md`. Innehållet regleras av R-005, och fältnamnet bestäms vid K2.
 
 ## Passlängd
 
@@ -146,7 +146,8 @@ Tiderna i tabellerna är **måltider**. Generatorn får avvika lite när den fyl
 
 - **Hela passet:** högst 5 minuter kortare än den begärda längden och aldrig längre (R-036). Ett pass som blir några minuter kortare går alltid att använda, eftersom det nästan alltid tar lite extra tid att samla gruppen. Ett pass som drar över tiden kan krocka med nästa lag på planen.
 - **Varje del:** högst 3 minuter från måltiden, uppåt eller nedåt (R-035).
-- **Vattenpauser och avslutning** får aldrig kortas för att få tiden att gå ihop.
+- **Vattenpauser och avslutning** får aldrig kortas för att få tiden att gå ihop (R-031).
+- **Om en del saknar övning** gäller inte gränsen för hela passet. De delar som har övningar ska fortfarande ligga inom 3 minuter från sin måltid. Passet visar den faktiska tiden och vad som saknas (R-039, R-100).
 
 ## Hur lång tid en övning får ta
 
@@ -162,14 +163,14 @@ En övning ska inte hålla på längre än gruppen orkar koncentrera sig på sam
 
 Spel får vara längre än övningar, eftersom barn orkar spela länge när spelet byter motståndare eller spelas i korta perioder med paus emellan. En del kan innehålla en eller två övningar (R-038). Om en del är längre än den längsta tiden för en övning blir det två övningar.
 
-**Förslag till datamodellen (beslutas vid K2):** i dag har en övning en rekommenderad tid. Generatorn behöver också veta hur kort och hur lång övningen kan göras, till exempel "10 minuter, går att köra 6–15". Jag föreslår att `tid` får tre värden: kortast, rekommenderad och längst. Om en övning bara har ett värde gäller det som både kortast och längst.
+**Tid i övningen:** i dag har en övning en rekommenderad tid. Generatorn behöver också veta hur kort och hur lång övningen kan göras, till exempel "10 minuter, går att köra 6–15". Därför har `tid` tre värden: kortast, rekommenderad och längst (R-009). Om en övning bara har ett värde gäller det som både kortast och längst. Fältnamnen bestäms vid K2.
 
 ## Vila och vätska
 
 Barn blir varma och uttorkade fortare än vuxna. Därför är vattenpauserna ett fast inslag i varje pass, inte något som ledaren förväntas komma ihåg själv.
 
 - **Pauserna räknas in i passets tid** och tas aldrig bort av generatorn (R-031).
-- **Pausen läggs mellan två övningar** eller, i Spel, mellan två perioder av spelet. Aldrig mitt i en övning i de andra delarna (R-037).
+- **Pausen läggs mellan två övningar** eller, i Spel, mellan två perioder av spelet. Aldrig mitt i en övning i de andra delarna, och normalt inte direkt före avslutningen. Om Spel saknar övning kan pauserna behöva ligga tätare, se undantaget i R-037.
 - **Pauserna sprids ut** så att den längsta tiden utan paus blir så kort som möjligt (R-037).
 - **Varje spelare har egen vattenflaska.** Det är ett råd till ledaren som appen kan visa. Det är inte en regel för generatorn.
 - **Vid värme** bör ledaren lägga in fler pauser och sänka intensiteten. Appen vet inte hur vädret är, så det är ledarens bedömning. Samma sak gäller vid kyla, där korta genomgångar och snabb start är viktigast.
@@ -181,18 +182,18 @@ Varje övning anger hur många spelare **en grupp** kan ha: minst och högst (f�
 
 ### Grupptyper
 
-För att generatorn ska kunna dela gruppen och hantera udda antal behöver varje övning en grupptyp. Det är ett nytt fält, se rapporten.
+För att generatorn ska kunna dela gruppen och hantera udda antal behöver varje övning en grupptyp. Fältet saknas i dag i `content/ovningar/README.md`. Innehållet regleras av R-008, och fältnamnet bestäms vid K2.
 
 | Nyckel | Betyder | Exempel | Udda antal |
 |---|---|---|---|
 | `fri` | Alla i samma yta, antalet behöver inte gå jämnt ut | Bollkänsla med egen boll, kull med boll | Inga problem |
 | `par` | Spelarna jobbar två och två | Passningar i par | En grupp blir tre och passar i triangel |
-| `tva-lag` | Två lag mot varandra | 3 mot 3, 4 mot 4 med jokrar | En spelare blir joker och är alltid med laget som har bollen. För 6–9 år fungerar det också att ena laget har en spelare mer |
+| `tva-lag` | Två lag mot varandra | 3 mot 3, 4 mot 4 med jokrar | Passet visar att en spelare blir joker och alltid är med laget som har bollen, om inte övningens `anpassning` beskriver en annan lösning (R-054). *Min bedömning:* för 6–9 år kan ledaren på plats lika gärna låta ena laget ha en spelare mer |
 | `fast-storlek` | Grupper med ett bestämt antal | Tre spelare där en anfaller mot två försvarare som roterar | Bara om övningen själv beskriver en lösning, till exempel att en spelare vilar och byter in |
 
-Så gör generatorn (R-051 till R-056):
+Så gör generatorn (R-050 till R-056):
 
-1. **Så få grupper som möjligt.** Generatorn väljer det minsta antal grupper där ingen grupp blir större än övningens högsta antal.
+1. **Så få grupper som möjligt.** Generatorn väljer det minsta antal grupper där ingen grupp blir större än övningens största grupp. Det är oftast övningens högsta antal, men i en ledarstyrd övning får en grupp inte heller vara större än taket per ledare (se nedan), och en övning med fast storlek och en lösning för udda antal får ha grupper som är en spelare större (R-050).
 2. **Jämnt fördelat.** Grupperna skiljer sig med högst en spelare.
 3. **Ingen grupp för liten.** Om någon grupp blir mindre än övningens minsta antal kan övningen inte användas med det antalet spelare.
 4. **Udda antal** hanteras enligt tabellen ovan. Bara övningar med grupptypen `fast-storlek` kan väljas bort på grund av udda antal (berättelse 02, kriterium 7).
@@ -231,7 +232,7 @@ Det här är det högsta antal spelare som en ledare rimligen kan ha hand om i e
 | `fas-13-14` | 14 |
 | `fas-15-19` | 16 |
 
-Samma tal används för att varna ledaren när det är många spelare per ledare i hela passet (R-021). Passet genereras ändå, men ledaren får ett tips om att be en förälder eller äldre spelare om hjälp.
+Samma tal används när det är många spelare per ledare i hela passet (R-021, beslutad av användaren 2026-09-11). Passet genereras ändå, men ledaren får ett tips om att be en förälder eller äldre spelare om hjälp.
 
 ### Vad antalet ledare gör möjligt
 
@@ -249,6 +250,10 @@ Regler för stationer (R-060 till R-066):
 - **Lika lång tid på varje station**, minst 5 minuter och högst den längsta tiden för en övning i fasen. Bytet mellan stationer tar 1 minut.
 - **Stationerna får plats i delens tid.** Två stationer kräver minst 11 minuter, tre stationer minst 17 minuter och fyra stationer minst 23 minuter. I korta pass blir det därför sällan stationer.
 - **Varje station är en egen övning** som uppfyller alla krav, också kravet på fokusområde.
+
+## Tillgänglig yta
+
+Ledaren kan välja om passet ska göras på hel, halv eller kvarts plan, eller låta bli (beslut 2026-09-11). När ledaren har valt yta används bara moment som får plats på den, med 3 meter mellan grupper eller stationer som ligger bredvid varandra. Momenten görs efter varandra och får använda samma yta. Reglerna är R-090 till R-094. Appen tar inte hänsyn till material, som antal bollar och koner, i version 1. Inomhushall kommer i en senare version.
 
 ## Exempel
 

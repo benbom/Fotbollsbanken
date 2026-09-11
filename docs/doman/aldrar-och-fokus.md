@@ -17,7 +17,11 @@ Det här har jag kunnat kontrollera i källan (hämtat 2026-09-11):
 
 Det här har jag **inte** kunnat kontrollera: själva innehållet i spelarutbildningsplanen. Det finns som digitala böcker, en per spelform, på en extern tjänst (share.articulate.com) som inte går att läsa via hämtning.
 
-Därför är beskrivningen av varje fas nedan **min bedömning som tränarutbildare**, byggd på principerna ovan och på etablerad kunskap om barns och ungdomars utveckling. Siffror om instruktionstid, koncentration och liknande är riktvärden från praktiken, inte hämtade från SvFF. De är markerade som bedömning där det har betydelse. Innan K1 bör någon jämföra faserna med SvFF:s digitala böcker, se *Beslut som behövs* i rapporten.
+Därför är beskrivningen av varje fas nedan **min bedömning som tränarutbildare**, byggd på principerna ovan och på etablerad kunskap om barns och ungdomars utveckling. Siffror om instruktionstid, koncentration och liknande är riktvärden från praktiken, inte hämtade från SvFF. De är markerade som bedömning där det har betydelse.
+
+**Beslut 2026-09-11** (`docs/krav/kravspec.md`, *Beslut vid K1*, punkt 3): användaren godkände faserna som min bedömning för version 1. **Åldersfaserna ska kontrolleras mot SvFF:s spelarutbildningsplan (de digitala böckerna per spelform) före lansering, senast vid kontrollpunkt K5.** Uppgiften finns i `docs/krav/backlog.md` under *Innan lansering*. Om kontrollen visar skillnader ändras den här filen och K/R-tabellen i `fokusomraden.md`, och de regler i `generatorregler.md` som bygger på dem ses över.
+
+Undantaget är avsnittet om nickning längst ned. Där är åldersgränsen hämtad från SvFF.
 
 ## Grundprinciper som gäller i alla åldrar
 
@@ -43,7 +47,9 @@ Faserna följer spelformerna, eftersom appen föreslår spelform utifrån ålder
 | `fas-13-14` | 13–14 | `9mot9` | Större plan, puberteten och att spela som lag |
 | `fas-15-19` | 15–19 | `11mot11` | Hela spelet, eget ansvar och olika ambitioner |
 
-Fasen bestäms av den ålder ledaren anger, inte av vilken spelform ledaren väljer. En grupp 11-åringar som spelar 9 mot 9 hör alltså fortfarande till `fas-10-12` när övningar väljs.
+Fasen bestäms av den ålder ledaren anger, inte av vilken spelform ledaren väljer (R-012, R-015). En grupp 11-åringar som spelar 9 mot 9 hör alltså fortfarande till `fas-10-12` när övningar väljs.
+
+Åldern är den ålder spelarna fyller under året. I en grupp med flera åldrar anger ledaren den ålder som flest har, och den lägre om två åldrar är lika vanliga (R-010, beslutat av användaren 2026-09-11).
 
 ---
 
@@ -77,7 +83,7 @@ Fasen bestäms av den ålder ledaren anger, inte av vilken spelform ledaren väl
 
 - **Lek och bollkänsla:** fortfarande mycket egen boll. Nu med högre fart, finter, vändningar och mottagning med olika delar av kroppen. Jonglering och bollkonster som barnen kan öva hemma.
 - **Spelförståelse:** att passa till någon som är fri, att göra sig fri (spelbar) och att sprida ut sig på planen. Att försvara sitt mål och vinna tillbaka bollen tillsammans. Tack vare retreatlinjen i 5 mot 5 kan laget börja spela ut bollen från målvakten.
-- **Fysiskt:** bra ålder för att lära in rörelser och koordination. Snabbhet och reaktion tränas bäst i korta lekar och tävlingar med boll. Fortfarande ingen konditionsträning i egen form.
+- **Fysiskt:** bra ålder för att lära in rörelser och koordination. Snabbhet och reaktion tränas bäst i korta lekar och tävlingar med boll. Fortfarande ingen konditionsträning i egen form. SvFF rekommenderar skadeförebyggande program från 7 år (FIFA 11+ Kids, källan finns i `passuppbyggnad.md`). I appen kommer det in från den här fasen, som lekfulla moment i uppvärmningen. För 6–7 år ger lek och koordination samma grund.
 - **Mentalt:** barnen vill lära sig och bli bra, och de börjar jämföra sig med andra. De förstår enkla regler och tävlingar. Koncentrationen räcker lite längre än i fasen före, men fortfarande inte till långa genomgångar.
 - **Socialt:** kompisar blir viktigare och en känsla för laget börjar växa fram. Fair play kan tränas på riktigt, till exempel att döma själv i smålagsspel.
 - **Målvakt:** målvakten införs i 5 mot 5. *Min bedömning:* alla bör få prova att stå i mål, både på träning och i match. Grundteknik: grundställning, fånga, rulla och kasta ut, spela med fötterna.
@@ -123,7 +129,7 @@ Fasen bestäms av den ålder ledaren anger, inte av vilken spelform ledaren väl
 
 **I fokus:** att spela som ett lag på en större plan, med offside, samtidigt som kroppen förändras.
 
-- **Lek och bollkänsla:** tekniken ska hålla under högre tempo, med längre passningar och när spelaren är trött. Nickspel och bollmottagning i luften kommer in på allvar. Lek kan fortfarande användas i uppvärmning.
+- **Lek och bollkänsla:** tekniken ska hålla under högre tempo, med längre passningar och när spelaren är trött. Bollmottagning i luften kommer in på allvar. Nickspel förs in, med få och lätta nickar och en begränsad mängd per pass (se *Nickning* nedan). Lek kan fortfarande användas i uppvärmning.
 - **Spelförståelse:** lagdelar (försvar, mittfält, anfall) och avståndet mellan dem. Offside, både att utnyttja den och att försvara med den. Spelvändningar och längre passningar. Försvarsspel som lag. Fasta situationer med inspark.
 - **Fysiskt:** många är mitt i tillväxtspurten. Koordinationen kan tillfälligt bli sämre, och växtvärk i knän och hälar är vanligt. Belastningen behöver varieras. *Min bedömning:* skadeförebyggande uppvärmning (knä, fotled, bål) bör göras regelbundet från den här fasen. Skillnaderna i mognad kan vara flera år, och de som mognar sent får inte väljas bort på grund av det.
 - **Mentalt:** självbilden är skör och humöret kan svänga. Spelarna kan tänka mer abstrakt och ta till sig taktik. De vill vara delaktiga och påverka.
@@ -165,15 +171,15 @@ Fasen bestäms av den ålder ledaren anger, inte av vilken spelform ledaren väl
 | Spel | Från små spel upp till 11 mot 11 |
 | Coachning | Frys spelet, fråga, låt spelarna ta ansvar för delar av passet |
 
-*Min bedömning:* 15–16-åringar och 17–19-åringar skiljer sig i hur mycket belastning de tål och hur mycket de tränar. Om passuppbyggnaden eller generatorreglerna behöver skilja dem åt kan fasen delas i del 2. I så fall behåller `fas-15-19` sin betydelse, och nya nycklar läggs till.
+*Min bedömning:* 15–16-åringar och 17–19-åringar skiljer sig i hur mycket belastning de tål och hur mycket de tränar. Passuppbyggnaden och generatorreglerna skiljer inte på dem i version 1. Om det behövs senare behåller `fas-15-19` sin betydelse, och nya nycklar läggs till.
 
 ---
 
 ## Sammanfattning för regelmotorn
 
-Tabellen samlar riktvärdena ovan. Allt i tabellen är min bedömning. Hur siffrorna används i passets delar, och vilka av dem som blir regler med ID, bestäms i `passuppbyggnad.md` och `generatorregler.md` i nästa steg.
+Tabellen samlar riktvärdena ovan. Allt i tabellen är min bedömning. Riktvärdena styr hur övningar skrivs och granskas. Generatorn använder bara ett av dem direkt: den övre gränsen för hur länge en övning i samma form håller blir den längsta tiden för en övning i Uppvärmning, Öva och Spelövning (R-034). Den kortaste tiden för en övning är 5 minuter i alla faser (R-034), och Spel får vara längre (`passuppbyggnad.md`). Kö och storlek på spelen styrs genom övningarnas ålder och antal spelare, inte genom egna regler.
 
-| Fas | Instruktion per gång | Tid i samma övning | Högst i kö per boll, mål eller station | Största spel i träning |
+| Fas | Instruktion per gång | Hur länge en övning i samma form håller | Högst i kö per boll, mål eller station | Största spel i träning |
 |---|---|---|---|---|
 | `fas-6-7` | cirka 30 s | 5–8 min | 2–3 | 3 mot 3 |
 | `fas-8-9` | 30–60 s | 8–10 min | 2–3 | 5 mot 5 |
@@ -181,12 +187,32 @@ Tabellen samlar riktvärdena ovan. Allt i tabellen är min bedömning. Hur siffr
 | `fas-13-14` | 1–2 min | 12–20 min | 3–4 | 9 mot 9 |
 | `fas-15-19` | 2–3 min | 15–25 min | 3–4 | 11 mot 11 |
 
-## Nickning, en öppen säkerhetsfråga
+## Nickning
 
-Jag har inte kunnat verifiera vad SvFF rekommenderar i dag om nickträning för barn. Andra förbund har under senare år begränsat nickning för de yngsta. Tills frågan är avgjord föreslår jag att appen är försiktig (min bedömning):
+**Källa:** SvFF, *Får barn nicka?*, https://aktiva.svenskfotboll.se/nyheter/2023/05/nickning-for-barn/ (publicerad 2023-05-23, hämtad 2026-09-11).
 
-- **6–9 år:** ingen nickträning.
-- **10–12 år:** bara enstaka nickar med lätt eller mjuk boll och få upprepningar.
-- **13–19 år:** nickspel får tränas, med gradvis ökad mängd och rätt bollstorlek för åldern.
+Det här säger SvFF, med mina ord:
 
-Se *Beslut som behövs* i rapporten. Förslaget styr vilka åldrar fokusområdet `nickspel` gäller för i `fokusomraden.md`.
+- Nickning förs in i spelarutbildningsplanen först i spelformen 9 mot 9, alltså från 13 år.
+- Spelreglerna förbjuder inte nickning före 13 år. Men 3 mot 3, 5 mot 5 och 7 mot 7 är utformade så att bollen mest är på marken, till exempel med retreatlinjen som gör att målvakten spelar ut bollen i stället för att sparka långt.
+- Skälet är att barn har svagare nackmuskler och har svårare att hålla huvudet stilla när de nickar.
+- SvFF anger ingen mängd, alltså inte hur många minuter eller nickar som är lagom för 13–19 år.
+
+**Beslut 2026-09-11** (`docs/krav/kravspec.md`, *Beslut vid K1*, punkt 2): appen följer SvFF. Ingen nickträning före 13 år. Taken för 13–19 år är mitt förslag, som användaren har beslutat.
+
+| Ålder | Nickträning | Regel |
+|---|---|---|
+| 6–12 år | Ingen. `nickspel` kan inte väljas, och övningar med `nickspel` väljs inte och kan inte bytas in | R-080, R-081 |
+| 13–14 år | Högst 10 minuter per pass | R-082 |
+| 15–19 år | Högst 20 minuter per pass | R-082 |
+
+`nickspel` väljs alltid tillsammans med ett annat fokusområde (R-083). Då kan kärnan i passet handla om det andra fokuset när nicktaket är nått.
+
+En övning där spelarna nickar som en planerad del ska vara märkt med `nickspel`, även när nickning inte är huvudfokus (R-081). Annars fungerar varken åldersgränsen eller taket. Reglerna gäller också när ledaren byter in en av klubbens egna övningar (R-106).
+
+Råd till ledaren och till övningsförfattaren (min bedömning):
+
+- Börja med få och lätta nickar det första året, till exempel bollen kastad från nära håll, och öka gradvis.
+- Använd rätt bollstorlek för åldern: storlek 4 för 13-åringar och storlek 5 från 14 år (`spelformer.md`).
+- För 10–12 år ska övningar med `fasta-situationer` utformas så att bollen spelas längs marken eller tas emot, inte nickas. Det kontrollerar jag när jag granskar övningar.
+- Reglerna gäller planerad nickträning. Att bollen någon gång träffar huvudet i ett spel går inte att förhindra helt.

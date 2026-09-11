@@ -107,9 +107,9 @@ Planmåtten skrivs som längd × bredd.
 
 ## Gäller alla spelformer
 
-- **Utrustning:** tröja, byxor, strumpor, skor och benskydd. Enhetliga matchkläder rekommenderas. *Min bedömning:* benskydd bör användas även på träning när övningen innehåller närkamper.
-- **Mål som kan välta:** alla mål, även flyttbara, ska vara säkert förankrade så att de inte välter, till exempel med tyngder. Det här är den viktigaste säkerhetsregeln i SvFF:s planstorleksdokument och gäller i högsta grad på träning, där små mål flyttas runt ofta. Övningar med mål ska påminna om det.
-- **Säkerhetsavstånd runt planen:** SvFF rekommenderar 3 meter fritt från sid- och kortlinjer till fasta eller flyttbara föremål när nya planer byggs. *Min bedömning:* samma tanke bör gälla när ledaren lägger ut övningsytor bredvid varandra. Ytor ska inte gränsa direkt mot staket, mål eller andra gruppers ytor.
+- **Utrustning:** tröja, byxor, strumpor, skor och benskydd. Enhetliga matchkläder rekommenderas. *Min bedömning:* benskydd bör användas även på träning när övningen innehåller närkamper. Varje pass påminner om det (R-085).
+- **Mål som kan välta:** alla mål, även flyttbara, ska vara säkert förankrade så att de inte välter, till exempel med tyngder. Det här är den viktigaste säkerhetsregeln i SvFF:s planstorleksdokument och gäller i högsta grad på träning, där små mål flyttas runt ofta. Ett pass med mål i någon övning påminner om det (R-084).
+- **Säkerhetsavstånd runt planen:** SvFF rekommenderar 3 meter fritt från sid- och kortlinjer till fasta eller flyttbara föremål när nya planer byggs. *Min bedömning:* samma tanke bör gälla när ledaren lägger ut övningsytor bredvid varandra. Ytor ska inte gränsa direkt mot staket, mål eller andra gruppers ytor. Generatorn använder 3 meter mellan ytor när ledaren har valt yta (R-092).
 
 ## Spelform föreslagen utifrån ålder
 
@@ -124,13 +124,16 @@ Berättelse 01 kräver att appen föreslår en spelform utifrån åldern. Så h�
 | 15–19 | `11mot11` |
 | Under 6 eller över 19 | Stöds inte i appen (berättelse 01, kriterium 3) |
 
-Reglerna som regelmotorn ska följa, med ID, skrivs i `generatorregler.md` i nästa steg. Tabellen ovan är underlaget.
+Reglerna som regelmotorn följer står i `generatorregler.md`: R-011 (giltig ålder), R-012 (fas från ålder), R-013 (föreslagen spelform), R-014 (vilka spelformer ledaren kan välja) och R-015 (fasen styrs av åldern, inte av spelformen).
 
-### Frågor om ålder som inte är lösta
+### Hur åldern räknas
 
-1. **Vilken ålder avses?** Svensk barn- och ungdomsfotboll delar i praktiken in lagen efter födelseår, och åldern räknas som den ålder spelarna fyller under året. De spelformsblad jag har läst säger inte uttryckligen hur åldern räknas. Jag har alltså inte kunnat verifiera det i källan. Min rekommendation är att appen frågar efter den ålder spelarna fyller i år, eller efter födelseår. Se *Beslut som behövs* i rapporten.
-2. **Grupper med flera åldrar.** Många lag tränar med två födelseår tillsammans, till exempel 9- och 10-åringar. Berättelse 01 har bara ett åldersfält. Min rekommendation är att ledaren anger den ålder som flest i gruppen har, och att övningarna väljs efter den åldern. Om gruppen spelar match i en annan spelform väljer ledaren den spelformen själv (berättelse 01, kriterium 2).
-3. **11 mot 11 uppåt.** Spelformsbladet för 11 mot 11 skriver "15+ år", medan planstorleksdokumentet skriver "15–19 år". För appen, som slutar vid 19 år, spelar skillnaden ingen roll.
+Frågan är avgjord. Användaren beslutade 2026-09-11 hur åldern räknas (`docs/krav/kravspec.md`, *Beslut vid K1*, punkt 6). Regeln är R-010 i `generatorregler.md`.
+
+1. **Vilken ålder avses?** Den ålder spelarna fyller under det aktuella kalenderåret. Det stämmer med hur svensk barn- och ungdomsfotboll i praktiken delar in lagen, efter födelseår. De spelformsblad jag har läst säger inte uttryckligen hur åldern räknas, så den kopplingen är min bedömning och inte hämtad ur källan. Beslutet gäller oavsett.
+2. **Grupper med flera åldrar.** Ledaren anger den ålder som flest i gruppen har. Om två åldrar är lika vanliga anger ledaren den lägre (R-010). Övningarna väljs efter den åldern. Om gruppen spelar match i en annan spelform kan ledaren välja den, men bara spelformen närmast före eller efter den föreslagna (R-014, berättelse 01, kriterium 2).
+3. **Över ett årsskifte.** I en säsongsplan som passerar ett årsskifte blir åldern ett år högre för veckorna i det nya året (R-113).
+4. **11 mot 11 uppåt.** Spelformsbladet för 11 mot 11 skriver "15+ år", medan planstorleksdokumentet skriver "15–19 år". För appen, som slutar vid 19 år, spelar skillnaden ingen roll.
 
 ## Vad spelformen betyder på träning
 
@@ -152,5 +155,5 @@ Kontrollen gjordes 2026-09-11 mot spelformsbladen och planstorleksdokumentet ova
 
 - **Inga avvikelser i sak.** Ålder, planmått, antal spelare och målstorlek i `CLAUDE.md` stämmer med källorna.
 - **7 mot 7, mål:** `CLAUDE.md` och spelformsbladet skriver "max 5 × 2 m". Planstorleksdokumentet skriver "5 × 2 m" utan "max". Det är en liten skillnad mellan två SvFF-dokument, inte ett fel i `CLAUDE.md`. Den här filen följer spelformsbladet.
-- **11 mot 11, ålder:** se fråga 3 ovan. `CLAUDE.md` följer planstorleksdokumentet.
+- **11 mot 11, ålder:** se punkt 4 under *Hur åldern räknas*. `CLAUDE.md` följer planstorleksdokumentet.
 - **Tillägg som saknas i CLAUDE.md:** matchtid, boll, retreatlinje, straffområden, rekommenderade målstorlekar och de undantag som vissa distrikt tillåter. De finns nu i den här filen.

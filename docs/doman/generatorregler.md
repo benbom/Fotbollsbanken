@@ -16,21 +16,26 @@ Reglerna bygger på de andra domänfilerna och använder deras nycklar:
 | Fokusområden | 17 nycklar, till exempel `bollkansla`, `passning-mottagning` | `fokusomraden.md` |
 | Passets delar | `del-uppvarmning`, `del-ovning`, `del-spelovning`, `del-spel`, `del-avslutning` | `passuppbyggnad.md` |
 | Grupptyper | `fri`, `par`, `tva-lag`, `fast-storlek` | `passuppbyggnad.md` |
-| Ytor (preliminärt) | `yta-hel`, `yta-halv`, `yta-kvart` | den här filen, R-090 |
+| Ytor | `yta-hel`, `yta-halv`, `yta-kvart` | den här filen, R-090 och R-091 |
 
 ## Så läser du reglerna
 
 - **Krav** måste alltid vara uppfyllt. Ett pass som bryter mot ett krav är fel.
-- **Prioritet** ska vara uppfyllt om det finns något giltigt pass som uppfyller den. Om prioriteter krockar gäller ordningen i R-048.
+- **Prioritet** är ett önskemål. Generatorn försöker uppfylla prioriteterna i den ordning som R-048 anger, och R-049 säger exakt vad det levererade passet alltid måste klara.
+- **Definition** förklarar ett begrepp som andra regler använder.
 - **Preliminär** betyder att regeln väntar på användarens beslut. Den kan byggas, men ska vara lätt att ändra. Preliminära regler är märkta med *(preliminär)* i rubriken.
+- **Utgår** betyder att regeln inte längre gäller. Rubriken får markeringen *(utgår)*, och regeln hänvisar till den regel som ersätter den. Numret och rubriken finns kvar, så att gamla hänvisningar går att följa.
+- **Beslut.** Användaren fattade beslut i de öppna frågorna 2026-09-11. Besluten står i `docs/krav/kravspec.md`, avsnittet *Beslut vid K1*. Regler som bygger på ett sådant beslut säger det och anger punkten i kravspecen.
 - **Min bedömning.** Siffrorna i reglerna är mina bedömningar som tränarutbildare, om inget annat står. Källorna finns i respektive domänfil.
-- **Reserverade nummer.** Varje grupp har ett eget nummerintervall, till exempel R-030–R-039 för tid. Nummer som inte används är reserverade för nya regler i samma grupp. Ett ID återanvänds aldrig.
+- **Numren är frysta.** Kraven i `docs/krav/` hänvisar till regel-ID:n. Ett nummer byts aldrig och tas aldrig bort. Varje grupp har ett eget nummerintervall, till exempel R-030–R-039 för tid. Nummer som inte används är reserverade för nya regler i samma grupp. Ett ID återanvänds aldrig.
 
 ## Begrepp
 
 | Begrepp | Betydelse |
 |---|---|
-| **Underlag** | Det ledaren anger: ålder, spelform, nivå, antal spelare (N), antal ledare (L), passlängd (P) och fokusområden, och preliminärt yta. |
+| **Underlag** | Det ledaren anger: ålder, spelform, nivå, antal spelare (N), antal ledare (L), passlängd (P), fokusområden och, om ledaren vill, yta. |
+| **Gemensamma banken** | Övningarna i `content/ovningar/` och de inskickade övningar som en redaktör har godkänt. Generatorn väljer bara härifrån (R-022). |
+| **Klubbens egna övningar** | Övningar som ledare i klubben har skapat (berättelse 13 och 14) och som inte har godkänts till den gemensamma banken. Ledaren kan byta in dem för hand (R-106). |
 | **Fas** | Åldersfasen som följer av åldern (R-012). |
 | **Valt fokus** | De fokusområden ledaren har valt. |
 | **Del** | En av passets fem delar. De fyra första fylls från banken, `del-avslutning` är ett fast inslag. |
@@ -41,6 +46,8 @@ Reglerna bygger på de andra domänfilerna och använder deras nycklar:
 | **Aktiv tid** | Passlängd minus avslutning minus vattenpauser (R-032). |
 | **Måltid** | Den tid en del ska ha enligt R-032 och R-033. |
 | **Träff** | En övning träffar valt fokus om minst ett av övningens fokusområden finns bland de valda. **Huvudträff** betyder att övningens första fokusområde (huvudfokus) finns bland de valda. |
+| **Giltigt moment** | Ett moment som för sig uppfyller alla krav som gäller ett enskilt moment: grundfiltret (grupp 3), R-041 i `del-ovning` och `del-spelovning`, tid (R-034, R-065), grupper (grupp 6), ledare och stationer (grupp 7), säkerhet (grupp 9) och, om yta är vald, yta (grupp 10). |
+| **Delen kan fyllas** | Det finns ett eller två giltiga moment för delen, med olika övningar, vars sammanlagda tid kan ligga inom delens måltid ± 3 minuter (R-035) och som tillsammans håller nicktaket (R-082). Det prövas för delen för sig, utan hänsyn till resten av passet. Begreppet används i R-100, R-101 och R-103. |
 | **Giltigt pass** | Ett pass som uppfyller alla krav. |
 
 ---
@@ -90,10 +97,10 @@ Krav. Övningen har en kortaste, en rekommenderad och en längsta tid i hela min
 
 **Varför:** underlaget bestämmer allt annat. Reglerna ser till att ledaren bara kan be om pass som går att genomföra säkert och meningsfullt, och att samma underlag alltid tolkas på samma sätt.
 
-### R-010 Hur åldern tolkas *(preliminär)*
-Den ålder ledaren anger är den ålder spelarna fyller under det aktuella kalenderåret. Om gruppen har flera åldrar anger ledaren den ålder som flest spelare har. Om två åldrar är lika vanliga anger ledaren den lägre. Appen ska säga detta vid åldersfältet.
+### R-010 Hur åldern tolkas
+Krav. Den ålder ledaren anger är den ålder spelarna fyller under det aktuella kalenderåret. Om gruppen har flera åldrar anger ledaren den ålder som flest spelare har. Om två åldrar är lika vanliga anger ledaren den lägre. Appen säger detta vid åldersfältet.
 
-*Väntar på användarens beslut från del 1. Regeln påverkar hjälptexten, inte beräkningarna.*
+*Beslut 2026-09-11 (kravspec, Beslut vid K1, punkt 6).* Att ledaren väljer den lägre åldern när två åldrar är lika vanliga är min bedömning. Den lägre åldern ger de försiktigaste säkerhetsreglerna och tiderna. Regeln påverkar hjälptexten och säsongsplanen (R-113), inte beräkningarna i ett enskilt pass.
 
 ### R-011 Giltig ålder
 Krav. Åldern är ett heltal från 6 till 19. Andra värden ger ett felmeddelande och inget pass (berättelse 01, kriterium 3).
@@ -128,7 +135,7 @@ Krav. Ledaren väljer exakt en nivå: `niva-1`, `niva-2` eller `niva-3`.
 ### R-017 Antal spelare och ledare
 Krav. Antal spelare är ett heltal från 1 till 40. Antal ledare är ett heltal från 1 till 10. Andra värden ger ett felmeddelande och inget pass.
 
-*Motivering för taken:* med fler än 40 spelare på ett pass behöver gruppen delas i två pass. Fler än 4 ledare ändrar inte vad generatorn kan göra (R-061), så 10 räcker gott.
+*Motivering för taken:* med fler än 40 spelare på ett pass behöver gruppen delas i två pass. Fler än 4 ledare ger inte fler stationer (R-061), men de gör att fler ledarstyrda grupper kan köras samtidigt (R-055). Med 10 ledare kan även 40 spelare i den yngsta fasen delas i ledarstyrda grupper om högst 8, så 10 räcker gott.
 
 ### R-018 Passlängd
 Krav. Passlängden är ett heltal i minuter, minst 30 och högst:
@@ -151,12 +158,12 @@ Krav. Ledaren väljer 1–3 fokusområden. Bara fokusområden som är K eller R 
 ### R-020 Komplett underlag
 Krav. Ett underlag är komplett när ålder, spelform, nivå, antal spelare, antal ledare, passlängd och minst ett fokusområde finns och uppfyller R-011 till R-019. Yta är valfri (R-090). Generatorn körs bara med ett komplett underlag.
 
-### R-021 Många spelare per ledare *(preliminär)*
-Om N är större än L gånger taket per ledare för fasen genereras passet ändå, men appen visar ett tips om att ta hjälp av fler vuxna.
+### R-021 Många spelare per ledare
+Krav. Om N är större än L gånger taket per ledare för fasen genereras passet ändå, men appen visar ett tips om att ta hjälp av fler vuxna. Om N är högst L gånger taket visas inget tips.
 
-*Exempel:* 20 spelare, 2 ledare, 7 år: 20 > 2 × 8 = 16, så tipset visas.
+*Testfall:* 20 spelare, 2 ledare, 7 år: 20 > 2 × 8 = 16, så tipset visas. 16 spelare med samma ledare och ålder: inget tips.
 
-*Preliminär eftersom den lägger till ett nytt beteende som inte finns i kraven.*
+*Beslut 2026-09-11 (kravspec, Beslut vid K1, punkt 9).*
 
 ---
 
@@ -164,10 +171,12 @@ Om N är större än L gånger taket per ledare för fasen genereras passet änd
 
 **Varför:** det här är grundfiltret. En övning som inte klarar det är aldrig aktuell, oavsett hur passet ser ut i övrigt. En övning kan bara läggas i ett moment om den dessutom klarar reglerna för grupper (grupp 6), ledare och stationer (grupp 7), säkerhet (grupp 9) och yta (grupp 10).
 
-Nivåmatchningen är strikt. Det är ledaren som vet var gruppen står, och övningsförfattaren som vet vilka nivåer övningen passar för. Om generatorn själv tar en övning från en annan nivå går ledarens val förlorat, och det är just det berättelse 03 säger att appen inte ska göra. Att en övning passar två nivåer uttrycks i stället i övningens nivålista (R-001).
+Nivåmatchningen är strikt (beslut 2026-09-11, kravspec, Beslut vid K1, punkt 5). Det är ledaren som vet var gruppen står, och övningsförfattaren som vet vilka nivåer övningen passar för. Om generatorn själv tar en övning från en annan nivå går ledarens val förlorat, och det är just det berättelse 03 säger att appen inte ska göra. Att en övning passar två nivåer uttrycks i stället i övningens nivålista (R-001).
 
-### R-022 Bara godkända övningar
-Krav. Bara övningar med status `godkand` kan väljas (berättelse 02, kriterium 11).
+### R-022 Bara godkända övningar ur den gemensamma banken
+Krav. Generatorn väljer bara övningar ur den gemensamma banken med status `godkand` (berättelse 02, kriterium 11). Klubbens egna övningar väljs aldrig av generatorn, inte heller i stationer eller när en del saknar övning. Ledaren kan själv byta in en av klubbens egna övningar enligt R-106.
+
+*Beslut 2026-09-11 (kravspec, Beslut vid K1, punkt 4).*
 
 ### R-023 Ålder
 Krav. Övningen kan väljas bara om underlagets ålder ligger inom övningens `alder`, med gränserna inräknade.
@@ -250,21 +259,27 @@ Krav. Summan av momentens tider i en del ligger inom måltiden ± 3 minuter.
 Krav. Passets totala tid, med vattenpauser och avslutning, är minst P − 5 och högst P minuter. Passet visar den faktiska totala tiden (berättelse 02, kriterium 8).
 
 ### R-037 Var vattenpauserna ligger
-Krav. En vattenpaus ligger mellan två moment eller, i `del-spel`, mellan två perioder av samma spel. I övriga delar ligger den aldrig inuti en övning. Ingen paus ligger före första momentet eller efter sista momentet i `del-spel`.
+Krav. En vattenpaus ligger mellan två moment eller, i `del-spel`, mellan två perioder av samma spel. I övriga delar ligger den aldrig inuti en övning. Ingen paus ligger före passets första moment, och ingen ligger efter passets sista moment, alltså direkt före avslutningen.
+
+Undantag när `del-spel` saknar övning (R-100): om pauserna då inte får plats enligt stycket ovan, får flera pauser ligga direkt efter varandra mellan två moment. Om passet bara har ett moment ligger pauserna direkt efter det. Pauserna tas aldrig bort (R-031).
+
+*Motivering för undantaget:* när `del-spel` finns kan en paus alltid läggas mellan två perioder av spelet. När den saknas kan passet ha färre platser än pauser. Ledaren kommer troligen att fylla den tomma tiden själv, och då behövs vattnet ändå.
 
 Prioritet. Pauserna placeras så att den längsta sammanhängande aktiva tiden utan paus blir så kort som möjligt.
 
+*Testfall:* delarna 10, 11, 12 och 18 minuter i följd och 2 pauser (exemplet i `passuppbyggnad.md`). Den längsta tiden utan paus kan inte bli kortare än 21 minuter, till exempel med pauser efter Öva och efter Spelövning.
+
 ### R-038 Antal moment per del
-Krav. Varje del som fylls från banken har ett eller två moment.
+Krav. Varje del som fylls från banken har ett eller två moment, utom en del som saknar övning (R-100) och därför inte har något.
 
 Prioritet. En del fylls med så få moment som möjligt. Varje byte kostar tid och koncentration.
 
 ### R-039 När en del saknas gäller inte tidsgränserna
-Krav. Om en del saknar övning (R-100) gäller inte R-035 och R-036 för passet. Övriga delar får sina måltider som vanligt, och passet visar den faktiska totala tiden och hur mycket som saknas.
+Krav. Om en del saknar övning (R-100) gäller inte R-036 för passet, och R-035 gäller inte för den tomma delen. R-035 gäller fortfarande för varje del som har moment, så att de delarna får sina måltider som vanligt. Passet visar den faktiska totala tiden och hur mycket som saknas.
 
 ---
 
-## Grupp 5: Fokusområden (R-040–R-048)
+## Grupp 5: Fokusområden och vad som är ett bra pass (R-040–R-049)
 
 **Varför:** ledaren väljer fokus för att passet ska handla om något. Kärnan i passet, Öva och Spelövning, ska därför alltid träffa valt fokus. Uppvärmning och Spel ska helst också göra det, men har egna uppgifter: uppvärmningen ska förbereda kroppen, och spelet ska ge mycket fri speltid. Ett fritt spel är alltid meningsfullt, även när det inte är märkt med dagens fokus.
 
@@ -287,34 +302,74 @@ Prioritet. Minst en övning i `del-uppvarmning` har något av dessa fokusområde
 
 | Fas | Fokusområden |
 |---|---|
-| `fas-6-7`, `fas-8-9` | `lek`, `bollkansla` eller `koordination` |
+| `fas-6-7` | `lek`, `bollkansla` eller `koordination` |
+| `fas-8-9` | `lek`, `bollkansla`, `koordination` eller `skadeforebyggande` |
 | `fas-10-12` | `skadeforebyggande` eller `koordination` |
 | `fas-13-14`, `fas-15-19` | `skadeforebyggande` |
 
-*Motivering:* SvFF rekommenderar skadeförebyggande program i uppvärmningen minst två gånger i veckan, FIFA 11+ Kids för 7–14 år och FIFA 11+ eller Knäkontroll för äldre (se källan i `passuppbyggnad.md`). För de yngsta sker samma sak genom lek och rörelse.
+*Motivering:* SvFF rekommenderar skadeförebyggande program i uppvärmningen minst två gånger i veckan, FIFA 11+ Kids för 7–14 år och FIFA 11+ eller Knäkontroll för äldre (se källan i `passuppbyggnad.md`). För de yngsta sker samma sak genom lek och rörelse. `fas-6-7` har inte `skadeforebyggande`, eftersom fasen också har 6-åringar (`fokusomraden.md`).
 
 ### R-045 Uppvärmningen träffar valt fokus
 Prioritet. Minst en övning i `del-uppvarmning` träffar valt fokus.
 
 ### R-046 Spelet träffar valt fokus
-Prioritet. Minst en övning i `del-spel` träffar valt fokus. Om ingen spelövning i banken träffar, väljs ett spel som uppfyller alla krav, utan hänsyn till fokus.
+Prioritet. Minst en övning i `del-spel` träffar valt fokus. Om ingen övning för `del-spel` i banken träffar, väljs ett spel som uppfyller alla krav, utan hänsyn till fokus.
 
 ### R-047 Alla valda fokus finns med
 Prioritet. Om ledaren har valt flera fokusområden träffas varje valt fokusområde av minst en övning i passet.
 
-### R-048 Ordning mellan prioriteter
-Krav. Generatorn väljer bland de giltiga passen. Pass jämförs med prioriteterna i den här ordningen, och ett pass som uppfyller en prioritet högre upp i listan är bättre än ett som inte gör det, oavsett de lägre:
+### R-048 Hur två pass jämförs
+Definition. Två giltiga pass för samma underlag jämförs med en poänglista. Posterna jämförs uppifrån och ned. Det pass som är bättre på den första posten där passen skiljer sig är det bättre passet, oavsett de lägre posterna. Två pass med samma värde på alla poster är lika bra.
 
-1. R-042 Huvudträff i kärnan (först `del-ovning`, sedan `del-spelovning`)
-2. R-043 Röd tråd
-3. R-047 Alla valda fokus finns med
-4. R-044 Uppvärmningen förbereder kroppen
-5. R-045 Uppvärmningen träffar valt fokus
-6. R-046 Spelet träffar valt fokus
-7. R-038 Så få moment som möjligt
-8. R-037 Pauserna placeras jämnt
+Regeln säger bara i vilken ordning prioriteterna gäller när två pass jämförs. Den kräver inte att generatorn hittar det bästa av alla möjliga pass. Vad passet som generatorn lämnar alltid måste klara står i R-049. Varje post går att räkna ut från passet självt, utan att andra pass behöver prövas.
 
-Generatorn ska lämna ett pass som inget annat giltigt pass är bättre än. Om två delar konkurrerar om samma övning (R-070) har delen som står först i ordningen `del-ovning`, `del-spelovning`, `del-spel`, `del-uppvarmning` företräde. Hur sökningen går till är ett algoritmval (grupp 8), men den ska ge det här resultatet. Testerna görs med små testbanker där det är entydigt vilket pass som är bäst.
+| Ordning | Post | Bättre är |
+|---|---|---|
+| 1 | Antal delar som har minst ett moment, räknat bland de delar som finns kvar efter R-033 | fler |
+| 2 | Vilka delar som har moment, prövat i ordningen `del-ovning`, `del-spelovning`, `del-spel`, `del-uppvarmning` | att den första delen där passen skiljer sig har moment |
+| 3 | R-042 för `del-ovning`: alla övningar i delen har huvudträff | uppfylld |
+| 4 | R-042 för `del-spelovning`: alla övningar i delen har huvudträff | uppfylld |
+| 5 | R-043 Röd tråd | uppfylld |
+| 6 | R-047 Alla valda fokus finns med | uppfylld |
+| 7 | R-044 Uppvärmningen förbereder kroppen | uppfylld |
+| 8 | R-045 Uppvärmningen träffar valt fokus | uppfylld |
+| 9 | R-046 Spelet träffar valt fokus | uppfylld |
+| 10 | R-038 Antal moment i hela passet | färre |
+| 11 | R-037 Längsta sammanhängande aktiva tid utan paus, i minuter | kortare |
+
+- En prioritet som gäller en del som har tagits bort enligt R-033 räknas som uppfylld, eftersom den är likadan för alla pass med samma underlag.
+- En prioritet som gäller en del som saknar övning (R-100) räknas som inte uppfylld.
+- Post 2 avgör vilken del som får en övning när två delar konkurrerar om samma övning (R-070).
+
+*Testfall:* pass A har huvudträff i `del-ovning` men ingen röd tråd. Pass B saknar huvudträff i `del-ovning` men har röd tråd och färre moment. A är bättre, eftersom post 3 avgör före post 5 och 10.
+
+### R-049 Det här klarar ett genererat pass alltid
+Krav. Ett pass som generatorn lämnar till ledaren
+
+1. är giltigt. När en del saknar övning gäller R-039: R-036 gäller inte, och R-035 gäller bara för delar som har moment,
+2. kan inte bli bättre enligt R-048 genom en enda **enkel ändring**.
+
+En enkel ändring är en av de här:
+
+- **a.** byta en övning i ett moment, också i en station, mot en annan övning ur den gemensamma banken,
+- **b.** fylla en del som saknar övning med ett eller två moment,
+- **c.** ersätta de två momenten i en del med ett moment,
+- **d.** flytta en vattenpaus till en annan plats som R-037 tillåter.
+
+Vid a, b och c får tiderna för passets övningar och stationer väljas om inom sina gränser (R-034, R-065), och grupperna delas om enligt grupp 6. En ändring räknas bara om passet efter ändringen uppfyller punkt 1.
+
+Generatorn behöver inte hitta det bästa av alla möjliga pass. Det kan finnas ett bättre pass som bara nås med flera ändringar samtidigt, och det är tillåtet. Hur generatorn söker är ett algoritmval (R-072). Regeln gäller passet som generatorn lämnar. När ledaren själv har bytt en övning (R-104, R-106) gäller den inte längre.
+
+Punkt 2 med ändring b är det som gör att en del bara står tom när generatorn verkligen har prövat att fylla den (R-100).
+
+**Så testas regeln:**
+
+- Kontrollera att passet är giltigt.
+- Pröva alla enkla ändringar mot testbanken och kontrollera att ingen ger en bättre poänglista enligt R-048.
+- Jämför poänglistor, inte vilka övningar passet har, eftersom flera pass kan vara lika bra.
+- I en testbank där bara ett pass klarar punkt 1 och 2 ska generatorn lämna just det passet.
+
+*Motivering:* kraven skyddar spelarna och ser till att passet går att genomföra. Prioriteterna gör passet bättre, men ett pass som är nästan lika bra är fullt användbart för en ledare. Att kräva det allra bästa passet gör regeln svår att testa, eftersom flera pass kan vara lika bra, och dyr att räkna fram.
 
 ---
 
@@ -426,18 +481,32 @@ Följande är inte fotbollsregler. Det avgörs av senior-systemutvecklare, så l
 
 ## Grupp 9: Säkerhet (R-080–R-085)
 
-**Varför:** säkerhetsreglerna gäller alltid, även när det gör att färre övningar matchar. Nickreglerna följer SvFF, som skriver att nickning förs in i spelarutbildningsplanen först i spelformen 9 mot 9, från 13 år. Före det är spelformerna utformade så att bollen ska vara på marken. Källa: SvFF, *Får barn nicka?*, https://aktiva.svenskfotboll.se/nyheter/2023/05/nickning-for-barn/ (publicerad 2023-05-23, hämtad 2026-09-11). Det är strängare än mitt förslag i `aldrar-och-fokus.md`, där jag föreslog begränsad nickning för 10–12 år. Hur mycket nickning 13–19-åringar ska ha anger SvFF inte. Den mängden är min bedömning.
+**Varför:** säkerhetsreglerna gäller alltid, även när det gör att färre övningar matchar. De gäller också när ledaren själv byter in en övning, både ur banken (R-104) och bland klubbens egna övningar (R-106).
 
-### R-080 Ingen nickträning före 13 år *(preliminär)*
-Krav. Om åldern är under 13 kan `nickspel` inte väljas som fokus, och ingen övning som har `nickspel` bland sina fokusområden väljs.
+**Nickning.** Användaren beslutade 2026-09-11 att appen följer SvFF (kravspec, Beslut vid K1, punkt 2). SvFF skriver att nickning förs in i spelarutbildningsplanen först i spelformen 9 mot 9, alltså från 13 år, och att spelformerna före det är utformade så att bollen ska vara på marken. Källa: SvFF, *Får barn nicka?*, https://aktiva.svenskfotboll.se/nyheter/2023/05/nickning-for-barn/ (publicerad 2023-05-23, hämtad 2026-09-11). Hur mycket nickning 13–19-åringar ska ha anger SvFF inte. Taken i R-082 är mitt förslag, som användaren har beslutat. Se också avsnittet *Nickning* i `aldrar-och-fokus.md`.
 
-### R-081 Nickövningar märks för rätt ålder *(preliminär)*
+### R-080 Ingen nickträning före 13 år
+Krav. Om åldern är under 13 kan `nickspel` inte väljas som fokus, och ingen övning som har `nickspel` bland sina fokusområden väljs eller kan bytas in.
+
+*Kontroll mot andra regler:* R-019 ger samma resultat för valet av fokus, eftersom `nickspel` är "–" till och med 12 år i `fokusomraden.md`. R-080 står ändå för sig, så att nickgränsen gäller även om tabellen ändras.
+
+### R-081 Nickövningar märks för rätt ålder
 Krav. En övning som har `nickspel` bland sina fokusområden ska ha en minsta ålder på minst 13 (R-003).
 
-### R-082 Begränsad mängd nickning *(preliminär)*
+En övning där spelarna nickar bollen som en planerad del av övningen ska ha `nickspel` bland sina fokusområden, även när nickning inte är huvudfokus. Det kan inte kontrolleras automatiskt. Det kontrolleras när övningen granskas (fotbollsexpert och redaktör).
+
+*Kontroll mot andra regler:* R-081 säger inte emot R-002. R-002 kräver att varje fokusområde är K eller R för varje fas som övningens åldersspann berör. Eftersom `nickspel` är "–" för `fas-10-12` och yngre ger R-002 samma gräns, 13 år. R-081 står ändå för sig, av samma skäl som R-080. Andra stycket behövs för att R-080 och R-082 ska fungera: en övning med nickning som inte är märkt med `nickspel` skulle annars slippa igenom båda reglerna.
+
+### R-082 Begränsad mängd nickning
 Krav. Sammanlagd tid för övningar som har `nickspel` bland sina fokusområden är högst 10 minuter per pass för `fas-13-14` och högst 20 minuter per pass för `fas-15-19`.
 
-### R-083 Nickspel väljs tillsammans med ett annat fokus *(preliminär)*
+- Övningens hela tid räknas, även om bara en del av övningen är nickning.
+- I ett helgruppsmoment räknas momentets tid. I ett stationsmoment räknas stationstiden t (R-065) för varje station med en sådan övning, eftersom det är den tid varje spelare är där.
+- Taket gäller också efter byte av övning (R-104, R-106), räknat med den nya övningens tid enligt R-105.
+
+*Testfall:* `fas-13-14`, en övning med `nickspel` i Öva på 8 minuter. En till övning med `nickspel` på 5 minuter kan inte läggas i passet, eftersom 8 + 5 = 13 > 10.
+
+### R-083 Nickspel väljs tillsammans med ett annat fokus
 Krav. `nickspel` kan bara väljas som fokus om ledaren också väljer minst ett annat fokusområde.
 
 *Motivering:* utan den regeln kan R-041 och R-082 inte uppfyllas samtidigt, eftersom Öva och Spelövning tillsammans ofta är längre än nicktaket.
@@ -450,14 +519,16 @@ Krav. Varje pass visar en påminnelse om benskydd, eftersom `del-spel` alltid in
 
 ---
 
-## Grupp 10: Tillgänglig yta *(preliminär)* (R-090–R-094)
+## Grupp 10: Tillgänglig yta (R-090–R-094)
 
-**Varför:** ytan avgör i praktiken vilka övningar som går att genomföra. Många lag delar planen med andra och har en halv eller en kvarts plan. Ett spel 9 mot 9 får inte plats på en kvarts plan, och fyra smålagsspel sida vid sida kräver mer yta än ett. Om generatorn inte vet det kan den föreslå pass som inte går att genomföra. Min bedömning av frågan finns i rapporten till K1. Hela gruppen väntar på användarens beslut.
+**Varför:** ytan avgör i praktiken vilka övningar som går att genomföra. Många lag delar planen med andra och har en halv eller en kvarts plan. Ett spel 9 mot 9 får inte plats på en kvarts plan, och fyra smålagsspel sida vid sida kräver mer yta än ett. Om generatorn inte vet det kan den föreslå pass som inte går att genomföra.
 
-### R-090 Ledaren kan ange yta *(preliminär)*
-Ledaren kan välja en av `yta-hel`, `yta-halv` och `yta-kvart`, eller låta bli. Om ledaren inte väljer någon yta används inget ytfilter.
+*Beslut 2026-09-11 (kravspec, Beslut vid K1, punkt 1):* version 1 har ett valfritt ytfilter med hel, halv och kvarts plan. Det finns inget materialfilter (bollar, koner, mål) i version 1. Inomhushall som yta kommer i en senare version och kräver egna mått, som inte finns här än.
 
-### R-091 Ytornas mått *(preliminär)*
+### R-090 Ledaren kan ange yta
+Krav. Ledaren kan välja en av `yta-hel`, `yta-halv` och `yta-kvart`, eller låta bli. Yta är valfri (R-020). Om ledaren inte väljer någon yta används inget ytfilter, och R-092 och R-093 gäller inte.
+
+### R-091 Ytornas mått
 Krav. Ytorna har de här måtten, längd × bredd i meter:
 
 | Nyckel | Namn | Mått |
@@ -468,8 +539,8 @@ Krav. Ytorna har de här måtten, längd × bredd i meter:
 
 105 × 65 är SvFF:s rekommenderade mått för 11 mot 11 (`spelformer.md`). Halv och kvarts plan är min avrundning nedåt. Med dessa mått får planen för 7 mot 7 (minst 50 × 30) plats på en kvarts plan och planen för 9 mot 9 (minst 65 × 50) på en halv plan.
 
-### R-092 Momentet får plats *(preliminär)*
-Krav. När en yta är vald kan ett moment bara användas om det får plats. Övningens yta per grupp är l × b meter för den valda spelformen. Ytan har måtten A × B.
+### R-092 Momentet får plats
+Krav. När en yta är vald kan ett moment bara användas om det får plats. Övningens yta per grupp, fältet `yta` (`content/ovningar/README.md`), är l × b meter. Om övningen anger olika ytor för olika spelformer används ytan för den valda spelformen. Den valda ytan har måtten A × B (R-091).
 - **En grupp:** gruppens yta får plats i någon riktning, alltså l ≤ A och b ≤ B, eller l ≤ B och b ≤ A.
 - **Flera grupper eller stationer samtidigt:** varje grupp får 3 meters marginal, alltså (l + 3) × (b + 3). Varje grupp med marginal får plats i någon riktning, och summan av alla gruppers ytor med marginal är högst A × B.
 
@@ -477,23 +548,28 @@ Marginalen följer säkerhetsavståndet i `spelformer.md`.
 
 *Testfall:* `yta-kvart` (52 × 32 = 1 664 m²) och två grupper med ytan 25 × 20 m: (28 × 23) × 2 = 1 288 m², och 28 × 23 får plats. Momentet kan användas. Tre grupper: 1 932 m². Momentet kan inte användas.
 
-### R-093 Övning utan yta *(preliminär)*
-Krav. När en yta är vald kan en övning som saknar yta inte användas.
+### R-093 Övning utan yta
+Krav. När en yta är vald kan en övning som saknar yta inte användas. Om ingen yta är vald spelar det ingen roll om övningen har en yta.
 
-### R-094 Ytan gäller ett moment i taget *(preliminär)*
+### R-094 Ytan gäller ett moment i taget
 Krav. Ytkontrollen görs för varje moment för sig, eftersom momenten görs efter varandra och kan använda samma yta.
 
 ---
 
-## Grupp 11: När för få övningar matchar, och byte av övning (R-100–R-105)
+## Grupp 11: När för få övningar matchar, och byte av övning (R-100–R-106)
 
-**Varför:** ledaren ska alltid förstå vad som hände och själv bestämma vad som ska ändras (berättelse 03). Generatorn byter aldrig ledarens val i tysthet och fyller inte ut en tom del med något som inte passar. Vid byte av övning (berättelse 04) ska den nya övningen passa lika bra på samma plats som den gamla.
+**Varför:** ledaren ska alltid förstå vad som hände och själv bestämma vad som ska ändras (berättelse 03). Generatorn byter aldrig ledarens val i tysthet och fyller inte ut en tom del med något som inte passar. Vid byte av övning (berättelse 04) ska den nya övningen passa lika bra på samma plats som den gamla, och säkerhetsreglerna gäller alltid, också för klubbens egna övningar.
 
 ### R-100 En del som saknar övning
-Krav. En del som fylls från banken, och som inte har tagits bort enligt R-033, saknar övning om inget giltigt pass har ett moment i den delen. En sådan del visas i passet med sitt namn, sin måltid och texten att övning saknas. Delens tid läggs inte på andra delar (R-039).
+Krav. En del som fylls från banken, och som inte har tagits bort enligt R-033, **saknar övning** om den inte har något moment i passet. En sådan del visas i passet på sin plats, med sitt namn, sin måltid och texten att övning saknas. Delens tid läggs inte på andra delar (R-039).
+
+- En del som inte kan fyllas (se *Begrepp*) saknar alltid övning.
+- En del som kan fyllas för sig kan ändå sakna övning om generatorn inte kan fylla den tillsammans med resten av passet, till exempel för att samma övning behövs i en annan del (R-070), för att nicktaket annars överskrids (R-082) eller för att passet annars blir för långt (R-036). Det ska vara sällsynt. R-049, ändring b, anger vad generatorn då minst måste ha prövat.
+
+*Varför regeln inte säger "om inget giltigt pass har ett moment i delen":* det skulle kräva att generatorn prövar alla möjliga pass innan den får visa en tom del. Det är samma sak som att kräva det bästa passet, och det kan varken byggas eller testas på ett rimligt sätt. I stället avgörs det av begreppet *Delen kan fyllas*, som prövas för delen för sig, och av R-049.
 
 ### R-101 När inget pass skapas
-Krav. Om ingen av delarna `del-ovning`, `del-spelovning` och `del-spel` kan fyllas, bland dem som finns kvar efter R-033, skapas inget pass. Appen visar i stället att inget pass kunde skapas (berättelse 03, kriterium 1).
+Krav. Om ingen av delarna `del-ovning`, `del-spelovning` och `del-spel` kan fyllas (se *Begrepp*), bland dem som finns kvar efter R-033, skapas inget pass. Appen visar i stället att inget pass kunde skapas (berättelse 03, kriterium 1). Om minst en av dem kan fyllas skapas ett pass.
 
 *Motivering:* ett pass med bara uppvärmning är inget träningspass. Ett pass där bara spelet finns går däremot att använda.
 
@@ -501,20 +577,49 @@ Krav. Om ingen av delarna `del-ovning`, `del-spelovning` och `del-spel` kan fyll
 Krav. Generatorn ändrar aldrig ålder, spelform, nivå, fokus, antal spelare, antal ledare, passlängd eller yta för att hitta fler övningar. Det gäller också R-026.
 
 ### R-103 Vilka val som kan ändras
-Krav. För varje del som saknar övning visar appen vilka av ledarens val som, var för sig, skulle kunna ge en övning i delen. Ett val visas om det finns ett annat tillåtet värde för just det valet, med alla andra val oförändrade, som gör att det finns minst ett giltigt moment för delen. Valen som prövas är nivå, fokusområden, antal spelare, antal ledare, spelform och, om det är valt, yta. För fokusområden prövas varje enskilt fokusområde som är tillåtet för fasen. Appen visar vilka val det gäller, inte vilka värden (berättelse 03, *Utanför*).
+Krav. För varje del som saknar övning visar appen vilka av ledarens val som, var för sig, skulle kunna ge en övning i delen. Ett val visas om det finns ett annat tillåtet värde för just det valet, med alla andra val oförändrade, som gör att delen kan fyllas (se *Begrepp*). Valen som prövas är nivå, fokusområden, antal spelare, antal ledare, spelform och, om det är valt, yta. För fokusområden prövas varje enskilt fokusområde som är tillåtet för fasen. Appen visar vilka val det gäller, inte vilka värden (berättelse 03, *Utanför*).
+
+Om delen kan fyllas för sig men ändå saknar övning (R-100, andra punkten) är det inget enskilt val som är orsaken. Då visar appen i stället att delens övningar inte gick att kombinera med resten av passet.
 
 ### R-104 Vilka övningar som kan ersätta en övning
-Krav. En övning X i ett moment kan ersättas med en övning Y om
-1. Y uppfyller grundfiltret (grupp 3), säkerhetsreglerna (grupp 9) och, om yta är vald, ytreglerna (grupp 10),
+Krav. En övning X i ett moment kan ersättas med en övning Y ur den gemensamma banken om
+1. Y uppfyller grundfiltret (grupp 3), säkerhetsreglerna (grupp 9) och, om yta är vald, ytreglerna (grupp 10). Nicktaket (R-082) prövas för hela passet efter bytet, med Y:s tid enligt R-105,
 2. Y är märkt med samma del som X ligger i,
 3. Y uppfyller R-041 om delen är `del-ovning` eller `del-spelovning`,
 4. Y kan användas med momentets spelare och ledare enligt grupp 6. I ett stationsmoment ska Y dessutom passa stationens grupper (R-063), stationstiden t (R-065) och ledarna (R-064),
 5. Y inte redan finns någon annanstans i passet (R-070).
 
-Prioriteterna i R-048 används inte vid byte. Ledaren väljer själv bland alla övningar som uppfyller villkoren. Om ingen övning uppfyller dem ligger X kvar (berättelse 04, kriterium 3).
+Klubbens egna övningar kan också ersätta X. För dem gäller R-106, som gör ett undantag från kravet på status i R-022 men behåller alla andra villkor.
+
+Prioriteterna i R-048 används inte vid byte. Ledaren väljer själv bland alla övningar som uppfyller villkoren, ur banken och bland klubbens egna övningar. Om ingen övning uppfyller dem ligger X kvar (berättelse 04, kriterium 3).
+
+X kan själv vara en av klubbens egna övningar som ledaren har bytt in tidigare. Villkoren är desamma.
 
 ### R-105 Tid efter byte
-Krav. Y får den tid inom sina gränser (R-034) som ligger närmast X:s tid. Om två tider ligger lika nära väljs den kortare. I ett stationsmoment får Y stationstiden t. R-035 och R-036 kontrolleras inte efter ett byte, men passet visar den nya totala tiden (berättelse 04, kriterium 5).
+Krav. Y får den tid inom sina gränser (R-034) som ligger närmast X:s tid. Om två tider ligger lika nära väljs den kortare. I ett stationsmoment får Y stationstiden t. R-035 och R-036 kontrolleras inte efter ett byte, men passet visar den nya totala tiden (berättelse 04, kriterium 5). Regeln gäller både övningar ur banken (R-104) och klubbens egna övningar (R-106).
+
+### R-106 Byte till en av klubbens egna övningar
+Krav. När ledaren byter ut en övning X (berättelse 04) visar appen också klubbens egna övningar som alternativ. Det är det enda sättet som en egen övning kommer in i ett pass. Generatorn väljer dem aldrig själv (R-022).
+
+En av klubbens egna övningar, Y, kan ersätta X om alla de här villkoren är uppfyllda:
+
+1. **Klubb och status.** Y tillhör ledarens klubb och är inte borttagen (berättelse 14, kriterium 3). Y:s status spelar ingen roll. Det här är det enda undantaget från det som gäller för övningar ur banken: kravet på status `godkand` i R-022 gäller inte.
+2. **Uppgifterna finns och är riktiga.** Y har de uppgifter som villkoren behöver, och de uppfyller R-001 till R-009:
+   - nivålista (R-001), fokusområden (R-002), ålder (R-003), spelformer (R-004), passdelar (R-005), ledarbehov (R-006), antal spelare (R-007), grupptyp (R-008) och tid (R-009),
+   - yta, om ledaren har valt en yta (R-093),
+   - namn, syfte och beskrivning, som varje övning i passet visar (berättelse 02, kriterium 2).
+3. **Samma villkor som för banken.** Y uppfyller villkor 1 till 5 i R-104, med undantaget i punkt 1 ovan. Det betyder att grundfiltret i övrigt (ålder, spelform, nivå, fokusområden som passar fasen och rätt del), R-041, grupperna, ledarna och R-070 gäller fullt ut.
+4. **Säkerhetsreglerna gäller alltid.** Hela grupp 9 gäller för Y utan undantag. Y kan alltså inte bytas in om den har `nickspel` och åldern är under 13 (R-080), om den har `nickspel` och en minsta ålder under 13 (R-081) eller om passet efter bytet går över nicktaket (R-082).
+
+**Om uppgifter saknas.** Om Y saknar en uppgift som punkt 2 kräver, eller om en uppgift bryter mot R-001 till R-009, kan Y inte bytas in. Appen gissar aldrig ett värde som saknas. Den antar till exempel inte att en övning utan nivå passar alla nivåer, att en övning utan antal spelare passar alla antal eller att en övning utan passdelar passar i alla delar. Hur appen visar att en egen övning saknar uppgifter bestäms av ux-designern.
+
+**Om material saknas.** Om Y inte anger något material visar passet påminnelsen om att mål ska vara förankrade (R-084), eftersom appen då inte kan veta att övningen saknar mål.
+
+Efter bytet gäller R-105 för tiden. R-049 gäller inte längre för passet.
+
+*Beslut 2026-09-11 (kravspec, Beslut vid K1, punkt 4). Berättelse 04, kriterium 1 och 3, bygger på regeln.*
+
+*Motivering:* klubbens egna övningar har inte granskats av fotbollsexpert eller redaktör. Ledaren får därför bara välja in dem själv, och bara när de har de uppgifter som behövs för att kontrollera ålder, antal och säkerhet. Nickreglerna fungerar bara om övningen är rätt märkt (R-081, andra stycket).
 
 ---
 
@@ -529,31 +634,42 @@ Krav. En veckas fokus är alla fokusområden som ledaren valde för de pass som 
 Krav. Appen varnar inte och hindrar inte att samma pass, övning eller fokus förekommer i flera veckor. Se R-072.
 
 ### R-112 Fokus som inte har förekommit på länge *(preliminär)*
-Ett kärnområde (K) för lagets fas räknas som att det inte har förekommit på länge om det inte finns bland veckans fokus (R-110) under någon av de 8 senaste veckorna som har minst ett pass. Veckor utan pass räknas inte. Appen kan då visa ett tips.
+Definition. Ett kärnområde (K) för lagets fas räknas som att det inte har förekommit på länge om det inte finns bland veckans fokus (R-110) under någon av de 8 senaste veckorna som har minst ett pass. Veckor utan pass räknas inte. Appen kan då visa ett tips.
 
-*Preliminär eftersom funktionen är Could i backlogen. Talet 8 är min bedömning: det motsvarar ungefär två block om 3–4 veckor.*
+*Preliminär eftersom funktionen är Could i backlogen och inte ingår i berättelse 24 (se *Utanför* där). Besluten 2026-09-11 avgör den inte. Talet 8 är min bedömning: det motsvarar ungefär två block om 3–4 veckor. Regeln blir slutlig när produktägaren och användaren tar in funktionen.*
 
-### R-113 Åldern i en säsongsplan som passerar ett årsskifte *(preliminär)*
-Krav. Om säsongsplanen sträcker sig över ett årsskifte räknas åldern för veckor i det nya kalenderåret som ett år högre. Fasen kan då ändras, och pass som genereras för de veckorna använder den nya åldern.
+### R-113 Åldern i en säsongsplan som passerar ett årsskifte
+Krav. Åldern i säsongsplanen räknas som i R-010: den ålder spelarna fyller under kalenderåret.
 
-*Preliminär eftersom den bygger på R-010.*
+- Lagets ålder vid planens start är den ålder spelarna fyller det kalenderår som planen börjar i.
+- För en vecka i planen är åldern lagets ålder vid planens start plus antalet årsskiften mellan planens start och veckan. För en plan som passerar ett årsskifte blir åldern alltså ett år högre för veckorna i det nya kalenderåret (berättelse 24, kriterium 3).
+- En vecka som går över ett årsskifte hör till det kalenderår där veckans torsdag ligger, som i svensk veckonumrering (ISO 8601).
+- Fasen följer åldern (R-012). Pass som genereras för en vecka använder veckans ålder, och därmed fasens regler för till exempel säkerhet, tider och passlängd.
+- Ett pass som redan finns, till exempel ett sparat pass, genereras inte om när det kopplas till en vecka. Det behåller den ålder det skapades för (R-102).
+- Om veckans ålder blir högre än 19 kan inga pass genereras för veckan (R-011).
+
+*Beslut 2026-09-11 (kravspec, Beslut vid K1, punkt 6). Regeln följer direkt av R-010 och är därför inte längre preliminär.*
+
+*Testfall:* en plan som börjar 2026-08-03 för ett lag som fyller 12 år 2026. Veckor under hösten 2026 har åldern 12 och fasen `fas-10-12`. Veckor från och med den som har sin torsdag 2027-01-07 har åldern 13 och fasen `fas-13-14`. Veckan 2026-12-28–2027-01-03 har sin torsdag 2026-12-31 och har därför åldern 12.
 
 ---
 
 ## Sammanställning
 
-| Grupp | Regler | Antal | Varav preliminära |
-|---|---|---|---|
-| 1 Övningens data | R-001–R-009 | 9 | 0 |
-| 2 Underlaget | R-010–R-021 | 12 | 2 (R-010, R-021) |
-| 3 Vilka övningar, nivå | R-022–R-029 | 8 | 0 |
-| 4 Delar och tid | R-030–R-039 | 10 | 0 |
-| 5 Fokusområden | R-040–R-048 | 9 | 0 |
-| 6 Grupper och udda antal | R-050–R-056 | 7 | 0 |
-| 7 Ledare och stationer | R-060–R-067 | 8 | 0 |
-| 8 Variation | R-070–R-072 | 3 | 0 |
-| 9 Säkerhet | R-080–R-085 | 6 | 4 (R-080–R-083) |
-| 10 Yta | R-090–R-094 | 5 | 5 |
-| 11 Inget matchande, byte | R-100–R-105 | 6 | 0 |
-| 12 Säsongsplan | R-110–R-113 | 4 | 2 (R-112, R-113) |
-| **Summa** | | **87** | **13** |
+| Grupp | Regler | Antal | Varav preliminära | Varav utgår |
+|---|---|---|---|---|
+| 1 Övningens data | R-001–R-009 | 9 | 0 | 0 |
+| 2 Underlaget | R-010–R-021 | 12 | 0 | 0 |
+| 3 Vilka övningar, nivå | R-022–R-029 | 8 | 0 | 0 |
+| 4 Delar och tid | R-030–R-039 | 10 | 0 | 0 |
+| 5 Fokusområden | R-040–R-049 | 10 | 0 | 0 |
+| 6 Grupper och udda antal | R-050–R-056 | 7 | 0 | 0 |
+| 7 Ledare och stationer | R-060–R-067 | 8 | 0 | 0 |
+| 8 Variation | R-070–R-072 | 3 | 0 | 0 |
+| 9 Säkerhet | R-080–R-085 | 6 | 0 | 0 |
+| 10 Yta | R-090–R-094 | 5 | 0 | 0 |
+| 11 Inget matchande, byte | R-100–R-106 | 7 | 0 | 0 |
+| 12 Säsongsplan | R-110–R-113 | 4 | 1 (R-112) | 0 |
+| **Summa** | | **89** | **1** | **0** |
+
+Lediga nummer, reserverade för nya regler i respektive grupp: R-057–R-059 (grupp 6), R-068–R-069 (grupp 7), R-073–R-079 (grupp 8), R-086–R-089 (grupp 9), R-095–R-099 (grupp 10), R-107–R-109 (grupp 11) och R-114–R-119 (grupp 12). Grupp 1 till 5 har inga lediga nummer kvar. En ny regel i någon av dem får ett nummer från R-120 och uppåt och placeras i den grupp den hör till.

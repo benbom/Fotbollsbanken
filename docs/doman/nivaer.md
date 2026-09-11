@@ -6,7 +6,7 @@ Status: utkast
 
 Ledaren väljer en nivå när ett pass genereras (berättelse 01), och generatorn väljer bara övningar som är taggade för den nivån (berättelse 02, kriterium 9). Den här filen föreslår nivåerna och beskriver hur ledaren känner igen dem.
 
-Indelningen är mitt förslag som tränarutbildare. SvFF:s nationella spelformer och spelarutbildningsplanen utgår från ålder och innehåller, så vitt jag har kunnat se, ingen nivåindelning av träningsgrupper som appen kan ta över. Användaren har bett mig föreslå en.
+Indelningen är mitt förslag som tränarutbildare. SvFF:s nationella spelformer och spelarutbildningsplanen utgår från ålder och innehåller, så vitt jag har kunnat se, ingen nivåindelning av träningsgrupper som appen kan ta över. Användaren beslutade 2026-09-11 att använda de tre nivåerna nedan, med strikt nivåmatchning (`docs/krav/kravspec.md`, *Beslut vid K1*, punkt 5, och R-025, R-026).
 
 ## Tre nivåer
 
@@ -72,8 +72,8 @@ Nästan alla grupper är blandade. Så här gör ledaren (min rekommendation):
 
 1. **Välj efter majoriteten.** Nivån ska stämma för ungefär två av tre spelare.
 2. **Är du osäker, välj den lägre nivån.** Det är lättare att göra en övning svårare på plats än att rädda en övning som är för svår.
-3. **Använd varianterna.** Varje övning har en lättare och en svårare variant. Spelare som behöver mer utmaning, eller mer tid, får varianten inom samma övning.
-4. **Nivån gäller dagens pass.** Samma grupp kan vara `niva-2` i passningsspel och `niva-1` i nickspel. Ledaren väljer nivån för det som ska tränas i dag.
+3. **Använd varianterna.** Varje övning har en lättare och en svårare variant, och passet visar alltid båda (R-029). Spelare som behöver mer utmaning, eller mer tid, får varianten inom samma övning.
+4. **Nivån gäller dagens pass.** Samma grupp kan vara `niva-2` i passningsspel och `niva-1` i 1 mot 1. Ledaren väljer nivån för det som ska tränas i dag.
 
 ## Vad nivån inte är
 
@@ -82,10 +82,10 @@ Nästan alla grupper är blandade. Så här gör ledaren (min rekommendation):
 
 ## Hur nivån används i övningsbanken
 
-Förslag till övningsförfattaren och till datamodellen, som beslutas vid K2:
+Till övningsförfattaren och till datamodellen, som beslutas vid K2:
 
-- En övning kan passa flera nivåer, till exempel `niva-1` och `niva-2`, där den lättare varianten gör den användbar på `niva-1`. Fältet för nivå bör därför vara en **lista med en eller flera nivånycklar**, inte ett enda värde. I dag heter fältet `niva` i `content/ovningar/README.md`, vilket kan läsas som ett enda värde.
+- En övning kan passa flera nivåer, till exempel `niva-1` och `niva-2`, där den lättare varianten gör den användbar på `niva-1`. Fältet `niva` är därför en **lista med en eller flera nivånycklar**, inte ett enda värde (R-001). Fältnamnet bestäms vid K2.
 - Övningar för `niva-1` bör ha enkel organisation, som går att visa på under en minut, och få moment.
 - Övningar för `niva-3` bör ha press från motståndare, begränsad tid eller yta, eller flera val för spelaren.
 
-Exakt hur regelmotorn matchar nivåer, till exempel om en övning för `niva-2` får användas på `niva-3` med sin svårare variant, skrivs som regler med ID i `generatorregler.md` i nästa steg.
+Matchningen är strikt: generatorn väljer bara övningar vars nivålista innehåller ledarens nivå, och tar aldrig en övning från en angränsande nivå, inte ens när för få övningar matchar (R-025, R-026). En övning för `niva-2` används alltså inte på `niva-3`, även om den har en svårare variant. Om övningen passar båda nivåerna ska det stå i nivålistan.

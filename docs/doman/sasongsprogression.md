@@ -11,7 +11,7 @@ Filen använder nycklarna från de andra domänfilerna: åldersfaser (`fas-6-7` 
 ## Källäge
 
 - SvFF rekommenderar att skadeförebyggande program används minst två gånger i veckan under hela säsongen för att ge effekt: FIFA 11+ Kids för 7–14 år, FIFA 11+ och Knäkontroll för äldre. Källa: https://aktiva.svenskfotboll.se/spelare/halsa/skadeforebyggande-program/ (hämtad 2026-09-11).
-- Nickning förs in i spelarutbildningsplanen från 9 mot 9, alltså från 13 år. Källa: https://aktiva.svenskfotboll.se/nyheter/2023/05/nickning-for-barn/ (publicerad 2023-05-23, hämtad 2026-09-11).
+- Nickning förs in i spelarutbildningsplanen från 9 mot 9, alltså från 13 år. Källa: https://aktiva.svenskfotboll.se/nyheter/2023/05/nickning-for-barn/ (publicerad 2023-05-23, hämtad 2026-09-11). Taket per pass för 13–19 år är beslutat av användaren 2026-09-11 (R-082, `aldrar-och-fokus.md`).
 - **Säsongens perioder** nedan är min beskrivning av hur året brukar se ut. Jag har inte hämtat distriktens spelprogram. Starten och slutet på seriespelet varierar mellan distrikten, till exempel mellan norra och södra Sverige, och mellan åren. Klubben ska utgå från sitt eget distrikts spelprogram.
 - **Progressionen**, alltså blocken, teman per fas och råden om få pass per vecka, är min bedömning som tränarutbildare, byggd på principerna i `aldrar-och-fokus.md`.
 
@@ -47,7 +47,7 @@ Nycklarna kan användas om perioder läggs in i säsongsplanen. Månaderna är u
    - **Vecka 2–3, utveckla:** samma tema, fler motståndare, mindre yta, mindre tid. De svårare varianterna. Om gruppen klarar temat bra kan ledaren välja nästa nivå för just det temat.
    - **Sista veckan, använda:** temat används i spel. Ledaren kan kombinera temat med förra blockets tema, så att det gamla repeteras.
 3. **Upprepning är bra.** Samma övning får gärna återkomma i flera veckor, särskilt för de yngsta. En känd övning kommer igång fort och ger mer aktiv tid (R-072, R-111).
-4. **Varje pass har spel.** Oavsett tema slutar passet med spel (`passuppbyggnad.md`). Temat bestämmer vad som övas, inte att spelet försvinner.
+4. **Varje pass har spel.** Oavsett tema har passet en del med spel före avslutningen, och spelet är passets största del (`passuppbyggnad.md`). Temat bestämmer vad som övas, inte att spelet försvinner.
 5. **Kärnområdena återkommer.** Under en period ska alla kärnområden (K) för fasen få ett eget block eller vara med som andra fokus i ett block. Ett kärnområde som inte har förekommit på ungefär 8 veckor med träning bör komma tillbaka (R-112).
 6. **Från individ till lag.** Tidigt i en period handlar teman om spelaren och bollen (bollkänsla, dribbling, passning, 1 mot 1). Senare handlar de om samarbete och lagspel (spelbarhet, speluppbyggnad, försvarsspel, omställning). Samma ordning gäller över åren.
 7. **Omstart efter uppehåll.** Efter sommaruppehållet eller ett längre avbrott börjar laget med ett block med grunder och bollkänsla, även om gruppen har kommit längre. Nivån kan snabbt höjas igen.
@@ -70,7 +70,7 @@ Tabellerna visar ett exempel på hur en säsong kan se ut. Varje rad är ett blo
 | | 2 | `ett-mot-ett`, `avslut` |
 | | 3 | `spelbarhet`, `lek` |
 
-Lek finns i alla pass för den här åldern, oavsett tema, eftersom uppvärmningen prioriterar `lek`, `bollkansla` och `koordination` (R-044).
+Oavsett tema innehåller uppvärmningen i första hand `lek`, `bollkansla` eller `koordination`, om banken har sådana övningar (R-044).
 
 ### `fas-8-9` (1–2 pass i veckan)
 
@@ -88,6 +88,8 @@ Lek finns i alla pass för den här åldern, oavsett tema, eftersom uppvärmning
 
 `speluppbyggnad` hör ihop med retreatlinjen i 5 mot 5. Under det blocket passar det bra att låta alla prova att stå i mål. `malvaktsspel` kan läggas till som tredje fokus.
 
+Från den här åldern kan uppvärmningen också innehålla lekfulla skadeförebyggande moment (R-044).
+
 ### `fas-10-12` (2 pass i veckan är vanligt)
 
 | Period | Block | Tema (fokusområden) |
@@ -104,7 +106,7 @@ Lek finns i alla pass för den här åldern, oavsett tema, eftersom uppvärmning
 | | 4 | `forsvarsspel`, `ett-mot-ett` |
 | Vinter | 1 | `dribbling`, `bollkansla` |
 
-Från den här åldern prioriterar uppvärmningen `skadeforebyggande` eller `koordination` (R-044). Nickning tränas inte före 13 år (R-080, preliminär).
+Från den här åldern prioriterar uppvärmningen `skadeforebyggande` eller `koordination` (R-044). Nickning tränas inte före 13 år (R-080).
 
 ### `fas-13-14` (2–3 pass i veckan är vanligt)
 
@@ -124,8 +126,8 @@ Från den här åldern prioriterar uppvärmningen `skadeforebyggande` eller `koo
 | | 2 | `passning-mottagning`, `koordination` |
 
 - `forsvarsspel` i den här fasen innehåller offside, som gäller från 9 mot 9.
-- `nickspel` väljs alltid tillsammans med ett annat fokus (R-083) och med begränsad mängd (R-082). Det första året med nickning är det bra att börja med få och lätta nickar.
-- `skadeforebyggande` är inte ett eget tema, eftersom det ska finnas i uppvärmningen i alla pass (R-044). SvFF anger minst två gånger i veckan för effekt.
+- `nickspel` väljs alltid tillsammans med ett annat fokus (R-083), och högst 10 minuter per pass får vara nickträning (R-082). Det första året med nickning är det bra att börja med få och lätta nickar.
+- `skadeforebyggande` är inte ett eget tema, eftersom uppvärmningen i varje pass i första hand ska innehålla det (R-044). SvFF anger minst två gånger i veckan för effekt.
 
 ### `fas-15-19` (2–4 pass i veckan)
 
@@ -144,7 +146,7 @@ Från den här åldern prioriterar uppvärmningen `skadeforebyggande` eller `koo
 | | 4 | `forsvarsspel`, `speluppbyggnad` |
 | Vinter | 1 | `avslut`, `dribbling` |
 
-I den här åldern bör temat också följa lagets spelidé, om klubben har en. Med tre eller fler pass i veckan kan veckans pass ha olika teman, se nedan.
+I den här åldern bör temat också följa lagets spelidé, om klubben har en. Med tre eller fler pass i veckan kan veckans pass ha olika teman, se nedan. `nickspel` väljs alltid tillsammans med ett annat fokus (R-083), och högst 20 minuter per pass får vara nickträning (R-082).
 
 ## Belastning över säsongen, 13–19 år
 
@@ -191,6 +193,6 @@ Veckor utan pass är normala, till exempel vid lov, sommaruppehåll eller helger
 - **Veckans fokus** räknas fram ur passen enligt R-110 och visas i planen och översikten.
 - **Upprepning** av pass, övningar och fokus är tillåten och ger ingen varning (R-111).
 - **Tips om ett kärnområde som saknats länge** kan visas enligt R-112 (preliminär, Could i backlogen).
-- **Åldern över ett årsskifte** hanteras enligt R-113 (preliminär).
-- **Flera pass per vecka** behövs för att planen ska passa lag som tränar två eller fler gånger i veckan. Berättelse 24 beskriver i dag ett pass per vecka. Se rapporten.
-- **Perioder och teman** som ledaren kan skriva in för ett block skulle göra progressionen synlig också innan passen är skapade. Det finns inte i berättelse 23–25 i dag. Se rapporten.
+- **Åldern över ett årsskifte** hanteras enligt R-113. Den följer av hur åldern räknas (R-010, beslutad 2026-09-11). Veckorna i det nya kalenderåret får en ålder som är ett år högre, och det kan ändra fasen mitt i planen, till exempel så att nickspel blir möjligt från januari för ett lag som fyller 13.
+- **Flera pass per vecka** stöds (beslut 2026-09-11, `docs/krav/kravspec.md`, *Beslut vid K1*, punkt 10). En vecka kan ha flera pass, och veckans fokus räknas fram ur alla veckans pass (R-110).
+- **Perioder och teman** som ledaren kan skriva in för ett block skulle göra progressionen synlig också innan passen är skapade. Det finns inte i berättelse 23–25 i dag och är en fråga för produktägaren. Det finns ingen regel för det i `generatorregler.md`.
