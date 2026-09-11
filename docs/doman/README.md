@@ -1,0 +1,19 @@
+# Fotbollsdomänen
+
+**Ägare:** fotbollsexpert
+
+Här beskrivs vad appen vet om fotboll. Dokumenten bygger på SvFF:s spelarutbildningsplan och nationella spelformer. Principerna används, men SvFF:s texter kopieras aldrig ordagrant.
+
+| Fil | Innehåll |
+|---|---|
+| `spelformer.md` | Spelform per ålder, planmått, antal spelare och målstorlek |
+| `aldrar-och-fokus.md` | Vad som betonas i varje åldersfas |
+| `nivaer.md` | Nivåindelning |
+| `fokusomraden.md` | Taxonomin som övningar taggas med |
+| `passuppbyggnad.md` | Passets delar, tidsfördelning och stationer per antal ledare |
+| `generatorregler.md` | Regler för regelmotorn, med ID:n (R-001 …) |
+| `sasongsprogression.md` | Progression över säsongen |
+
+När regelmotorn byggs ska koden och testerna hänvisa till regel-ID:n i `generatorregler.md`. En regel som inte står här ska inte finnas i koden.
+
+Varje dokument har en statusrad överst: `Status: utkast` eller `Status: godkänd (K1, ÅÅÅÅ-MM-DD)`.
