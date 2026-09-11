@@ -79,6 +79,10 @@ De här frågorna kunde inte avgöras av produktägaren eller fotbollsexperten. 
 
 Roll- och behörighetsmodellen som besluten bygger på (bara ledare, klubbadmin och redaktör i appen) beslutas slutgiltigt vid K2.
 
+**A. Varning om ålder i säsongsplanen. Förslag, godkänns vid K1.** Enligt R-113 behåller ett sparat pass sin ålder även när det kopplas till en vecka i säsongsplanen. Förslaget är att appen ska varna när passets ålder inte stämmer med veckans ålder, och att den alltid ska varna när passet innehåller en övning märkt `nickspel` och veckans ålder är under 13 år. Se berättelse 24, kriterium 5.
+
+**B. Fråga om nickning i formuläret för egna övningar. Förslag, godkänns vid K1.** Egna övningar granskas inte av fotbollsexpert eller redaktör, och nickreglerna (R-080 till R-083) förutsätter att en övning som innehåller nickning är märkt `nickspel`. Förslaget är att formuläret för egna övningar rakt ut ska fråga om övningen innehåller nickning, och att ett ja automatiskt ska ge märkningen `nickspel`. Se berättelse 13, kriterium 4.
+
 ## Källor
 
 Fotbollsfakta (spelformer, åldersfaser, nivåer, fokusområden, passuppbyggnad, generatorregler, säsongsprogression) ägs av fotbollsexperten och beskrivs i `docs/doman/`. Detta dokument hänvisar dit i stället för att upprepa eller själv besluta fotbollsregler.
