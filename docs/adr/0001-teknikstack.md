@@ -40,9 +40,9 @@ Appen byggs som en **statisk single-page-app (SPA) med React och Vite**, och **S
 | E2E-tester | Playwright med mobil viewport | Apache-2.0 |
 | Tillgänglighetstester | @axe-core/playwright. Bara utvecklingsverktyg, det levereras aldrig i appen. | MPL-2.0 |
 | Tester av åtkomstregler | pgTAP via Supabase CLI mot en lokal databas i Docker | PostgreSQL-licensen / MIT |
-| Kodkvalitet | ESLint (typescript-eslint, eslint-plugin-jsx-a11y), Prettier och `tsc --noEmit` | MIT |
+| Kodkvalitet | ESLint (typescript-eslint, eslint-plugin-jsx-a11y, eslint-plugin-react), Prettier och `tsc --noEmit`. Regeln `react/no-danger` sätts till `error` i hela projektet (S-07): innehåll från ledare ritas som planskisser, och `dangerouslySetInnerHTML` är den direkta vägen från sådan data till lagrad XSS. | MIT |
 | Paket och körmiljö | npm med `package-lock.json`. Node.js i aktuell LTS-version (24), låst med `.nvmrc` och `engines`. Supabase CLI för lokal databas och migrationer. | MIT |
-| Beroendeuppdateringar | Dependabot, som ingår i GitHub | – |
+| Beroendeuppdateringar | Dependabot, som ingår i GitHub. `npm audit --audit-level=high` är ett steg som underkänner bygget från och med inkrement 1, och GitHub Secret Scanning med Push Protection slås på när repot blir publikt (S-25, ADR 0002). | – |
 
 Alla licenser är förenliga med projektets Apache-2.0-licens. Exakta versioner låses i `package-lock.json` när bygget börjar i fas 4.
 

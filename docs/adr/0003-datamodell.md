@@ -22,7 +22,10 @@ Datamodellen ska bära berättelserna i inkrement 3–7 och flödena i `docs/des
 
 ### Principer
 
-1. **Postgres i Supabase med åtkomstregler på radnivå (RLS) på alla tabeller** i schemat `public`. RLS är den enda behörighetsgränsen, eftersom klienten talar direkt med databasen (ADR 0001). En kontroll i CI underkänner bygget om någon tabell saknar RLS.
+1. **Postgres i Supabase med åtkomstregler på radnivå (RLS) på alla tabeller** i schemat `public`. RLS är den enda behörighetsgränsen, eftersom klienten talar direkt med databasen (ADR 0001). En kontroll i CI underkänner bygget om
+   - någon tabell i `public` saknar RLS,
+   - någon vy i `public` saknar `security_invoker = true` (S-02). En vy körs annars med vyägarens rättigheter och utvärderar aldrig RLS på de underliggande tabellerna, vilket gör varje vy till en möjlig tvärklubbsläcka. **Alla vyer skapas därför med `with (security_invoker = true)`**, `club_exercises_v` i ADR 0010 inräknad,
+   - `storage.buckets` innehåller någon rad. Version 1 laddar inte upp filer, och en bucket med öppen policy är en av de vanligaste läckorna i Supabase-projekt (S-24).
 2. **Varje tabell med klubbdata har `club_id`** (eller når klubben i ett steg via `team_id`). Då blir isoleringsreglerna enkla, går att indexera och kan granskas tabell för tabell.
 3. **Operationer som ändrar status eller roller går bara via Postgres-funktioner** (RPC) som kontrollerar behörigheten och gör hela ändringen i en transaktion. Klienten får aldrig uppdatera kolumner som `status`, `is_admin` eller redaktörstabellen direkt. Det gäller:
    - `create_club`
@@ -32,10 +35,34 @@ Datamodellen ska bära berättelserna i inkrement 3–7 och flödena i `docs/des
    - `return_submission`
    - `appoint_editor`
    - `revoke_editor`
+   - `delete_my_account` (S-10, se *Radering av konto* nedan)
+   - `import_bank_exercises(jsonb)`, som bara importrollen får anropa (S-05)
+
+   **Varje funktion i `public` sätts upp likadant** (S-06). Postgres ger som förval `execute` till `public`, och PostgREST exponerar allt i schemat `public` som RPC för både `anon` och `authenticated`. Förvalet måste därför aktivt tas bort, funktion för funktion:
+   - `revoke execute ... from public, anon`, följt av uttrycklig `grant execute ... to authenticated`
+   - varje `security definer`-funktion avbryter direkt om `auth.uid()` är null, även de som redan har en egen behörighetskontroll
+   - `set search_path = ''` och helt kvalificerade tabellnamn i varje funktion
+   - ett pgTAP-test per funktion som visar att anonym åtkomst nekas
+
+   Det gäller också funktioner utan egen behörighetskontroll, till exempel dubblettkontrollen av klubbnamn, som annars låter vem som helst räkna upp klubbnamn utan att vara inloggad.
 4. **Ett sparat pass är ett självbärande dokument.** Varje övning i passet sparas som en ögonblicksbild av övningens innehåll, tillsammans med en referens till originalet. Då påverkas passet inte när en egen övning ändras eller tas bort (14.3). Planläget och utskriften kan dessutom visa passet utan fler hämtningar, vilket behövs för dåligt nät (ADR 0005).
 5. **Primärnycklar är `uuid`** (`gen_random_uuid()`). Övningar ur repot har dessutom ett stabilt text-ID, `source_id`, vars format beslutas i del B. Tider lagras som `timestamptz` och datum som `date`. Veckor räknas enligt ISO 8601 i tidszonen Europe/Stockholm.
 6. **Mjuk borttagning** (`deleted_at` eller `archived_at`) används för lag, övningar och pass, där kraven säger att det som redan används inte ska påverkas (10.3, 14.3).
 7. **Migrationer** skrivs som SQL i `supabase/migrations/` och är det enda sättet att ändra strukturen. Databastyperna för TypeScript genereras med `supabase gen types`.
+8. **Varje UPDATE-policy har både `using` och `with check`, och `with check` binder de kolumner som avgör vem som äger raden till oförändrade värden** (S-01). Att ge en roll `update` på en rad är annars i praktiken att ge den rätt att flytta raden dit den vill. Utan detta skulle en ledare kunna köra `update exercises set scope='bank'` från webbläsarens konsol och publicera ogranskat innehåll i den gemensamma banken, eller `set club_id=<annan klubb>` och plantera data i en främmande klubb. Skyddet läggs i tre lager, eftersom en policy är lätt att skriva fel:
+   - `with check` på varje UPDATE-policy som kräver att `scope`, `club_id` och `origin` är oförändrade,
+   - kolumnrättigheter: `revoke update (scope, club_id, origin, approved_by, source_id) on exercises from authenticated`,
+   - en `check`-begränsning som kräver `origin = 'club'` när `scope = 'club'`.
+
+   pgTAP-test visar att var och en av de fem kolumnerna nekas. Samma princip gäller varje annan tabell där en kolumn avgör synlighet eller ägarskap.
+9. **Gränser för storlek och antal upprätthålls i databasen** (S-08). Innehåll från ledare är den enklaste vägen att slå i gratisnivåns 500 MB och därmed göra databasen skrivskyddad för alla klubbar, och samma data laddas dessutom ned till varje klubbmedlems IndexedDB (ADR 0005). Gränserna är därför en driftfråga, inte bara en fråga om snygga formulär:
+   - `check` på textlängder: passnamn 100 tecken, redaktörens kommentar 2 000, `beskrivning` 5 000, lagnamn 100
+   - `check` på `pg_column_size(content) < 100000`, och på `pg_column_size(content -> 'planskiss') < 8192` (ADR 0012)
+   - tak per klubb och per användare: 1 000 övningar per klubb och 200 pass per ledare och dygn
+   - `max_rows` i PostgREST, så att en enskild fråga inte kan hämta hela banken i ett svep
+
+   Exakta värden får justeras i inkrement 3–4, men gränsen ska finnas från första migrationen. Att lägga till ett tak i efterhand kräver att befintliga rader först städas.
+10. **Lagringstider är en del av datamodellen, inte en driftrutin** (S-19). Mjuk borttagning i punkt 6 gör annars personuppgifter i praktiken permanenta: en ledare tar bort en egen övning som råkar innehålla ett spelarnamn i fritexten, raden får `deleted_at` men ligger kvar för alltid med `created_by` intakt och följer med i varje säkerhetskopia. Ett `pg_cron`-jobb, som ingår i Supabase, rensar därför hårt enligt tabellen i *Lagringstider* nedan.
 
 ### Entiteter
 
@@ -182,6 +209,8 @@ erDiagram
 - **`club_members`** kopplar en person till en klubb. `is_admin` anger om personen är klubbadmin. Tabellen tillåter att en person tillhör flera klubbar. Det är Should i backloggen, men modellen klarar det från start, och gränssnittet i version 1 kan utgå från en klubb.
 - **`team_members`** kopplar en ledare till ett lag. Den som är med i ett lag är också medlem i lagets klubb. Det upprätthålls av `accept_invitation` och av en begränsning i databasen. Den som tas bort ur ett lag förlorar lagets material (11.3), men är kvar som medlem i klubben så länge personen har andra lag eller är klubbadmin.
 - **`editors`** innehåller redaktörerna och gäller hela appen, inte en klubb. Den första redaktören, användaren själv, läggs in med ett engångsskript när produktionen sätts upp, eftersom ingen i appen kan utse den första (18). `revoke_editor` hindrar att den sista redaktören tas bort.
+- **Den första redaktören är ägare och kan inte återkallas av någon annan** (S-15). Utan det kan en hjälpredaktör som utsetts inför säsongen anropa `revoke_editor` på den som utsåg hen och därefter ensam kontrollera hela den gemensamma banken, utan någon väg tillbaka i appen. Tabellen får därför kolumnen `is_owner boolean`, satt bara för den första raden, och `revoke_editor` avbryter om målraden har `is_owner` och anroparen inte är samma person. Varje `appoint_editor` och `revoke_editor` loggas i `editor_events` med `actor_id`, `subject_id` och tidpunkt.
+- **Uppslagningen av ett konto på e-postadress** (18.1–18.2) kräver en exakt och fullständig adress, aldrig en delsträng, och antalet uppslagningar begränsas per redaktör och dygn. Funktionen röjer med nödvändighet om en adress har ett konto, och det är hela dess syfte, men den ska inte gå att använda för att prova sig fram (S-15, jämför S-13).
 - **Roller som går att kombinera:** ledare (rader i `team_members`), klubbadmin (`club_members.is_admin`) och redaktör (en rad i `editors`) är oberoende av varandra. En person kan ha alla tre.
 
 #### Klubbar och lag
@@ -262,14 +291,14 @@ Alla bygger på `auth.uid()`.
 
 | Tabell | Läsa | Skapa | Ändra | Ta bort |
 |---|---|---|---|---|
-| `profiles` | Sin egen rad, och visningsnamn för personer som man delar lag eller klubb med | Skapas vid registrering (ADR 0004) | Sin egen rad | Via kontoradering |
+| `profiles` | Sin egen rad, och visningsnamn för personer i samma lag. Klubbadmin ser hela klubbens ledare. | Skapas vid registrering (ADR 0004) | Sin egen rad | Via `delete_my_account` |
 | `clubs` | Medlemmar | Bara via `create_club`, som också gör skaparen till klubbadmin | Klubbadmin | – (inte i version 1) |
 | `club_members` | Klubbadmin ser alla i klubben. En ledare ser sig själv och de som finns i samma lag. | Via `create_club` och `accept_invitation` | Klubbadmin (`is_admin`) | Klubbadmin |
 | `teams` | Lagets ledare och klubbadmin | Klubbadmin | Klubbadmin | Arkivering av klubbadmin |
 | `team_members` | Lagets ledare och klubbadmin | Via `accept_invitation` | – | Klubbadmin |
 | `invitations` | Klubbadmin i klubben | Klubbadmin (ADR 0004) | Återkallas av klubbadmin | Rensas automatiskt |
 | `editors` | Redaktörer. Varje person kan se om hen själv är redaktör. | Via `appoint_editor`, bara av redaktör | – | Via `revoke_editor`, bara av redaktör |
-| `exercises` med `scope = bank` | Alla inloggade (det finns ingen publik åtkomst, se Won't i `backlog.md`) | Import med servicenyckel, eller `approve_submission` | Import med servicenyckel | – (`retired_at` sätts vid import) |
+| `exercises` med `scope = bank` | Alla inloggade (det finns ingen publik åtkomst, se Won't i `backlog.md`) | `import_bank_exercises` via importrollen, eller `approve_submission` | Samma | – (`retired_at` sätts av importen) |
 | `exercises` med `scope = club` | Klubbens medlemmar | Klubbens medlemmar | Klubbens medlemmar | Klubbens medlemmar (mjukt) |
 | `submissions`, `submission_events` | Klubbens medlemmar och redaktörer | Via `submit_exercise` | Via `approve_submission` och `return_submission` | – |
 | `training_sessions`, `session_items` | Skaparen om `team_id` är null, annars lagets ledare | Skaparen. Med `team_id` krävs att skaparen är med i laget. | Samma som läsa | Samma som läsa (mjukt) |
@@ -280,9 +309,52 @@ Två saker i tabellen är förslag som kräver beslut vid K2 och beskrivs under 
 - **Klubbadmin har ingen automatisk åtkomst till lagens pass och säsongsplaner.** Klubbadmin ser lagen, ledarna och antalet pass, men läser inte innehållet om hen inte själv är med i laget. Det följer principen om minsta behörighet och 11.2.
 - **En redaktör kan söka upp ett konto på e-postadress** för att utse en ny redaktör (18.1–18.2), via en funktion som bara redaktörer kan anropa och som bara svarar med id och visningsnamn.
 
-**Servicenyckeln** (`service_role`), som går förbi RLS, används bara i CI för att importera banken och i Edge Functions som skickar inbjudningar (ADR 0004). Den finns aldrig i klienten eller i det statiska bygget.
+**Vem som ser vilka personer är fastställt** (S-16). ADR:n sa tidigare på ett ställe att `profiles` fick läsas för dem man delar lag **eller klubb** med, och på ett annat att `club_members` bara fick läsas för sig själv och de som finns i samma lag. Raderna motsade varandra, och det fanns därför ingen enskild sanning att skriva policyerna eller pgTAP-testerna mot. Den som skrev dem hade lika gärna kunnat välja den bredare tolkningen, och då hade varje ledare i en stor klubb kunnat lista namnen på klubbens samtliga ledare — ingen tvärklubbsläcka, men mer än vad 11.2 utlovar. **Den snävare tolkningen gäller: samma lag, plus klubbadmin som ser hela klubben.** Tabellen ovan är rättad efter den, och båda raderna säger nu samma sak.
+
+**Servicenyckeln finns inte i CI** (S-05). En nyckel med `bypassrls` läser och skriver allt, `auth.users` inräknat, så sprängradien vid en läcka är total: ett arbetsflöde som skriver ut hemligheten i en logg ger både samtliga ledares e-postadresser och möjligheten att skriva vad som helst i banken. Importen behöver inte den behörigheten, och får den därför inte.
+
+I stället skapas en egen databasroll, **`importer`**, med `noinherit` och **utan `bypassrls`**. Rollen har inga rättigheter på tabellerna alls, bara `execute` på `import_bank_exercises(jsonb)`, som är `security definer` och bara kan
+- skriva rader med `scope = 'bank'` och `origin = 'repo'`, aldrig `origin = 'submission'` och aldrig `approved_by`,
+- sätta och nollställa `retired_at` på sådana rader.
+
+**Rollen nås med en Postgres-anslutningssträng, inte med en API-nyckel.** Det är värt att vara tydlig med, eftersom Supabases API-nycklar bara kan avbilda tre roller — `anon`, `authenticated` och `service_role` — och en egen roll som `importer` alltså inte går att nå den vägen. Den andra tänkbara vägen, en JWT med `role: importer` signerad med projektets JWT-hemlighet, är utesluten: den hemligheten kan signera en token för vilken roll som helst, `service_role` inräknad, och att lägga den i CI vore lika farligt som servicenyckeln och skulle göra hela den här ändringen meningslös. Importen ansluter därför direkt till Postgres som `importer` via session-poolern.
+
+Anslutningssträngen lagras som miljöhemlighet knuten till en GitHub Environment med krav på godkännande, inte som en vanlig repohemlighet (ADR 0002, ADR 0010).
+
+**Servicenyckeln** (`service_role`) används därefter bara i Edge Functions som skickar inbjudningar (ADR 0004), och i användarens egna manuella ingrepp i Supabase dashboard. Den finns aldrig i CI, aldrig i klienten och aldrig i det statiska bygget.
 
 **Tester:** varje regel i tabellen ovan får pgTAP-tester med minst två klubbar, två lag i samma klubb och personer i varje roll och kombination av roller. Testerna visar både att det tillåtna fungerar och att det otillåtna nekas. Testerna ägs av kvalitetssäkraren.
+
+### Radering av konto
+
+Rätten till radering enligt artikel 17 är ovillkorlig och ska verkställas inom en månad. Den påverkar nycklar, `on delete`-beteende och om `created_by` får vara null, och kan därför inte skjutas till fas 5 (S-10). **Funktionen ingår i version 1** enligt användarens beslut 2026-09-12. Produktägaren skriver berättelsen parallellt.
+
+`delete_my_account()` raderar den inloggades eget konto, aldrig någon annans, och gör allt i en transaktion:
+
+| Steg | Vad som händer |
+|---|---|
+| Raderas | Raden i `profiles`, alla rader i `club_members` och `team_members`, inbjudningar som personen har skickat och som ännu inte accepterats, och pass med `team_id is null` med sina `session_items` |
+| Avidentifieras | `created_by`, `submitted_by`, `actor_id` och `added_by` sätts till null på delat material: lagpass, klubbövningar, godkända bankövningar, inskickningar och deras historik |
+| Behålls | Delat material i sig. Ett lagpass som raderas när dess skapare slutar skulle ta med sig andra ledares arbete, och en godkänd bankövning är granskat innehåll som klubbarna använder |
+| Sist | Raden i `auth.users` raderas. Den ligger i ett schema som appen inte kommer åt, så det steget görs av en Edge Function som anropar funktionen ovan och därefter admin-API:et |
+
+**Den sista klubbadminen blockeras.** Att låta en klubb bli kvar utan admin gör lag, inbjudningar och medlemskap omöjliga att förvalta, och det finns ingen väg i appen att utse en ny. Funktionen avbryter därför med ett tydligt fel om personen är ensam klubbadmin i någon klubb som har kvar andra medlemmar, och ledaren får först utse en till admin. Är personen ensam **medlem** i klubben raderas klubben med sina lag och övningar i samma transaktion, eftersom ingen då blir av med något.
+
+Detta är den enda vägen. En radering för hand i Supabase dashboard missar `team_members` och de personliga passen, och går inte att visa att den verkställts.
+
+### Lagringstider
+
+Bara inbjudningar hade en lagringstid. Resten fastställs här (S-19, användarens beslut om lagringstider). Ett `pg_cron`-jobb kör rensningen dagligen och loggar antalet rader.
+
+| Vad | Tid | Vad som händer |
+|---|---|---|
+| Mjukt borttagna rader (`deleted_at`) | 90 dagar | Raderas hårt, med sina underrader |
+| Arkiverade lag och säsongsplaner (`archived_at`) | 24 månader | Raderas hårt |
+| Konton utan inloggning | 24 månader | Påminnelse per e-post, därefter radering med samma väg som `delete_my_account` |
+| Inbjudningar | 30 dagar efter accept, utgång eller återkallande | E-postadressen tas bort (oförändrat, ADR 0004) |
+| Säkerhetskopior | 30 dagar | Raderas av GitHub (ADR 0002) |
+
+En raderad ledare finns kvar i säkerhetskopior i upp till 30 dagar. Det är godtagbart, men ska stå i integritetspolicyn (fas 5).
 
 ## Alternativ
 
@@ -312,12 +384,15 @@ Två saker i tabellen är förslag som kräver beslut vid K2 och beskrivs under 
 **Nackdelar och risker**
 - **RLS-regler är lätta att göra fel.** En glömd regel kan läcka data mellan klubbar. Det motverkas med kontrollen i CI att RLS är påslagen, pgTAP-tester för varje regel och granskning av säkerhetsagenten. `security definer`-funktionerna är de mest känsliga delarna.
 - **Ögonblicksbilder dubblerar data.** Ett pass tar några kilobyte per övning. Det ryms utan problem i 500 MB, men en rättelse i en bankövning når inte redan sparade pass. Det stämmer med R-102 (ett pass som redan finns genereras inte om), men gränssnittet behöver kanske visa att en nyare version av övningen finns. Frågan lämnas till UX-designern.
-- **Importen från repot använder servicenyckeln** och går förbi RLS. Den får bara läsa filer med `godkand` och ändrar aldrig status själv. En agent kan tekniskt ändra en fil till `godkand` i git. Skyddet mot det är granskning av diffen före merge, och del B föreslår en CI-kontroll för det.
+- **Importen från repot går via importrollen**, inte servicenyckeln, och är därmed begränsad till `origin = 'repo'`. Den får bara läsa filer med `godkand` och ändrar aldrig status själv. En agent kan tekniskt ändra en fil till `godkand` i git. Skyddet mot det är grenskydd med `CODEOWNERS`, granskning av diffen före merge och CI-kontrollen i ADR 0010 avsnitt 3.
 - **Personuppgifter:**
   - e-post i `auth.users` och `invitations`
   - namn i `profiles`
   - `created_by`, `submitted_by` och `actor_id` i flera tabeller
-  - fritext som passnamn, övningstexter och redaktörens kommentarer, där en ledare kan skriva in ett spelarnamn trots att appen inte ber om det. Detta går inte att hindra tekniskt. Gränssnittstexterna bör påminna om att inte skriva spelarnamn, och säkerhetsagenten bör bedöma frågan.
+  - fritext som **lagnamn**, passnamn, övningstexter och redaktörens kommentarer, där en ledare kan skriva in ett spelarnamn trots att appen inte ber om det. Detta går inte att hindra tekniskt.
   
-  När ett konto raderas ska profilen, medlemskapen och de personliga passen tas bort, medan lagpass och klubbövningar finns kvar med `created_by = null`. Hur kontoradering går till beslutas i fas 5.
+  **Lagnamnet är den mest sannolika bäraren av ett barns namn** (S-20). Ett lag som heter ”P2015 Kalles grupp” är precis det scenario uppdraget varnar för, och namnet visas för hela klubben och följer med i varje pass. Eftersom inga spelaruppgifter behandlas finns annars inga barns personuppgifter i systemet, och därmed ingen fråga om åldersgräns eller vårdnadshavares samtycke. Hela det skyddet vilar på att fritextfälten hålls rena, vilket gör detta viktigare än allvarlighetsgraden antyder. Det behandlas därför som ett krav på gränssnittet, inte som en restrisk: en kort hjälptext ”Skriv inga namn på spelare” vid lagnamn, passnamn, egna övningars fritextfält och redaktörskommentar, samma mening i integritetspolicyn och i texten klubbadmin ser när en klubb skapas. `texter.md` har en början, men bara vid registreringen. Texterna ägs av UX-designern och behöver beställas.
+  
+  När ett konto raderas tas profilen, medlemskapen och de personliga passen bort, medan lagpass och klubbövningar finns kvar med `created_by = null`. Vägen är `delete_my_account`, se *Radering av konto* ovan. Funktionen ingår i version 1 och byggs i inkrement 3.
+- **Rättslig grund och ansvar** (användarens beslut 2026-09-12): **avtal** är rättslig grund för ledarnas konton, inte samtycke. En ledare som måste använda appen för att kunna leda sitt lag samtycker inte frivilligt, och ett återkallat samtycke skulle tvinga fram radering mitt i säsongen. **Föreningen är ensam personuppgiftsansvarig**, och anslutna klubbar är organisatoriska enheter i tjänsten, inte egna ansvariga. Alternativet, gemensamt ansvar, hade krävt ett avtal per klubb enligt artikel 26. Detta ska stå i integritetspolicyn, som skrivs före K5.
 - **Motsägelse i dokumenten:** i `content/ovningar/README.md` sätts `utkast` av ovningsforfattare och har flödet `utkast → granskad → godkand`. Berättelse 13.1 använder `utkast` för en ofullständig egen övning, och 15.1 och 17.2 använder `utkast` för en inskickad övning i kön. Modellen ovan håller isär begreppen: klubbövningen har ingen granskningsstatus, och inskickningen har `utkast`, `atgarda` och `godkand`. Gränssnittet visar ”Inskickad” för `utkast`, som floden.md avsnitt 1.6 punkt 3 redan gör. Dokumenten behöver inte ändras för att modellen ska fungera, men produktägaren bör förtydliga begreppen, se rapporten.

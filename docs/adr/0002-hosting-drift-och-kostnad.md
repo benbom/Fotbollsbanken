@@ -12,7 +12,8 @@ ADR 0001 gör appen till en statisk SPA med Supabase som backend. Nu ska det bes
 - **E-post** behövs för inloggning och inbjudningar (berättelse 08 och 11, ADR 0004).
 - **CI med GitHub Actions** och en förhandsversion per gren (uppdraget för fas 2). `main` ska alltid fungera (`CLAUDE.md`).
 - **Förutsägbar användning.** Användningen är låg men säsongsbunden: en klubb först, ledare som planerar veckovis och uppehåll i vinter- och sommaruppehållen.
-- **Repot `benbom/Fotbollsbanken` är privat** (kontrollerat med `gh repo view` 2026-09-11). Det påverkar vad GitHub ger gratis.
+- **Repot `benbom/Fotbollsbanken` är privat** (kontrollerat med `gh repo view` 2026-09-11). Det påverkar vad GitHub ger gratis. Användaren beslutade 2026-09-12 att **repot görs publikt före fas 4**, se *Publikt repo och skydd av `main`* nedan.
+- **Inga nya kostnader** (användarens beslut 2026-09-12). Ingen egen domän och ingen Supabase Pro. Besluten nedan ska rymmas i gratisnivåerna som de ser ut i dag, och de följder det får redovisas som kända risker i stället för att lösas med pengar.
 
 ### Villkor för gratisnivåerna
 
@@ -59,7 +60,12 @@ flowchart LR
   sbprod -- inloggning och inbjudan --> brevo
 ```
 
-1. **Webbhotell: Cloudflare Pages Free** för det statiska bygget. Varje gren får en egen förhandsadress (`<gren>.<projekt>.pages.dev`). Produktionen körs från `main`. En egen domän är valfri, se *Beslut som behövs*.
+1. **Webbhotell: Cloudflare Pages Free** för det statiska bygget. Varje gren får en egen förhandsadress (`<gren>.<projekt>.pages.dev`). Produktionen körs från `main`. **Ingen egen domän köps** (användarens beslut 2026-09-12). Appen nås på `<projekt>.pages.dev`. Följden för e-postleveransen står under *Drift och risker*.
+
+   **Säkerhetsheaders levereras med bygget** (S-17). En `_headers`-fil i bygget är gratis och sätts upp en gång, och den är det som återstår om en XSS ändå tar sig in via skissdata (S-07) eller ett komprometterat npm-paket. Utan den kan sådan kod anropa vilken domän som helst och skicka ledarens förnyelsetoken dit, och utan `frame-ancestors` kan appen ramas in för clickjacking mot till exempel ”Ta bort ledare ur laget”. Headern är också det verkliga skyddet för förnyelsetoken i localStorage (ADR 0004 och 0005).
+   - `Content-Security-Policy` med `default-src 'self'`, `connect-src` begränsad till projektets Supabase-domän och Turnstile, `object-src 'none'`, `base-uri 'none'` och `frame-ancestors 'none'`
+   - `Strict-Transport-Security`, `X-Content-Type-Options: nosniff` och `Referrer-Policy: no-referrer`. Den sista skyddar också inbjudningstoken från att läcka i `Referer`, se ADR 0004 (S-14)
+   - CI underkänner bygget om headerfilen saknas i det som laddas upp. Byggs i inkrement 1.
 2. **Databas, Auth och Edge Functions: Supabase Free** i en EU-region. Förstahandsval är `eu-north-1` (Stockholm), annars `eu-central-1` (Frankfurt). Tillgängliga regioner kontrolleras när projektet skapas. Två projekt, som ryms i gratisnivåns två aktiva projekt:
    - **produktion**, som bara `main` pekar på
    - **staging**, som alla förhandsversioner pekar på, med testdata och aldrig riktiga personuppgifter
@@ -72,12 +78,40 @@ flowchart LR
    - **Pull request mot `main` och ändringar under `src/`:** Playwright med axe mot bygget.
    - **Merge till `main`:** allt ovan, uppladdning till produktion och migrationer till staging.
    - **Migrationer till produktion:** körs med ett manuellt startat arbetsflöde (`workflow_dispatch`) efter kontrollpunkten, aldrig automatiskt.
+   - **Import av övningsbanken** (`importera-banken`, ADR 0010): körs vid push till `main` när `content/ovningar/**` har ändrats. Jobbet använder **importrollen `importer`, aldrig servicenyckeln** (S-05, ADR 0003). Rollens **anslutningssträng till Postgres** — inte en API-nyckel, se ADR 0003 om varför — ligger som miljöhemlighet i en **GitHub Environment med krav på godkännande**, inte som en vanlig repohemlighet, så att ett nyskrivet arbetsflöde inte kommer åt den utan att användaren släpper fram körningen.
+   - **Rättigheter:** förvalt `GITHUB_TOKEN`-läge för repot är read-only, och varje arbetsflöde begär uttryckligen de rättigheter det behöver. Inget arbetsflöde utlöses av `pull_request_target`, och inga hemligheter ges till arbetsflöden som utlöses av pull requests från forkar (S-03, S-04).
    - `concurrency` med `cancel-in-progress` avbryter överflödiga körningar, och npm-cachen och Playwrights webbläsare cachas för att spara minuter.
    
    Uppladdningen sker från GitHub Actions i stället för med Cloudflares Git-integration. Då laddas bara det upp som har klarat testerna, och Cloudflare behöver ingen läsbehörighet till repot.
 5. **Hålla databasen vaken (förslag, kräver beslut):** ett schemalagt arbetsflöde i GitHub Actions gör en lätt läsning mot produktionens databas en gång per dag, så att projektet inte pausas under uppehåll. Det kostar ungefär 30 Actions-minuter i månaden. Se *Beslut som behövs*.
-6. **Säkerhetskopior (förslag, kräver säkerhetsagentens granskning):** Supabase Free har inga säkerhetskopior. Ett schemalagt arbetsflöde kör `supabase db dump` en gång i veckan och krypterar filen innan den sparas som artefakt i Actions, med kort lagringstid (till exempel 30 dagar). Filen innehåller ledarnas personuppgifter och får aldrig sparas okrypterad. Nyckeln förvaras utanför repot.
+6. **Säkerhetskopior: krypterade med publik nyckel** (S-09). Supabase Free har inga säkerhetskopior alls, så behovet är verkligt. Ett schemalagt arbetsflöde kör `supabase db dump` en gång i veckan, krypterar filen och sparar den som artefakt i Actions i **30 dagar**. Filen innehåller ledarnas personuppgifter och får aldrig sparas okrypterad.
+
+   Krypteringen sker med **publik nyckel** (`age`), och det är själva poängen: **bara den publika nyckeln checkas in, och den privata nyckeln finns hos användaren, aldrig i GitHub.** CI kan då skapa en säkerhetskopia men aldrig läsa en. En symmetrisk nyckel som hemlighet i samma repo hade inte skyddat mot det troligaste hotet — en agent som får igenom en arbetsflödesfil och hämtar både dumpen och nyckeln — och när repot blir publikt är krypteringen dessutom det enda som skiljer artefakten från en publik nedladdning.
+
+   **Återläsningen provas en gång** innan kedjan räknas som klar. En säkerhetskopia som aldrig har återlästs är en förhoppning, inte en kopia. Provet görs mot ett lokalt Supabase i Docker, inte mot produktionen, och dokumenteras i driftrutinen i fas 5.
+
+   Artefakter hos GitHub ligger utanför EU. Det är en dokumenterad överföring med standardavtalsklausuler, och den är godtagbar just för att uppgifterna är krypterade med en nyckel GitHub inte har. Alternativet, en dump i Supabase Storage i EU, hade hållit allt inom EU men gett den som har servicenyckeln både databasen och kopian. Behandlingen ska stå i integritetspolicyn, och en raderad ledare finns kvar i kopior i upp till 30 dagar (ADR 0003, *Lagringstider*).
 7. **Övervakning av kvoter:** den som äger Supabase- och Cloudflare-kontona läser de e-postmeddelanden som skickas när en kvot närmar sig. Någon betald övervakning används inte.
+
+### Publikt repo och skydd av `main`
+
+Användaren beslutade 2026-09-12 att **repot görs publikt före fas 4**. Det är inte bara en kostnadsfråga: grenskydd för `main` blir gratis, och därmed blir lager 1 i godkännandekedjan i ADR 0010 en teknisk spärr i stället för en överenskommelse (S-04). Utan den kunde vem som helst med skrivrättighet — varje agent som kör med användarens git inräknad — pusha en fil med `status: godkand` direkt till `main`, och nästa import lade in övningen i den gemensamma banken utan att någon människa hade läst den. Actions blir gratis på köpet, och Secret Scanning med Push Protection ingår.
+
+Villkoren före publicering, med den status de har i dag:
+
+| Villkor | Status 2026-09-12 |
+|---|---|
+| Historikskanning efter hemligheter, redovisad (S-22) | **Klar.** Huvudsessionen har sökt igenom historiken utan träffar. Repot innehöll ingen kod, vilket var skälet att göra det nu |
+| `.gitignore` kompletterad innan någon kod skrivs (S-22) | **Klar.** Huvudsessionen har utökat filen |
+| Grenskydd, `CODEOWNERS` och read-only som förval för `GITHUB_TOKEN`, aktiverat samtidigt | `CODEOWNERS` är tillagd av huvudsessionen. Grenskyddet och tokenläget sätts i samma steg som publiceringen |
+| Inga arbetsflöden som utlöses av `pull_request_target`, inga hemligheter till arbetsflöden från forkar | Beslutat i punkt 4 ovan. Gäller från första arbetsflödet |
+| Säkerhetskopior med publik nyckel innan repot blir publikt (S-09) | Beslutat i punkt 6. Måste vara på plats före publiceringen, eftersom artefakter annars blir världsläsbara |
+| Regel och CI-kontroll för `granskning.av` och `kalla` (S-21) | Beslutat i ADR 0010 |
+| S-01, S-02 och S-06 lösta och testade | Beslutade i ADR 0003. Att RLS-policyerna blir läsbara för utomstående sänker inte säkerheten om de är riktiga, men det höjer kravet på att de är det |
+
+**Supabases publika nyckel är avsedd att ligga i klientbygget och är inte en hemlighet.** Den är redan läsbar för var och en som öppnar appen. Servicenyckeln är motsatsen och finns efter S-05 inte i CI över huvud taget (ADR 0003).
+
+Publiceringen gör också övningsbanken fritt kopierbar. Det är en fråga om innehållslicens snarare än säkerhet, och den lämnas till användaren, se *Beslut som behövs* i rapporten.
 
 ## Alternativ
 
@@ -100,23 +134,26 @@ flowchart LR
 **Kostnad**
 - Enligt villkoren den 2026-09-11 kostar driften 0 kronor så länge kvoterna räcker. Ingen av tjänsterna tar betalt utan att någon aktivt uppgraderar, och när en gräns överskrids begränsas tjänsten i stället för att det kommer en faktura.
 - Den verkliga risken är att tjänsten slutar fungera, inte att det kommer en kostnad: databasen blir skrivskyddad, API:et svarar med 402, e-post levereras inte eller CI blockeras. Det ska finnas en rutin för vad som görs när det händer, och den skrivs i fas 5.
-- **Möjliga nya kostnader som kräver användarens beslut:**
-  - en egen domän, ungefär 100–200 kronor per år om föreningen inte redan har en
-  - GitHub Pro (för skyddade grenar i privat repo) eller fler Actions-minuter
-  - Supabase Pro (25 USD per månad) om kvoterna, pausningen eller behovet av säkerhetskopior kräver det
+- **Inga nya kostnader tas** (användarens beslut 2026-09-12). Tre poster som annars hade legat nära till hands är därmed avförda, med de följder som anges:
+  - **egen domän** (ungefär 100–200 kronor per år): avförd. Följden är sämre leveranssäkerhet för inloggningsmejlen, se *Drift och risker* och ADR 0004
+  - **GitHub Pro** för skyddade grenar i ett privat repo: behövs inte, eftersom repot görs publikt i stället
+  - **Supabase Pro** (25 USD per månad): avförd. Följden är att tidsbegränsade sessioner och automatiska säkerhetskopior inte finns, vilket hanteras av beslut 6 och av den kända risken i ADR 0004 (S-11)
 
 **Kvoter i förhållande till förväntad användning**
 - Databasen (500 MB) räcker gott. Övningar, pass och säsongsplaner är små textposter, och planskisser lagras som skissdata, inte som bilder.
 - 50 000 aktiva användare per månad och 5 GB egress ligger långt över vad en klubb använder. Övningsbanken cachas i klienten (ADR 0005), så den hämtas inte vid varje besök.
-- **GitHub Actions är den kvot som tar slut först.** En fullständig körning med lint, typkontroll, enhetstester, pgTAP i Docker, Playwright och bygge beräknas ta 10–15 minuter. 2 000 minuter räcker då till ungefär 130–200 fullständiga körningar i månaden, och det kan bli trångt när agentlaget bygger intensivt. Därför är de tyngsta jobben begränsade till pull requests och relevanta sökvägar. Om repot görs publikt blir Actions gratis. Se *Beslut som behövs*.
+- **GitHub Actions är den kvot som tar slut först.** En fullständig körning med lint, typkontroll, enhetstester, pgTAP i Docker, Playwright och bygge beräknas ta 10–15 minuter. 2 000 minuter räcker då till ungefär 130–200 fullständiga körningar i månaden, och det kan bli trångt när agentlaget bygger intensivt. Därför är de tyngsta jobben begränsade till pull requests och relevanta sökvägar. Repot görs publikt före fas 4 (användarens beslut 2026-09-12), och då blir Actions gratis och kvoten upphör att vara den trånga sektorn.
 - E-post: Brevo ger 300 meddelanden per dag. Det räcker för inbjudningar och inloggning i en klubb, men en stor inbjudan av många ledare samma dag kan slå i taket. Se ADR 0004.
 
 **Drift och risker**
 - **Pausning:** utan att databasen hålls vaken pausas produktionen efter en veckas uppehåll, och appen fungerar inte förrän någon trycker ”Resume project”. Stagingprojektet får pausas, eftersom det bara används under utveckling.
-- **Säkerhetskopior** saknas helt på gratisnivån tills arbetsflödet i beslut 6 finns. Tills dess kan data som förloras inte återställas.
+- **Säkerhetskopior** saknas helt på gratisnivån tills arbetsflödet i beslut 6 finns. Tills dess kan data som förloras inte återställas. Kopian räknas som klar först när en återläsning har provats en gång (S-09); fram till dess är den oprövad.
 - **Staging delas av alla grenar.** Två grenar med olika migrationer kan krocka i stagingdatabasen. Det accepteras eftersom få grenar är aktiva samtidigt, och den lokala databasen i CI är den som avgör om testerna går igenom.
-- **Skyddade grenar** för `main` i ett privat repo kräver enligt min kännedom en betald GitHub-plan. Det har inte verifierats i detta uppdrag, eftersom dokumentationssidan inte angav vilka planer som stöds. Utan skydd upprätthålls ”`main` ska alltid fungera” genom arbetsflödet i `CLAUDE.md`, där bara huvudsessionen mergar, och inte tekniskt.
-- **Cloudflare** levererar bara statiska filer utan personuppgifter. Cloudflare ser ändå besökarnas IP-adresser och är därför personuppgiftsbiträde. Säkerhetsagenten ska granska det och Supabases avtal om underbiträden utanför EU inför K5.
+- **Förhandsversionerna ligger öppet på internet** på gissningsbara adresser, och en förhandsversion kan ha en halvfärdig RLS-policy (S-23). Skadan är begränsad så länge staging bara har testdata, och regeln **aldrig riktiga personuppgifter i staging** är därför en regel som ska testas, inte en ambition. Staging har egna nycklar, skilda från produktionens. Cloudflare Access framför förhandsversionerna är gratis upp till 50 användare och kan läggas till i fas 4 om det behövs.
+- **Grenskydd för `main`** kräver enligt uppgift en betald GitHub-plan för privata repon. Det har inte verifierats i detta uppdrag, eftersom dokumentationssidan inte angav vilka planer som stöds, och frågan förlorar sin betydelse när repot görs publikt: då är grenskyddet gratis. Fram till publiceringen upprätthålls ”`main` ska alltid fungera” bara av arbetsflödet i `CLAUDE.md`, där bara huvudsessionen mergar, och inte tekniskt (S-04).
+- **E-postleveransen är den tydligaste följden av att ingen egen domän köps** (användarens beslut 2026-09-12). SPF, DKIM och DMARC kan inte sättas upp för en egen avsändardomän, och inloggningsmejl från en avsändare utan autentiserad domän hamnar oftare i skräpposten. Eftersom inloggningen bygger på en engångskod per mejl (ADR 0004) betyder ett mejl i skräpposten att ledaren inte kommer in alls. Detta är en **känd och accepterad risk**. Planen är att **mäta i inkrement 3**: följ hur många inloggningar som misslyckas med att koden aldrig kom fram, och testa mot Gmail, Outlook och en telefonoperatörs adress. Fastnar mejlen i skräpposten lyfts domänfrågan till användaren igen, eftersom en domän då är den enda verkliga lösningen.
+- **Brevos villkor är inte bekräftade.** Om Brevos gratisnivå tillåter en avsändare utan egen domän gick inte att kontrollera 2026-09-12: `help.brevo.com` svarade med HTTP 403 på båda försöken, och säkerhetsagenten fick 404 eller tomt innehåll på tre andra adresser. Frågan är öppen och avgör om beslut 3 håller, se *Beslut som behövs* i rapporten.
+- **Cloudflare** levererar bara statiska filer utan personuppgifter. Cloudflare ser ändå besökarnas IP-adresser och är därför personuppgiftsbiträde, och lokaliserar inte till EU utan det betalda tillägget Data Localization Suite. Det hanteras med standardavtalsklausuler och ska erkännas i integritetspolicyn, inte antas bort. Säkerhetsagenten granskar det och Supabases underbiträdeslista inför K5.
 - **Villkoren kan ändras.** De gäller den 2026-09-11 och ska kontrolleras igen före K5.
 
 ## Källor

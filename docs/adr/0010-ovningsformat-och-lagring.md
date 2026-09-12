@@ -88,9 +88,13 @@ Schemat kontrollerar inte om en övning som innehåller nickning saknar märknin
 #### Nickning, planskiss och det som databasen inte får
 
 - **`nickspel` är ett fokusområde**, inte ett eget fält. Märkningen är därför alltid synlig i `fokusomraden`, generatorn läser den där (R-080, R-082, R-083), och `main_focus` och `focus_areas` gör den sökbar. Ledaren märker själv sin egna övning, eftersom formuläret inte frågar om nickning i version 1 (berättelse 13, *Utanför*).
-- **`planskiss` är reserverat.** Fältet får finnas och är antingen frånvarande eller ett objekt med ett heltalsfält `version`. Resten är ogenomskinligt för det här schemat, och planskissutvecklaren beslutar det inre formatet i en egen ADR. Övningar utan planskiss är tillåtna i banken (berättelse 06, kriterium 2). Valideringen underkänner alltså aldrig en övning på grund av skissens innehåll, och behöver inte ändras när skissformatet kommer.
+- **`planskiss` valideras fullt ut när fältet finns.** Fältet får saknas, och övningar utan planskiss är tillåtna i banken (berättelse 06, kriterium 2). Finns det, prövas det mot planskissutvecklarens Zod-schema i ADR 0012, som `src/regelmotor/schema/ovning.ts` importerar.
+
+  **Detta är en ändring.** Fältet var tidigare reserverat och ogenomskinligt för valideringen, med raden ”valideringen underkänner alltså aldrig en övning på grund av skissens innehåll”. Den raden går inte att förena med S-07, vilket planskissutvecklaren påpekar i ADR 0012 avsnitt 6: samma fält fylls av ledare i appen, och skissdata från en ledare är innehåll som en angripare styr fullt ut och som sprids till alla klubbar när en inskickad övning godkänns. Undantaget kunde på sin höjd ha gällt repofiler, som passerar mänsklig granskning i en diff, men två valideringsnivåer för samma fält är en onödig skarv och skulle betyda att en repofil kan innehålla skissdata som appen sedan inte kan rita. Med ADR 0012 finns ett fullständigt schema, och då finns inget skäl kvar att låta fältet vara ogenomskinligt någonstans. Valideringsskriptet i avsnitt 5 underkänner alltså en repofil med ogiltig skiss.
+
+  Storleken begränsas dessutom i databasen med en `check` på `pg_column_size(content -> 'planskiss') < 8192` (ADR 0012, S-08). Ritmotorns egna krav — sluten formlista, bara primitiva värden, bara React-element, aldrig `foreignObject`, aldrig `dangerouslySetInnerHTML` — ägs av ADR 0012.
 - **Kolumnerna är genererade**, `generated always as (...) stored` ur `content`, med en liten `immutable` hjälpfunktion för listorna. Då kan kolumn och innehåll inte glida isär, och de kan indexeras: btree på `age_min`, `age_max` och `minutes_min`, GIN på `focus_areas`, `game_formats`, `levels` och `session_parts`.
-- **En övning är komplett** när alla kolumner ovan som är märkta `R-106` är ifyllda och `name` samt `syfte` och `beskrivning` i `content` inte är tomma. Vyn `club_exercises_v` räknar fram `ar_komplett` ur kolumnerna. Samma villkor används av listan över klubbens övningar (berättelse 13, kriterium 2), av bytesdialogen (R-106) och av `submit_exercise` (berättelse 15, kriterium 2). Ofullständiga egna övningar sparas som de är: fälten saknas i `content`, och kolumnerna blir null.
+- **En övning är komplett** när alla kolumner ovan som är märkta `R-106` är ifyllda och `name` samt `syfte` och `beskrivning` i `content` inte är tomma. Vyn `club_exercises_v` räknar fram `ar_komplett` ur kolumnerna och **skapas med `with (security_invoker = true)`** (S-02). Utan flaggan körs vyn med vyägarens rättigheter och utvärderar aldrig RLS på `exercises`, så en ledare i klubb A skulle få tillbaka samtliga klubbars egna övningar med fritext och allt, utan att någon policy överträds. ADR 0003 princip 1 gör flaggan till en CI-kontroll för varje vy i `public`. Samma villkor används av listan över klubbens övningar (berättelse 13, kriterium 2), av bytesdialogen (R-106) och av `submit_exercise` (berättelse 15, kriterium 2). Ofullständiga egna övningar sparas som de är: fälten saknas i `content`, och kolumnerna blir null.
 - **Ytfiltret (R-092) räknas i regelmotorn**, inte i SQL, eftersom det beror på antal grupper och marginaler. `has_area` finns bara för att snabbt kunna sortera bort övningar utan yta (R-093).
 
 ### 2 Flödet in i banken
@@ -117,7 +121,7 @@ flowchart LR
 
 #### När appen finns
 
-6. **Import.** Ett jobb, `importera-banken`, körs vid push till `main` när något under `content/ovningar/**` har ändrats, och kan även startas manuellt. Det körs aldrig för en pull request. Jobbet använder servicenyckeln (ADR 0003) och gör, i en transaktion:
+6. **Import.** Ett jobb, `importera-banken`, körs vid push till `main` när något under `content/ovningar/**` har ändrats, och kan även startas manuellt. Det körs aldrig för en pull request. Jobbet använder **importrollen `importer`, inte servicenyckeln** (S-05, ADR 0003). Rollen saknar `bypassrls`, har inga tabellrättigheter och får bara anropa `import_bank_exercises(jsonb)`, som i sin tur bara kan skriva rader med `scope = bank` och `origin = repo` och sätta `retired_at`. Nyckeln ligger som miljöhemlighet i en GitHub Environment med krav på godkännande. Jobbet gör, i en transaktion:
    - läser alla filer, validerar dem på nytt och avbryter utan att skriva om något fel hittas,
    - `upsert` på `source_id` av varje fil med `status: godkand` till `exercises` med `scope = bank` och `origin = repo`. Oförändrat innehåll hoppas över med hjälp av en hash,
    - sätter `retired_at` på rader vars fil har fått en annan status eller har försvunnit, och nollställer `retired_at` om filen blir godkänd igen.
@@ -153,9 +157,29 @@ Det som en agent inte kan förfalska är händelsen `pull_request_review` med `s
 | 1. Grenskydd | `main` tar inte emot direkta pushar. Ändringar går via pull request, och `CODEOWNERS` kräver granskning av användaren för `content/ovningar/**`, `.github/workflows/**` och `supabase/migrations/**` | GitHub |
 | 2. Kontroll `godkannande` | Körs på varje pull request. Underkänner bygget om en commit som inte är gjord av arbetsflödet nedan ändrar en `status:`-rad till `godkand`, och om en pull request som innehåller godkännanden också ändrar filer utanför `content/ovningar/**` | CI |
 | 3. Arbetsflöde `godkann-omgang` | Startas av `pull_request_review` med `state: approved` från kodägaren. Sätter `status: godkand` på filerna i pull requesten som har `granskad`, lägger till en rad i `granskning` med datum och användarens GitHub-namn, och pushar en commit till grenen. Rör aldrig en fil med `utkast` eller `atgarda` | CI |
-| 4. Import | Läser bara filer med `godkand` och skriver aldrig status. Servicenyckeln finns bara som hemlighet i GitHub, aldrig lokalt och aldrig i klienten | CI |
+| 4. Import | Läser bara filer med `godkand` och skriver aldrig status. Körs med importrollen, som inte kan skapa ett godkännande i appen | CI |
 
-Arbetsflödet i lager 3 använder GitHub Actions egen token, och kontrollen i lager 2 känner igen dess commits på författaren `github-actions[bot]`. Tokenen får bara `contents: write` och `pull-requests: read`.
+Arbetsflödet i lager 3 använder GitHub Actions egen token, och kontrollen i lager 2 känner igen dess commits på författaren `github-actions[bot]`. Tokenen får bara `contents: write` och `pull-requests: read`, och förvalt `GITHUB_TOKEN`-läge för repot sätts till read-only.
+
+#### Lager 1 är verkligt från och med nu
+
+Lager 1 fanns tidigare bara på pappret: skyddade grenar kräver enligt uppgift en betald GitHub-plan för privata repon, så i praktiken kunde vem som helst med skrivrättighet — varje agent som kör med användarens git inräknad — pusha `status: godkand` direkt till `main` (S-04). Hela den mänskliga godkännandegarantin vilade då på arbetsflödet i `CLAUDE.md`, inte på teknik.
+
+Användaren beslutade 2026-09-12 att **repot görs publikt före fas 4 och att `main` skyddas** med grenskydd och `CODEOWNERS`. Huvudsessionen förbereder repot. Grenskydd blir därmed gratis, och lager 1 blir en teknisk spärr i stället för en överenskommelse. Villkoren för publiceringen står i ADR 0002.
+
+#### Lager 3 måste binda godkännandet till en commit
+
+Händelsen `pull_request_review` bär den commit som granskades, `review.commit_id`, men det räcker inte att arbetsflödet startar av den (S-03). Checkar det ut grenens huvud kan en agent pusha en ny commit sekunden efter användarens Approve, och arbetsflödet stämplar `godkand` på övningstext som användaren aldrig läst. Samma händelse ger dessutom `contents: write` och tillgång till hemligheter, så kod från grenen får inte köras. Arbetsflödet byggs därför så här:
+
+| Krav | Varför |
+|---|---|
+| Checka ut exakt `github.event.review.commit_id`, jämför med `pull_request.head.sha` och avbryt vid skillnad | Godkännandet gäller en commit, inte en gren |
+| Slå på ”Dismiss stale pull request approvals when new commits are pushed” i grenskyddet | Ett Approve ska inte överleva en ny commit |
+| Verifiera att granskaren är kodägare | `pull_request_review` utlöses av vilken granskare som helst |
+| Kräv att lager 2 har grönt för samma SHA innan lager 3 kör | Annars kan en pull request som ändrar arbetsflöden själv godkännas |
+| Kör bara betrodd kod från basgrenen, aldrig `npm ci` eller skript från PR-grenen | `npm ci` med ändrade `scripts`, eller ett ändrat `scripts/validera-ovningar.ts`, kör annars en agents kod med skrivrättighet till repot |
+
+Inga arbetsflöden utlöses av `pull_request_target`, och inga hemligheter ges till arbetsflöden som utlöses av pull requests från forkar.
 
 **För användaren** blir godkännandet ett klick: öppna omgångens pull request, läsa igenom övningarna och trycka Approve. Statusraderna sätts av CI, valideringen körs om, och huvudsessionen mergar. Vill användaren godkänna bara några av övningarna i en omgång går de andra tillbaka till `atgarda` innan granskningen.
 
@@ -165,10 +189,12 @@ Arbetsflödet i lager 3 använder GitHub Actions egen token, och kontrollen i la
 |---|---|
 | Klienten kan inte skriva `status` | RLS ger ingen `update`-rättighet på `submissions`. Statusen ändras bara av `submit_exercise`, `approve_submission` och `return_submission` (ADR 0003) |
 | Bara redaktörer kan godkänna | `approve_submission` är `security definer` med låst `search_path` och avbryter om `is_editor()` är falskt |
-| Servicenyckeln kan inte godkänna | `approve_submission` avbryter också när `auth.uid()` är null, vilket det är för servicenyckeln. Importen kan därför inte skapa bankövningar med `origin = submission` |
+| Importen kan inte godkänna | Importrollen saknar `bypassrls` och kan bara anropa `import_bank_exercises`, som är begränsad till `origin = repo` och aldrig sätter `approved_by` (S-05) |
 | Importen kan inte skapa ett godkännande | En `check` på `exercises` kräver att `origin = submission` alltid har `approved_by` satt, och `approved_by` sätts bara av `approve_submission` |
 | Ingen automatik | Det finns ingen trigger och inget schemalagt jobb som sätter `godkand`. Kvalitetssäkraren får ett pgTAP-test som visar att varje annan väg nekas |
 | Spårbarhet | Varje godkännande blir en rad i `submission_events` med `actor_id` och tidpunkt, och i repot en commit med användarens granskningsrad |
+
+**Rättelse av ett tidigare påstående.** Här stod tidigare att ”servicenyckeln kan inte godkänna”, eftersom `approve_submission` avbryter när `auth.uid()` är null. Påståendet var inte tekniskt sant (S-05). `check`-begränsningen kräver bara att `approved_by` är *satt*, och den som har en nyckel med `bypassrls` kan sätta den till vilket uuid som helst och skriva in en bankövning med `origin = submission` utan att `approve_submission` någonsin körts. Skyddet mot förfalskat godkännande var alltså **organisatoriskt så länge en nyckel med `bypassrls` fanns i CI**. Det är själva skälet till att servicenyckeln tas bort därifrån och ersätts med importrollen: efter den ändringen är skyddet tekniskt. Servicenyckeln finns kvar i Edge Functions (ADR 0004) och hos användaren, och den som har den kan fortfarande skriva vad som helst i databasen — det är oundvikligt och gäller varje Postgres-superanvändare, och det är därför nyckeln inte får finnas i något system som en agent kan ändra.
 
 Ingen agent har ett konto i appen, och det finns ingen inloggning utan e-postbekräftelse (ADR 0004). Även om en agent fick tag i en klientnyckel saknar den en redaktörsroll.
 
@@ -229,6 +255,8 @@ Skriptet ligger i `scripts/validera-ovningar.ts` och körs av Node direkt, utan 
 | Korsreglerna R-001 till R-009, R-081 och R-092 | Alltid |
 | Alla bankfält ifyllda, och minst en rad i `granskning` | Vid `granskad` och `godkand` |
 | `granskning` har en kommentar | Vid `atgarda` |
+| `planskiss` mot schemat i ADR 0012, när fältet finns | Alltid (S-07) |
+| `granskning.av` och `kalla` innehåller inget `@` och inget mönster som liknar en e-postadress | Alltid (S-21) |
 
 Utdata är en rad per fel med fil, fält och regel-ID, till exempel `spring-och-vand.yaml: fokusomraden – fasta-situationer är "–" för fas-8-9 (R-002)`. Skriptet avslutar med kod 1 om något underkänns.
 
@@ -276,4 +304,4 @@ Utdata är en rad per fel med fil, fält och regel-ID, till exempel `spring-och-
 - **Importen kan ta bort innehåll ur appen.** En felaktig statusändring i en fil ger `retired_at` på raden, och generatorn slutar välja övningen. Sparade pass påverkas inte, eftersom de har ögonblicksbilder (ADR 0003). Importen loggar hur många rader som pensionerades och avbryter om det är fler än tio i en körning, så att ett misstag inte tömmer banken tyst.
 - **Skyddet mot `godkand` vilar på GitHubs inställningar**, inte bara på kod. Grenskydd, `CODEOWNERS` och rättigheterna för arbetsflödets token måste sättas upp innan fas 3 mergas till `main`, annars finns bara kontrollen i CI, som en administratör kan förbigå. Säkerhetsagenten bör granska uppsättningen.
 - **Ordbytet i avsnitt 4 rör dokument som andra äger.** Tills produktägaren och UX-designern har ändrat sina dokument står `utkast` kvar där och betyder tre saker. Fram till dess gäller den här ADR:n för koden och dokumenten för texterna, vilket är en känd inkonsekvens.
-- **Personuppgifter:** `granskning` innehåller namn eller roll på den som granskat, och `kalla` kan innehålla ett personnamn. Båda fälten är fritext i ett repo som kan bli publikt (ADR 0002 nämner det som ett sätt att få gratis Actions-minuter). Fälten bör innehålla roll och för- och efternamn på den som själv medverkar i projektet, inget annat. Säkerhetsagenten bör bedöma frågan innan repot eventuellt görs publikt.
+- **Personuppgifter i `granskning` och `kalla`:** båda är fritext i ett repo som blir publikt före fas 4 (ADR 0002). Regeln är fastställd (S-21): `granskning.av` innehåller **roll och förnamn eller ett handtag, aldrig en e-postadress**, och `kalla` hänvisar till **publicerat material, aldrig till en privatperson**. Valideringsskriptet underkänner fälten om de innehåller ett `@`-tecken eller ett mönster som liknar en e-postadress. Användarens eget GitHub-namn, som arbetsflödet i lager 3 skriver i `granskning`, är redan publikt och oproblematiskt.

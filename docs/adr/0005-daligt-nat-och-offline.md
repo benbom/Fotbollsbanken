@@ -41,6 +41,11 @@ Det gäller efter att ledaren har öppnat appen med nät minst en gång på enhe
    - **Det genererade passet som ännu inte har sparats**, så att det inte går förlorat om webbläsaren stängs.
 3. **Inga API-svar i service workerns cache.** Data från Supabase cachas bara i IndexedDB via appen, aldrig i Cache Storage via service workern. Då finns all persondata och klubbdata på ett ställe som appen själv styr och kan rensa.
 4. **Utloggning rensar allt lokalt:** IndexedDB-cachen och utkasten raderas vid utloggning (08.4). Appskalet innehåller ingen persondata och finns kvar.
+   
+   **Cachen är åtskild per användare** (S-12). Att bara rensa vid utloggning räcker inte: två ledare i samma familj kan dela en surfplatta, och om ledare A stänger appen utan att logga ut och sessionen går ut, hydrerar appen cachen från disk innan den första hämtningen hinner klart när ledare B loggar in. B skulle då se A:s lags pass och säsongsplan, från ett lag B inte tillhör. Samma sak händer om utloggningen avbryts av att nätet försvinner. Därför:
+   - persistlagret nycklas på användarens `sub`, och `buster` sätts till samma värde, så att en annan användares cache aldrig kan hydreras
+   - cachen rensas på `onAuthStateChange` för både `SIGNED_OUT` och `USER_DELETED`
+   - vid uppstart rensas cachen om lagrat `sub` inte matchar sessionens
 5. **Visa det som finns, uppdatera i bakgrunden:** cachad data visas direkt och uppdateras när det går. Läsningar har en tidsgräns (cirka 10 sekunder) och görs om med ökande väntetid. En diskret markering visar att appen saknar anslutning och när datan senast uppdaterades. Utformningen bestäms av UX-designern.
 6. **Skrivningar som tål omförsök:** klienten skapar id:t (`uuid`) för nya pass, övningar och kopplingar. Om svaret försvinner på ett instabilt nät kan anropet göras igen utan att en dubblett skapas. Det finns ingen kö för skrivningar utan nät i version 1.
 7. **Sessionen offline:** en utgången åtkomsttoken loggar inte ut ledaren. Cachad data visas, och sessionen förnyas när nätet kommer tillbaka. Supabase-js behåller sessionen vid nätverksfel och tar bara bort den när förnyelsetoken är ogiltig.
@@ -72,7 +77,7 @@ Det gäller efter att ledaren har öppnat appen med nät minst en gång på enhe
   
   Båda licenserna är förenliga med projektets Apache-2.0-licens.
 - **Första besöket kräver nät,** och en ledare som aldrig har öppnat ett pass med nät på enheten kan inte öppna det på planen. Gränssnittet och en kort guide bör uppmana ledaren att öppna appen hemma först. Det är en fråga för UX-designern.
-- **Data på enheten är personuppgifter och klubbdata:** namn på lagkamrater och passens innehåll. De ligger oskyddade i webbläsarens lagring tills ledaren loggar ut. Säkerhetsagenten ska bedöma risken, till exempel för en delad eller borttappad telefon.
+- **Data på enheten är personuppgifter och klubbdata:** namn på lagets övriga ledare och passens innehåll. De ligger oskyddade i webbläsarens lagring tills ledaren loggar ut. Säkerhetsagenten har bedömt risken som godtagbar för det här innehållet (S-11, S-12). Den delade enheten hanteras av punkt 4 ovan. Den borttappade, olåsta telefonen kvarstår som en känd och accepterad risk, se ADR 0004. Förnyelsetoken ligger dessutom som förval i localStorage, och det verkliga skyddet för den är innehållspolicyn i ADR 0002 (S-17), inte lagringsvalet.
 - **Cachen kan vara inaktuell:** en ledare kan köra ett pass som en annan ledare har ändrat efter senaste synken. Eftersom varje sparande skapar ett nytt pass (05) ändras befintliga pass sällan, och risken är liten.
 - **Testbarhet:** Playwright kan simulera att nätet saknas (`context.setOffline(true)`) och långsamt nät. E2E-tester för planläget och sparade pass utan nät läggs till i inkrement 5. Wake Lock, ljud och vibration kräver manuell provning på riktiga telefoner, åtminstone en iPhone och en Android.
 - **Uppdateringar av appen** når ledaren först när hen godkänner omladdningen. En allvarlig säkerhetsrättelse kan därför dröja. Det får hanteras i driftrutinen i fas 5.
