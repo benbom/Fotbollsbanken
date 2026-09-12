@@ -1,0 +1,55 @@
+# Kontroll av varje pull request mot main: lint, typkontroll, tester och validering av
+# ovningsbanken. ADR 0002 beslut 4: forvalt GITHUB_TOKEN-lage ar read-only, varje arbetsflode
+# begar bara det det behover, ingen utlosare ar pull_request_target och actions pinnas till
+# en version (kommenterad SHA).
+name: Kontroll
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kontroll-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  kontroll:
+    name: Lint, typkontroll, tester och ovningar
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hamta koden
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Satt upp Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Installera beroenden
+        run: npm ci
+
+      - name: Formatering
+        run: npm run format:check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typkontroll
+        run: npm run typecheck
+
+      - name: Tester
+        run: npm test
+
+      - name: Validera ovningsbanken
+        run: npm run validera:ovningar
+
+      - name: Kanda sarbarheter
+        run: npm audit --audit-level=high
