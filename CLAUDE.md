@@ -29,6 +29,7 @@ Version 1 innehåller generatorn, planskisser, konton med klubbar och lag, egna 
 | `docs/doman/` | Fotbollsdomänen och generatorreglerna | fotbollsexpert |
 | `docs/design/` | Flöden, skisser, designsystem, gränssnittstexter | ux-designer |
 | `docs/adr/` | Arkitekturbeslut | senior-systemutvecklare |
+| `docs/sakerhet/` | Säkerhets- och GDPR-granskningar | sakerhet-integritet (huvudsessionen sparar rapporterna) |
 | `content/ovningar/` | Övningsbanken | ovningsforfattare skriver, fotbollsexpert granskar |
 | Källkod (skapas i fas 2) | Appen | senior-systemutvecklare. Planskissmodulen ägs av planskissutvecklare och testerna av kvalitetssakrare |
 
