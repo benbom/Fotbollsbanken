@@ -1,0 +1,10 @@
+# Kodägare. Ändringar i dessa filer kräver granskning av @benbom.
+# Grunden för att en övning bara kan godkännas av en människa (ADR 0010).
+
+/content/ovningar/        @benbom
+/docs/doman/              @benbom
+/.github/workflows/       @benbom
+/.github/CODEOWNERS       @benbom
+/supabase/migrations/     @benbom
+/CLAUDE.md                @benbom
+/.claude/agents/          @benbom

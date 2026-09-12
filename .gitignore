@@ -1,2 +1,16 @@
 # Claude Code – personliga inställningar (delas inte)
 .claude/settings.local.json
+
+# Hemligheter
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.age
+
+# Verktyg och byggresultat
+node_modules/
+dist/
+.wrangler/
+supabase/.temp/
