@@ -1,6 +1,6 @@
 # 0010: Övningsformat, lagring och vägen in i banken
 
-Status: föreslagen
+Status: beslutad (K2, 2026-09-12)
 
 ## Kontext
 
@@ -101,6 +101,8 @@ Schemat kontrollerar inte om en övning som innehåller nickning saknar märknin
 
 **Repot är källan.** Bankens övningar skrivs som filer i `content/ovningar/`, versioneras i git och läses in i databasen av ett CI-jobb. Databasen är en kopia som appen läser, inte originalet. Ingen i appen kan ändra en bankövning som kommer från repot (ADR 0003).
 
+**Banken är licensierad under CC BY-SA 4.0** (användarens beslut 2026-09-12, `content/LICENSE`, ADR 0002). Licensen gäller allt under `content/`: övningarnas texter och deras skissdata. Koden licensieras separat under Apache-2.0. Den som kopierar en övning ska alltså ange Fotbollsbanken som källa och dela vidare under samma licens. Det gäller vårt eget innehåll: övningarna bygger på principerna i SvFF:s spelarutbildningsplan men innehåller inte SvFF:s texter, och SvFF:s material omfattas inte av licensen (`CLAUDE.md`). Fältet `kalla` i avsnitt 1 är övningens egen inspirationsangivelse och något annat än licensens erkännandekrav; det är fortsatt valfritt.
+
 #### Fas 3, innan appen finns
 
 ```mermaid
@@ -139,6 +141,13 @@ En egen övning som en klubb skickar in når banken utan att passera repot:
 | Ledaren skickar in | `submit_exercise` kontrollerar att övningen är komplett och skapar en rad i `submissions` med status `inskickad` och en ögonblicksbild | Appen |
 | Redaktören godkänner | `approve_submission` skapar en ny rad i `exercises` med `scope = bank` och `origin = submission`, från ögonblicksbilden | Appen |
 | Generatorn | Väljer den nya övningen som vilken bankövning som helst (R-022) | Appen |
+
+**En inskickad övning bidras under CC BY-SA 4.0, och det ska framgå vid inskickningen** (användarens beslut 2026-09-12). Godkänns övningen blir den en del av den gemensamma banken, sprids till alla klubbar och blir fritt vidareanvändbar av utomstående när repot är publikt. Det är en följd ledaren behöver känna till innan knappen trycks, inte efteråt:
+
+- Steget före `submit_exercise` visar en kort text om att övningen bidras under CC BY-SA 4.0, med länk till licensen. Utformningen — en mening vid knappen eller en kryssruta — ägs av UX-designern. Texten saknas i `texter.md` i dag och behöver beställas (berättelse 15).
+- Ledarens egen övning i klubben påverkas inte. Det som licensieras är kopian som `approve_submission` skapar (`scope = bank`, `origin = submission`).
+- Godkända inskickningar ligger bara i databasen och inte i `content/`, så `content/LICENSE` täcker dem inte i filform. Villkoret bärs i version 1 av texten vid inskickningen. Byggs exporten till repot som nämns under *Konsekvenser* senare, hamnar de under filens licens, vilket är ytterligare ett skäl att villkoret är tydligt redan nu.
+- Samma villkor ska nämnas i den information som tas fram inför lanseringen (fas 5).
 
 **Godkända inskickningar skrivs inte tillbaka till repot i version 1.** Banken har därmed två ursprung: filerna (`origin = repo`) och de godkända inskickningarna (`origin = submission`). Konsekvensen och förslaget på en export tas upp under *Konsekvenser* och i rapporten.
 

@@ -1,6 +1,6 @@
 # 0012: Planskissformat och ritmotor
 
-Status: föreslagen
+Status: beslutad (K2, 2026-09-12)
 
 ## Kontext
 

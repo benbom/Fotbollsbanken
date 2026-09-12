@@ -1,6 +1,6 @@
 # 0001: Teknikstack
 
-Status: föreslagen
+Status: beslutad (K2, 2026-09-12)
 
 ## Kontext
 

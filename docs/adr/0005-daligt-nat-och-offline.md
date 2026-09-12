@@ -1,6 +1,6 @@
 # 0005: Dåligt nät och offline
 
-Status: föreslagen
+Status: beslutad (K2, 2026-09-12)
 
 ## Kontext
 
@@ -77,7 +77,7 @@ Det gäller efter att ledaren har öppnat appen med nät minst en gång på enhe
   
   Båda licenserna är förenliga med projektets Apache-2.0-licens.
 - **Första besöket kräver nät,** och en ledare som aldrig har öppnat ett pass med nät på enheten kan inte öppna det på planen. Gränssnittet och en kort guide bör uppmana ledaren att öppna appen hemma först. Det är en fråga för UX-designern.
-- **Data på enheten är personuppgifter och klubbdata:** namn på lagets övriga ledare och passens innehåll. De ligger oskyddade i webbläsarens lagring tills ledaren loggar ut. Säkerhetsagenten har bedömt risken som godtagbar för det här innehållet (S-11, S-12). Den delade enheten hanteras av punkt 4 ovan. Den borttappade, olåsta telefonen kvarstår som en känd och accepterad risk, se ADR 0004. Förnyelsetoken ligger dessutom som förval i localStorage, och det verkliga skyddet för den är innehållspolicyn i ADR 0002 (S-17), inte lagringsvalet.
+- **Data på enheten är personuppgifter och klubbdata:** namn på lagets övriga ledare och passens innehåll. De ligger oskyddade i webbläsarens lagring tills ledaren loggar ut. Säkerhetsagenten har bedömt risken som godtagbar för det här innehållet (S-11, S-12). Den delade enheten hanteras av punkt 4 ovan. Den borttappade, olåsta telefonen hanteras av ”Logga ut på alla enheter” i ADR 0004, som ingår i version 1 efter användarens beslut 2026-09-12: anropet ger `SIGNED_OUT` på den egna enheten och punkt 4 rensar då cachen, medan de andra enheterna nekas förnyelse och rensas när de öppnas igen. Förnyelsetoken ligger dessutom som förval i localStorage, och det verkliga skyddet för den är innehållspolicyn i ADR 0002 (S-17), inte lagringsvalet.
 - **Cachen kan vara inaktuell:** en ledare kan köra ett pass som en annan ledare har ändrat efter senaste synken. Eftersom varje sparande skapar ett nytt pass (05) ändras befintliga pass sällan, och risken är liten.
 - **Testbarhet:** Playwright kan simulera att nätet saknas (`context.setOffline(true)`) och långsamt nät. E2E-tester för planläget och sparade pass utan nät läggs till i inkrement 5. Wake Lock, ljud och vibration kräver manuell provning på riktiga telefoner, åtminstone en iPhone och en Android.
 - **Uppdateringar av appen** når ledaren först när hen godkänner omladdningen. En allvarlig säkerhetsrättelse kan därför dröja. Det får hanteras i driftrutinen i fas 5.

@@ -1,6 +1,6 @@
 # 0003: Datamodell och isolering mellan klubbar
 
-Status: föreslagen
+Status: beslutad (K2, 2026-09-12)
 
 ## Kontext
 
@@ -35,6 +35,7 @@ Datamodellen ska bära berättelserna i inkrement 3–7 och flödena i `docs/des
    - `return_submission`
    - `appoint_editor`
    - `revoke_editor`
+   - `transfer_editor_ownership` (S-15, se *Konton och roller*)
    - `delete_my_account` (S-10, se *Radering av konto* nedan)
    - `import_bank_exercises(jsonb)`, som bara importrollen får anropa (S-05)
 
@@ -208,8 +209,9 @@ erDiagram
 - **`auth.users`** ägs av Supabase Auth och innehåller e-post och inloggningsuppgifter. **`profiles`** innehåller bara visningsnamnet, som enligt `docs/design/skisser/14-inloggning.md` visas för andra ledare i samma lag. Inga andra personuppgifter lagras.
 - **`club_members`** kopplar en person till en klubb. `is_admin` anger om personen är klubbadmin. Tabellen tillåter att en person tillhör flera klubbar. Det är Should i backloggen, men modellen klarar det från start, och gränssnittet i version 1 kan utgå från en klubb.
 - **`team_members`** kopplar en ledare till ett lag. Den som är med i ett lag är också medlem i lagets klubb. Det upprätthålls av `accept_invitation` och av en begränsning i databasen. Den som tas bort ur ett lag förlorar lagets material (11.3), men är kvar som medlem i klubben så länge personen har andra lag eller är klubbadmin.
-- **`editors`** innehåller redaktörerna och gäller hela appen, inte en klubb. Den första redaktören, användaren själv, läggs in med ett engångsskript när produktionen sätts upp, eftersom ingen i appen kan utse den första (18). `revoke_editor` hindrar att den sista redaktören tas bort.
+- **`editors`** innehåller redaktörerna och gäller hela appen, inte en klubb. Den första redaktören, användaren själv, läggs in med ett engångsskript när produktionen sätts upp, eftersom ingen i appen kan utse den första (18). `revoke_editor` hindrar att den sista redaktören tas bort, och `delete_my_account` avbryter av samma skäl om personen är den sista redaktören (se *Radering av konto*).
 - **Den första redaktören är ägare och kan inte återkallas av någon annan** (S-15). Utan det kan en hjälpredaktör som utsetts inför säsongen anropa `revoke_editor` på den som utsåg hen och därefter ensam kontrollera hela den gemensamma banken, utan någon väg tillbaka i appen. Tabellen får därför kolumnen `is_owner boolean`, satt bara för den första raden, och `revoke_editor` avbryter om målraden har `is_owner` och anroparen inte är samma person. Varje `appoint_editor` och `revoke_editor` loggas i `editor_events` med `actor_id`, `subject_id` och tidpunkt.
+- **Ägarskapet kan flyttas, men aldrig försvinna.** Eftersom `is_owner` inte kan sättas från appen skulle rollen vara borta för gott om ägarens konto raderades, och ingen skulle därefter kunna skyddas mot `revoke_editor`. `transfer_editor_ownership(new_owner)` kan därför bara anropas av ägaren själv, kräver att målet redan är redaktör och flyttar `is_owner` i en transaktion. Ägaren måste flytta ägarskapet innan kontot kan raderas. Flytten loggas i `editor_events`.
 - **Uppslagningen av ett konto på e-postadress** (18.1–18.2) kräver en exakt och fullständig adress, aldrig en delsträng, och antalet uppslagningar begränsas per redaktör och dygn. Funktionen röjer med nödvändighet om en adress har ett konto, och det är hela dess syfte, men den ska inte gå att använda för att prova sig fram (S-15, jämför S-13).
 - **Roller som går att kombinera:** ledare (rader i `team_members`), klubbadmin (`club_members.is_admin`) och redaktör (en rad i `editors`) är oberoende av varandra. En person kan ha alla tre.
 
@@ -340,7 +342,11 @@ Rätten till radering enligt artikel 17 är ovillkorlig och ska verkställas ino
 
 **Den sista klubbadminen blockeras.** Att låta en klubb bli kvar utan admin gör lag, inbjudningar och medlemskap omöjliga att förvalta, och det finns ingen väg i appen att utse en ny. Funktionen avbryter därför med ett tydligt fel om personen är ensam klubbadmin i någon klubb som har kvar andra medlemmar, och ledaren får först utse en till admin. Är personen ensam **medlem** i klubben raderas klubben med sina lag och övningar i samma transaktion, eftersom ingen då blir av med något.
 
+**Den sista redaktören blockeras på samma sätt** (S-15, användarens beslut 2026-09-12). Redaktörsrollen gäller hela appen, och `appoint_editor` kräver att anroparen redan är redaktör. Raderar den sista redaktören sitt konto finns det därför ingen väg tillbaka i appen: inskickningar i kön kan varken godkännas eller återsändas, och en första redaktör måste sättas in på nytt med ett engångsskript mot databasen. `delete_my_account` avbryter alltså med ett tydligt fel om personen är den enda raden i `editors`, och redaktören får först utse en efterträdare. Är personen dessutom ägare (`is_owner`) krävs också att ägarskapet har flyttats med `transfer_editor_ownership`, eftersom `is_owner` inte kan sättas från appen. Till skillnad från klubbfallet finns ingen motsvarighet till ”ensam medlem”: den gemensamma banken tillhör inte redaktören och följer aldrig med i en radering.
+
 Detta är den enda vägen. En radering för hand i Supabase dashboard missar `team_members` och de personliga passen, och går inte att visa att den verkställts.
+
+**Export av egna uppgifter ingår inte i version 1.** Dataportabilitet enligt artikel 20 ligger i backloggen som Could (användarens beslut 2026-09-12). Modellen ska ändå inte stänga dörren för den. Allt som utgör en enskild persons eget material går att nå ur `auth.uid()` i ett steg: `profiles`, `club_members`, `team_members`, pass med `created_by`, klubbövningar, inskickningar och `submission_events` med `actor_id`. Det är samma urval som `delete_my_account` går igenom, så en senare `export_my_data()` blir en läsning av samma rader serialiserad till JSON, utan ändring i strukturen. Ögonblicksbilderna i passen gör dessutom en export läsbar i sig, utan att banken behöver följa med.
 
 ### Lagringstider
 

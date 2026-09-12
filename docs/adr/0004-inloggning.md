@@ -1,6 +1,6 @@
 # 0004: Inloggning och inbjudan av ledare
 
-Status: föreslagen
+Status: beslutad (K2, 2026-09-12)
 
 ## Kontext
 
@@ -109,7 +109,12 @@ En redaktör söker upp ett befintligt konto på e-postadress med en funktion so
 - **Turnstile** innebär en ny extern tjänst, Cloudflare, som redan är webbhotell enligt ADR 0002. Utan Turnstile kan en angripare tömma e-postkvoten, och då kan ingen logga in den dagen. **Säkerhetsagenten tillstyrker** (granskning-k2, avsnitt 4): Cloudflare är redan biträde och ser redan samma uppgifter som CDN, Turnstile är i normalfallet icke-interaktivt och därmed bättre för WCAG 2.2 AA än bildbaserade alternativ, och det är gratis. Villkoren är att tjänsten nämns i integritetspolicyn, att den tas med i `connect-src` i innehållspolicyn (ADR 0002, S-17) och att den aldrig ersätter gränserna i punkt 3.
 - **Sessioner kan inte tidsbegränsas på gratisnivån** enligt min kännedom. Tidsbegränsade sessioner och timeout vid inaktivitet är Pro-funktioner i Supabase, och Supabase Pro är avförd (ADR 0002). Det har inte verifierats i detta uppdrag.
 
-  **Den borttappade telefonen är en känd och accepterad risk** (S-11). En ledare som tappar sin olåsta telefon på planen ger upphittaren tillgång till lagets pass, klubbens övningar och namnen på klubbens övriga ledare, utan tidsgräns. Säkerhetsagenten bedömer risken som godtagbar för det här innehållet, men rekommenderade ”Logga ut på alla enheter” (`supabase.auth.signOut({ scope: 'global' })`, ingår i gratisnivån) i version 1. **Användaren beslutade 2026-09-12 att den funktionen inte ingår i version 1.** Följden är att ledaren i dag inte har något sätt alls att avbryta åtkomsten från en förlorad enhet: att logga ut på en annan enhet tar bara bort den enhetens session. Den som behöver det får kontakta användaren, som kan återkalla sessionen i Supabase dashboard. Funktionen är några rader kod och kan läggas till i en senare version utan att något annat ändras.
+  **”Logga ut på alla enheter” ingår därför i version 1** (S-11, användarens beslut 2026-09-12). En ledare som tappar sin olåsta telefon på planen ger annars upphittaren tillgång till lagets pass, klubbens övningar och namnen på klubbens övriga ledare, utan tidsgräns, och utan funktionen finns inget sätt alls att avbryta det: att logga ut på en annan enhet tar bara bort den enhetens session. Eftersom sessioner inte kan tidsbegränsas på gratisnivån är detta den enda spärr appen kan erbjuda, och den kostar några rader kod.
+
+  - **Anropet är `supabase.auth.signOut({ scope: 'global' })`**, som återkallar samtliga förnyelsetoken för användaren, inte bara den här enhetens. Det ingår i gratisnivån och kräver ingen ny tjänst.
+  - **Knappen ”Logga ut på alla enheter” ligger i vyn *Mitt konto***, skild från den vanliga ”Logga ut” i menyn (`docs/design/skisser/15-radera-konto.md`, `texter.md` avsnitt 16, `skisser/14-inloggning.md`). Var *Mitt konto* placeras i navigeringen avgörs när navigeringsmönstret ritas i inkrement 3.
+  - **Den egna enheten loggas också ut.** Anropet ger `SIGNED_OUT` lokalt, och ADR 0005 punkt 4 rensar då IndexedDB-cachen och utkasten. Ledaren loggar in igen med engångskod. De andra enheterna får inget eget besked: de upptäcker utloggningen när åtkomsttoken går ut, inom en timme, eftersom förnyelsen då nekas.
+  - **Byggs i inkrement 3**, tillsammans med resten av kontohanteringen. Produktägaren skriver berättelse 27 parallellt.
 
   Det verkliga skyddet för förnyelsetoken, som ligger i localStorage, är innehållspolicyn i ADR 0002 (S-17), inte lagringsvalet. Se även ADR 0005 om cachen på en delad enhet (S-12).
 - **Radering av konto ingår i version 1** (S-10, användarens beslut 2026-09-12). Sista steget, att ta bort raden i `auth.users`, ligger i ett schema som appen inte kommer åt och görs därför av en Edge Function med servicenyckeln, på samma sätt som `send-invitation`. Funktionen och vad som händer när den sista klubbadminen raderar sig beskrivs i ADR 0003, *Radering av konto*.

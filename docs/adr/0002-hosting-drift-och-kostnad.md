@@ -1,6 +1,6 @@
 # 0002: Hosting, drift och kostnad
 
-Status: föreslagen
+Status: beslutad (K2, 2026-09-12)
 
 ## Kontext
 
@@ -107,11 +107,14 @@ Villkoren före publicering, med den status de har i dag:
 | Inga arbetsflöden som utlöses av `pull_request_target`, inga hemligheter till arbetsflöden från forkar | Beslutat i punkt 4 ovan. Gäller från första arbetsflödet |
 | Säkerhetskopior med publik nyckel innan repot blir publikt (S-09) | Beslutat i punkt 6. Måste vara på plats före publiceringen, eftersom artefakter annars blir världsläsbara |
 | Regel och CI-kontroll för `granskning.av` och `kalla` (S-21) | Beslutat i ADR 0010 |
+| Licensfiler på plats: `content/LICENSE` (CC BY-SA 4.0) och `LICENSE` i roten (Apache-2.0) | **Klar.** Huvudsessionen har lagt båda. Innehåll utan licens är ofritt som förval, så de ska ligga där innan repot publiceras |
 | S-01, S-02 och S-06 lösta och testade | Beslutade i ADR 0003. Att RLS-policyerna blir läsbara för utomstående sänker inte säkerheten om de är riktiga, men det höjer kravet på att de är det |
 
 **Supabases publika nyckel är avsedd att ligga i klientbygget och är inte en hemlighet.** Den är redan läsbar för var och en som öppnar appen. Servicenyckeln är motsatsen och finns efter S-05 inte i CI över huvud taget (ADR 0003).
 
-Publiceringen gör också övningsbanken fritt kopierbar. Det är en fråga om innehållslicens snarare än säkerhet, och den lämnas till användaren, se *Beslut som behövs* i rapporten.
+Publiceringen gör också övningsbanken fritt kopierbar. Det är en fråga om innehållslicens snarare än säkerhet, och användaren beslutade 2026-09-12 hur den ska hanteras: **innehållet i `content/` licensieras under CC BY-SA 4.0, och koden under Apache-2.0.** Två licenser, eftersom de skyddar olika saker. Apache-2.0 låter vem som helst använda koden utan motprestation, medan CC BY-SA:s delningsvillkor gör att den som bygger vidare på övningarna ska ange källan och dela vidare under samma licens. Övningsbanken är projektets egentliga arbete, och det är den som är värd att hålla öppen på det sättet.
+
+Licensfilerna ligger i `content/LICENSE` respektive `LICENSE` i repots rot. Båda ska finnas på plats innan repot publiceras, eftersom innehåll utan licens är ofritt som förval och en läsare då inte vet vad som gäller. Vad licensen betyder för en övning som en ledare skickar in i appen står i ADR 0010, avsnitt 2.
 
 ## Alternativ
 
@@ -137,7 +140,7 @@ Publiceringen gör också övningsbanken fritt kopierbar. Det är en fråga om i
 - **Inga nya kostnader tas** (användarens beslut 2026-09-12). Tre poster som annars hade legat nära till hands är därmed avförda, med de följder som anges:
   - **egen domän** (ungefär 100–200 kronor per år): avförd. Följden är sämre leveranssäkerhet för inloggningsmejlen, se *Drift och risker* och ADR 0004
   - **GitHub Pro** för skyddade grenar i ett privat repo: behövs inte, eftersom repot görs publikt i stället
-  - **Supabase Pro** (25 USD per månad): avförd. Följden är att tidsbegränsade sessioner och automatiska säkerhetskopior inte finns, vilket hanteras av beslut 6 och av den kända risken i ADR 0004 (S-11)
+  - **Supabase Pro** (25 USD per månad): avförd. Följden är att tidsbegränsade sessioner och automatiska säkerhetskopior inte finns, vilket hanteras av beslut 6 och av ”Logga ut på alla enheter” i ADR 0004 (S-11)
 
 **Kvoter i förhållande till förväntad användning**
 - Databasen (500 MB) räcker gott. Övningar, pass och säsongsplaner är små textposter, och planskisser lagras som skissdata, inte som bilder.
