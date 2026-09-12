@@ -1,4 +1,4 @@
-Status: ändrad vid K2 (2026-09-12)
+Status: godkänd (K2, 2026-09-12)
 
 # 15. Skicka in en övning till den gemensamma banken
 
@@ -12,6 +12,7 @@ Status: ändrad vid K2 (2026-09-12)
 2. **Givet** att en övning saknar obligatoriska fält, **när** ledaren försöker skicka in den, **då** hindras insändningen, och appen visar vad som saknas.
 3. **Givet** att en övning har skickats in, **när** ledaren tittar på övningen i sin egen lista, **då** ser ledaren att den är inskickad och vilken status den har i granskningen.
 4. **Givet** att en övning redan är inskickad och väntar på granskning, **när** ledaren försöker skicka in samma övning igen, **då** informeras ledaren om att den redan är inskickad, i stället för att en dubblett skapas.
+5. **Givet** att den gemensamma övningsbanken licensieras under CC BY-SA 4.0 (`content/LICENSE`), skilt från appens kod (Apache-2.0) – beslutat vid K2 (2026-09-12) – **när** ledaren skickar in en övning till banken, **då** upplyser appen kort om att övningen därmed delas under den licensen, innan insändningen bekräftas.
 
 ## Beroenden
 

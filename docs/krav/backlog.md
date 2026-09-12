@@ -1,4 +1,4 @@
-Status: ändrad vid K2 (2026-09-12)
+Status: godkänd (K2, 2026-09-12)
 
 # Backlog – Fotbollsbanken
 
@@ -38,10 +38,11 @@ Beslutat vid K1 (2026-09-11, se `kravspec.md`): generatorn har ett valfritt ytfi
 | 11 | [Klubbadmin bjuder in ledare](berattelser/11-klubbadmin-bjuder-in-ledare.md) | Must |
 | 12 | [Dela sparat pass inom laget](berattelser/12-dela-sparat-pass-inom-laget.md) | Must |
 | 26 | [Radera sitt konto](berattelser/26-radera-konto.md) | Must |
+| 27 | [Logga ut på alla enheter](berattelser/27-logga-ut-alla-enheter.md) | Must |
 | – | Klubbadmin kan se en logg över vem som gjort vad i klubben | Could |
 | – | En person kan vara medlem i flera klubbar samtidigt | Should (rimligt för ledare som tränar i flera klubbar, men inte grundflödet) |
 | – | Egen domän för utskick av inloggningsmejl, för att minska risken att koden hamnar i skräpposten | Could. Beslutat vid K2 (2026-09-12), se berättelse 08, kriterium 6, och kravspec. |
-| – | "Logga ut på alla enheter" | Could. Beslutat vid K2 (2026-09-12): det är ledarens enda skydd vid en borttappad, olåst telefon (säkerhetsgranskning K2, fynd S-11), men bedöms inte vara Must för version 1. |
+| – | Exportera sina egna uppgifter innan radering (dataportabilitet enligt GDPR, artikel 20) | Could. Beslutat vid K2 (2026-09-12), se berättelse 26, Utanför. |
 
 ## Inkrement 4 – Egna och inskickade övningar med redaktörskö
 
