@@ -131,7 +131,7 @@ En rörelse är en pil från en punkt till en annan. Fälten:
 
 När `fran` eller `till` pekar på ett objekt börjar respektive slutar pilen vid symbolens kant, inte i dess mitt, så att pilspetsen syns. En rörelse som pekar på ett `id` som inte finns underkänns av valideringen.
 
-**Teckenförklaring.** Konventionen följer den som är vanligast i svensk tränarlitteratur och i SvFF:s eget utbildningsmaterial: heldraget för bollen i luften eller längs marken mellan spelare, streckat för spelare utan boll, vågigt för spelare med boll och en kraftigare markering för avslut.
+**Teckenförklaring.** Konventionen följer den som är vanligast i svensk tränarlitteratur och i SvFF:s eget utbildningsmaterial: heldraget för bollen i luften eller längs marken mellan spelare, streckat för spelare utan boll, vågigt för spelare med boll och en kraftigare markering för avslut. Fotbollsexperten har tillstyrkt de fyra linjeformerna (granskning 2026-09-12).
 
 | Rörelse | Linje | Pilspets | Läses som |
 |---|---|---|---|
@@ -142,7 +142,20 @@ När `fran` eller `till` pekar på ett objekt börjar respektive slutar pilen vi
 
 De fyra formerna skiljs åt av linjens form och inte av färg eller enbart av tjocklek, så de fungerar i svartvit utskrift och för den som är färgblind.
 
-**Förklaringen visas som text, inte bara som symboler.** Ritmotorn exporterar en komponent `Teckenforklaring` som renderar en HTML-lista med symbol och benämning för de objekt- och rörelsetyper som faktiskt förekommer i den visade skissen. Den visas i den förstorade vyn och i utskriften (`designsystem.md` avsnitt 7), inte i miniatyren. Att den bygger på skissens innehåll gör att en enkel skiss får en kort förklaring.
+**Konventionen är vedertagen men inte standardiserad.** Det finns ingen norm som säger att just de här fyra linjeformerna betyder just det här, och olika tränarlitteratur skiljer sig i detaljerna. Valet är ändå oproblematiskt, men bara under ett villkor: **en skriven teckenförklaring visas alltid bredvid skissen.** En ideell ungdomsledare kan aldrig förutsättas kunna en ritkonvention utantill, och skissen ska gå att läsa av den som ser sin första planskiss. Villkoret är ett krav på formatet, inte en rekommendation.
+
+**Förklaringen visas som text, inte bara som symboler.** Ritmotorn exporterar en komponent `Teckenforklaring` som renderar en HTML-lista med symbol **och utskriven benämning i ord** för de objekt- och rörelsetyper som faktiskt förekommer i den visade skissen. Att den bygger på skissens innehåll gör att en enkel skiss får en kort förklaring.
+
+| Vy | Teckenförklaring |
+|---|---|
+| `normal` (öppnad övning) | Alltid, direkt under skissen |
+| `planlage` | Alltid, under eller bredvid skissen |
+| `utskrift` | Alltid, under skissen (`designsystem.md` avsnitt 7) |
+| `miniatyr` | Nej. Miniatyren är ingen läsbar skiss utan en igenkänningsbild, och den är alltid klickbar för förstoring, där förklaringen finns |
+
+Ingen vy där skissen visas i läsbar storlek får alltså sakna förklaringen, och den får inte vara hopfällbar bakom en knapp som är stängd från början. Kravet testas i avsnitt 8.
+
+**Möjlig senare tilläggstyp: passning i luften jämfört med på marken.** Formatet har i dag en enda `passning`. Skillnaden mellan boll på marken och boll i luften spelar liten roll till och med 12 år, där bollen ska vara på marken, men blir fotbollsfackligt relevant från 13 år för inlägg, långpass och nickövningar (R-080 till R-082). En framtida `passning-luft` med egen linjeform, till exempel heldragen med korta tvärstreck, är ett rent tillägg i den slutna listan: befintliga skisser fortsätter gälla oförändrade, och tillägget kräver ingen migrering och ingen höjning av `version`. Det är inget hinder nu och tas upp först när banken har övningar för 13 år och uppåt som behöver skillnaden.
 
 ### 4 Skalning efter antal spelare
 
@@ -158,17 +171,35 @@ De fyra formerna skiljs åt av linjens form och inte av färg eller enbart av tj
 | S-4 | Skalningen är ren och deterministisk: samma skiss och samma antal ger alltid samma bild |
 | S-5 | Ritmotorn skapar aldrig fler än 40 spelarsymboler. Överskott utöver det redovisas i text i stället, se `parallella-ytor` |
 | S-6 | Skalningen ändrar aldrig `rorelser`. Pilarna hör till basskissens spelare. Tillagda spelare ritas utan pilar |
+| S-7 | **En tillagd spelare ritas alltid som utespelare.** Målvaktsmarkeringen ärvs aldrig och kan aldrig sättas av en skalningsregel, oavsett vilket objekt tillägget utgår från. Se motiveringen nedan |
 
 **Strategierna:**
 
 | `strategi` | Fält | Så här fördelas överskottet |
 |---|---|---|
-| `fast` | – | Inget läggs till. Används när `grupptyp` är `fast-storlek`, till exempel en fyrkant för fyra spelare |
-| `koer` | `koer`: lista med 1–6 poster `{ vid: "<objekt-id>", riktning: 0–359, avstand: 0,5–5 m (förval 1,5) }` | Överskottet fördelas cyklistiskt över köerna i listans ordning: spelare 1 till kö 1, spelare 2 till kö 2 och så vidare. Den `k`:te spelaren i en kö placeras `k × avstand` meter från köns startobjekt i riktningen `riktning`. Köspelaren ärver lag och målvaktsflagga från startobjektet, men får ingen etikett |
-| `platser` | `platser`: ordnad lista med 1–20 poster `{ x, y, lag, malvakt }` | Överskottet placeras på platserna i listans ordning. Räcker platserna inte till stannar utplaceringen, och resten redovisas som text. Används för två lag, där platserna varvas A, B, A, B i listan |
+| `fast` | – | Inget läggs till. Används när `grupptyp` är `fast-storlek` **och** `udda_antal_losning` är `false`, till exempel en fyrkant för fyra spelare. Är `udda_antal_losning` `true` används `koer` i stället, se *Den extra spelaren vid udda antal* nedan |
+| `koer` | `koer`: lista med 1–6 poster `{ vid: "<objekt-id>", riktning: 0–359, avstand: 0,5–5 m (förval 1,5), etikett: text 0–24 tecken (valfri) }` | Överskottet fördelas cyklistiskt över köerna i listans ordning: spelare 1 till kö 1, spelare 2 till kö 2 och så vidare. Den `k`:te spelaren i en kö placeras `k × avstand` meter från köns startobjekt i riktningen `riktning`. Köspelaren ärver **bara laget** från startobjektet och ritas alltid som utespelare (S-7). Köspelaren får ingen egen etikett. Köns `etikett` ritas en gång vid köns början, inte på varje spelare, och utelämnas i `miniatyr` |
+| `platser` | `platser`: ordnad lista med 1–20 poster `{ x, y, lag }` | Överskottet placeras på platserna i listans ordning. Räcker platserna inte till stannar utplaceringen, och resten redovisas som text. Används för två lag, där platserna varvas A, B, A, B i listan. En plats anger bara lag, aldrig målvakt: fältet `malvakt` finns inte i posten och underkänns av schemat (S-7) |
 | `parallella-ytor` | `per_yta`: heltal 2–20, antal spelare per yta | Skissen visar **en** yta. Antalet ytor är `ceil(antal / per_yta)`. Ritmotorn ritar alltid bara en yta och skriver antalet i bildtexten och i `desc`: ”Så här ser en av 3 ytor ut.” Används när övningen körs i flera identiska uppställningar bredvid varandra |
 
 `koer` och `platser` kan kombineras: anges båda fylls först `platser` i sin ordning, därefter `koer`. Det gör det möjligt att först fylla lagen till jämn storlek och sedan lägga resten i kö.
+
+**Varför en tillagd spelare aldrig blir målvakt (S-7).** Från 5 mot 5 finns exakt en målvakt per lag och mål (`spelformer.md`). En regel som ärver målvaktsmarkeringen skulle rita två eller tre målvakter så snart en kö utgår från målvakten, till exempel i en avslutsövning där skyttarna köar vid målet. Det är ett fotbollsfel i bilden, inte bara en skönhetsfläck: ledaren skulle läsa skissen som att flera spelare ska stå i mål. Regeln gäller därför alla tre strategier som lägger till spelare:
+
+| Strategi | Hur S-7 uppfylls |
+|---|---|
+| `koer` | Köspelaren ärver laget från startobjektet, men `malvakt` sätts alltid till `false`, även när startobjektet är en målvakt |
+| `platser` | Posten kan inte uttrycka en målvakt. Fältet `malvakt` är borttaget ur schemat, så felet är omöjligt att skriva |
+| `parallella-ytor` | Berörs inte: strategin lägger aldrig till någon spelare, utan ritar en yta och anger antalet ytor i text. Basskissens egen målvakt ritas som författaren angav den |
+| `fast` | Berörs inte: inget läggs till |
+
+Behöver en övning fler målvakter än basskissen visar, till exempel två mål med var sin målvakt, skrivs de som egna `spelare`-objekt med `malvakt: true` i `objekt`. Det är ett val som övningsförfattaren gör medvetet och som fotbollsexperten kan granska, till skillnad från en målvakt som en skalningsregel skapar automatiskt.
+
+**Den extra spelaren vid udda antal.** R-050 tillåter att en grupp är en spelare större än övningens storlek när övningen har en lösning för udda antal (`udda_antal_losning` i ADR 0010, till exempel att en spelare vilar och byter in). Med `fast` skulle den spelaren bli osynlig i skissen: gruppen är fem, skissen visar fyra, och ledaren ser inte var den femte hör hemma. Ingen femte strategi införs för det. I stället gäller:
+
+> En övning med `grupptyp: fast-storlek` och `udda_antal_losning: true` använder `strategi: koer` med **en** kö, placerad vid sidan av ytan eller vid ledaren, med `etikett: "Vilande, byter in"`.
+
+Kön tar då emot den eller de spelare som gruppen är större än basskissen, och den vilande spelaren syns på skissen med sin roll utskriven. Är `udda_antal_losning: false` är `fast` fortsatt rätt, eftersom generatorn då aldrig ger övningen en större grupp (R-050). Valideringen kan inte kräva det här, eftersom skissen inte känner till övningens fält, men `content/ovningar/README.md` beskriver kopplingen för övningsförfattaren och fotbollsexperten kontrollerar den vid granskningen.
 
 **Varför bara en yta ritas i `parallella-ytor`.** Tre 20 × 20 m-ytor bredvid varandra blir 60 m breda, och i en 96 px miniatyr eller 45 mm i en utskrift blir varje spelare mindre än en punkt. En yta i läsbar storlek plus en siffra ger ledaren mer. Regeln gäller även i planläget, där utrymmet är störst men läsbarheten viktigast.
 
@@ -177,7 +208,7 @@ De fyra formerna skiljs åt av linjens form och inte av färg eller enbart av tj
 - Antalet spelare som ritmotorn tar emot klamras till intervallet `[basantal, basantal + 30]`. Ett orimligt värde ger alltså en full men läsbar skiss, aldrig en trasig.
 - En kö ritas med högst 8 spelare. Blir den längre ritas 8 spelare och antalet skrivs som etikett vid köns slut, till exempel ”+4”.
 
-**Reglerna behöver bekräftas av fotbollsexperten.** De är rimliga ur ett ritperspektiv, men vilken strategi som är rätt för en viss övningstyp, och om S-1 (basskissen visar minsta gruppstorleken) stämmer med hur övningsförfattaren tänker, är en fotbollsfacklig fråga. Se rapporten.
+**Reglerna är granskade av fotbollsexperten (2026-09-12).** De fyra strategierna räcker för barn- och ungdomsträning, S-1 (basskissen visar minsta gruppstorleken) stämmer med hur en övningsförfattare tänker, taket på 40 ritade spelarsymboler stämmer med R-017, och att `parallella-ytor` ritar en yta med antalet i text är det som ger ledaren mest. S-7 och regeln för udda antal ovan kom ur samma granskning.
 
 ### 5 Rendering
 
@@ -215,9 +246,9 @@ Det ger 1,2 m på en 15 × 15 m teknikyta och 3,6 m på en fullstor 105 × 65 m 
 |---|---|---|
 | Pass och redaktörskö | `miniatyr` | Cirka 96 px bredd, inga etiketter, klickbar för förstoring |
 | Byt övning | `miniatyr` | Samma |
-| Öppnad övning | `normal` | Full bredd minus sidmarginal, alltså cirka 328 px på en 360 px skärm |
-| Planläget | `planlage` | Minst 70 % av skärmbredden, kraftigare linjer (`D / 6`) för solljus |
-| Utskrift | `utskrift` | Cirka 45 mm bredd, svart på vitt, teckenförklaring under skissen |
+| Öppnad övning | `normal` | Full bredd minus sidmarginal, alltså cirka 328 px på en 360 px skärm. Skriven teckenförklaring under skissen (avsnitt 3) |
+| Planläget | `planlage` | Minst 70 % av skärmbredden, kraftigare linjer (`D / 6`) för solljus. Skriven teckenförklaring under eller bredvid skissen (avsnitt 3) |
+| Utskrift | `utskrift` | Cirka 45 mm bredd, svart på vitt, skriven teckenförklaring under skissen (avsnitt 3) |
 
 **Tillgänglighet.** SVG:n får `role="img"` och `aria-labelledby` som pekar på ett `<title>` och ett `<desc>` med id:n prefixade av `instansId`. `<title>` innehåller övningens namn följt av ”planskiss”. `<desc>` innehåller `skiss.beskrivning` om den finns, annars en genererad sammanfattning: yta, antal spelare per lag, mål, och antal rörelser per typ, till exempel ”Yta 30 × 20 meter. 4 spelare i lag A, 4 i lag B, 1 målvakt. 2 mål. 3 passningar och 2 löpningar.” Sammanfattningen är deterministisk och kan därför snapshot-testas. Skissen är dekorativ i den meningen att övningens text alltid finns bredvid: ingen information i skissen saknas i texten, vilket är kravet för att en bild inte ska behöva en fullständig textmotsvarighet.
 
@@ -234,7 +265,7 @@ S-07 gäller att skissdata från en ledare är innehåll som en angripare styr f
 | Bara primitiva värden | Schemat innehåller bara `number`, `string`, `boolean` och fasta punkter `{ x, y }`. Ingen fri nyckel, ingen `z.record`, ingen `z.any`, ingen `z.unknown`, inget godtyckligt djup. Alla tal är `finite` med undre och övre gräns, så `NaN`, `Infinity` och `1e308` underkänns |
 | Bara React-element | Ritmotorn returnerar `ReactElement` och innehåller ingen strängkonkatenering till markup. En ESLint-regel förbjuder `dangerouslySetInnerHTML` (`react/no-danger` som `error`) och en enhetstest kontrollerar att modulens exporter aldrig returnerar en sträng |
 | Aldrig `foreignObject` | Elementlistan i ritmotorn är sluten: `svg`, `title`, `desc`, `defs`, `pattern`, `g`, `rect`, `circle`, `polygon`, `line`, `path`, `text` och `tspan`. `foreignObject`, `image`, `use`, `script`, `style`, `a` och `animate` används inte, och en ESLint-regel (`no-restricted-syntax` på JSX-elementnamn) förbjuder dem i `src/planskiss/` |
-| Längdgränser för etiketter | `spelare.etikett` och `ledare.etikett` 0–3 tecken, `zon.etikett`, `ruta.etikett` och `rorelse.etikett` 0–24 tecken, `beskrivning` 0–300 tecken, `id` 1–24 tecken |
+| Längdgränser för etiketter | `spelare.etikett` och `ledare.etikett` 0–3 tecken, `zon.etikett`, `ruta.etikett`, `rorelse.etikett` och `skalning.koer[].etikett` 0–24 tecken, `beskrivning` 0–300 tecken, `id` 1–24 tecken |
 | Tak för antal objekt | Högst 60 objekt, 30 rörelser, 6 köer, 20 platser och 40 ritade spelarsymboler per skiss |
 
 **Teckenuppsättning i etiketter.** Fri text i etiketter begränsas till mönstret `^[\p{L}\p{N} .:\-\/+()]*$` med Unicode-flagga, alltså bokstäver, siffror och ett fåtal skiljetecken. Tecknen `<`, `>`, `&`, `"`, `'`, `\` och styrtecken underkänns. Det är inte skyddet mot XSS — React escapar redan text i `<text>`-noder — utan ett extra lager och ett sätt att hålla skisserna rena.
@@ -271,8 +302,11 @@ Testerna ägs av kvalitetssäkraren. Den här ADR:n anger vad som ska täckas.
 
 | Område | Vad som testas |
 |---|---|
-| Validering | Minst ett godkänt och ett underkänt fall per regel: okänt `typ`, okänt fält (`.strict()`), etikett för lång, otillåtet tecken i etikett, `NaN` och `Infinity` som koordinat, koordinat utanför marginalen, för många objekt, för många rörelser, dubblerat `id`, `rorelse` som pekar på ett `id` som inte finns, `bredd` angiven utan `storlek: eget`, `till` angiven utan `form: linje` |
+| Validering | Minst ett godkänt och ett underkänt fall per regel: okänt `typ`, okänt fält (`.strict()`), etikett för lång, otillåtet tecken i etikett, `NaN` och `Infinity` som koordinat, koordinat utanför marginalen, för många objekt, för många rörelser, dubblerat `id`, `rorelse` som pekar på ett `id` som inte finns, `bredd` angiven utan `storlek: eget`, `till` angiven utan `form: linje`, `malvakt` angiven i en `platser`-post (ska underkännas av `.strict()`) |
 | Skalning | Varje strategi: `fast` ändrar inget, `koer` fördelar cykliskt och placerar den `k`:te spelaren rätt, `platser` fyller i ordning och stannar när platserna tar slut, `parallella-ytor` räknar `ceil` rätt. Gränsfallen: antal under basantalet, antal över taket, kö längre än 8, kombinationen `platser` + `koer` |
+| Målvakt vid skalning (S-7) | En kö som utgår från ett objekt med `malvakt: true` ger tillagda spelare med `malvakt: false`, och antalet ritade målvaktssymboler är detsamma som i basskissen oavsett antal spelare. Testas för `koer`, `platser` och `parallella-ytor` |
+| Udda antal | En skiss med `strategi: koer`, en kö och `etikett: "Vilande, byter in"` ritar den extra spelaren och etiketten en gång, inte per spelare |
+| Teckenförklaring | `Teckenforklaring` innehåller en utskriven benämning för varje objekt- och rörelsetyp som förekommer i skissen, och renderas i `normal`, `planlage` och `utskrift` men inte i `miniatyr` |
 | Koordinatomräkning | Omskalning mellan `omrade` och en avvikande `yta`, och att omskalningen uteblir när sidförhållandet ändras mer än 25 % |
 | Symbolstorlek | `D` för en liten yta, en stor yta och båda klampgränserna |
 | Renhet | Samma indata ger samma utdata två gånger. Ritmotorn returnerar aldrig en sträng, och inget förbjudet SVG-element förekommer i utdata |
@@ -354,7 +388,7 @@ Ett exempel på den andra vanliga strategin, en kö bakom startkonen i en dribbl
       - { vid: sp-1, riktning: 180, avstand: 1.5 }
 ```
 
-Med `spelare.min: 3` i basskissen och sex spelare i gruppen placeras tre extra spelare 1,5, 3,0 och 4,5 meter till vänster om `sp-1`, med samma lag som `sp-1` och utan etikett.
+Med `spelare.min: 3` i basskissen och sex spelare i gruppen placeras tre extra spelare 1,5, 3,0 och 4,5 meter till vänster om `sp-1`, med samma lag som `sp-1`, utan etikett och alltid som utespelare — även om `sp-1` hade varit målvakt (S-7).
 
 ## Alternativ
 
@@ -381,13 +415,14 @@ Med `spelare.min: 3` i basskissen och sex spelare i gruppen placeras tre extra s
 - S-07 kan stängas: sluten formlista, bara primitiva värden, tak och längdgränser, validering vid både skrivning och läsning, och en ritmotor som bara skapar React-element.
 - Ritmotorn är en ren funktion, vilket gör snapshot-tester och visuella tester meningsfulla och gör att samma kod kan användas i pass, planläge, utskrift och redaktörskö.
 - Ingen extern bildresurs, inget nytt beroende och ingen bildlagring. Supabase Storage behöver fortfarande inte aktiveras (S-24).
+- **En övning är en uppställning, och det är ett medvetet val.** Skalningen fördelar fler spelare i en given uppställning, men byter aldrig uppställning. En rondo 4 mot 1 blir alltså inte 6 mot 2 genom skalning, utan är två övningar i banken. Fotbollsexperten bekräftar att det är rätt svar (granskning 2026-09-12): 4 mot 1 och 6 mot 2 är pedagogiskt olika övningar med olika krav på spelarna — annat tempo, andra vinklar, annan press och olika svårighetsgrad — och de bör kunna ha olika ålder, nivå och syfte. Att tvinga in dem i en skiss skulle dölja skillnaden för ledaren. Gränsen håller dessutom skalningen till fyra enkla, testbara regler.
 
 **Nackdelar och risker**
 
 - **Att skriva koordinater för hand är arbetsamt.** En skiss med tio objekt är tio rader med siffror som ingen ser förrän den renderas. Fas 3 behöver därför tidigt ett litet förhandsgranskningsverktyg, till exempel en sida i utvecklingsservern som ritar en YAML-fil. Utan det blir skisserna få eller felaktiga. Ritredigeraren för ledare (berättelse 13, kriterium 3) är ett större arbete som hör till inkrement 2 och behöver egen tid i backloggen.
-- **Skalningsreglerna täcker inte allt.** Fyra strategier räcker för köer, lagfördelning och parallella ytor, men inte för övningar där uppställningen ändrar karaktär med antalet, till exempel en rondo som går från 4 mot 1 till 6 mot 2. Sådana övningar får antingen `fast` och en skiss för minsta storleken, eller två övningar. Fotbollsexperten bör bedöma hur vanligt det är.
 - **Omskalningen mellan `omrade` och `yta` kan bli missvisande** när sidförhållandet skiljer sig. Regeln med 25 % gräns är en avvägning, inte en sanning, och behöver prövas mot verkliga övningar i fas 3.
 - **Formatet är en gång till att hålla i synk.** Målmåtten finns både i `spelformer.md` och som konstant i koden. Testet som jämför dem minskar risken men tar inte bort den.
 - **En formatändring efter fas 3 kostar.** Varje övning med skiss måste då migreras. Därför finns `version` från början: en höjning till `2` innebär att importen och klienten kan läsa båda, och att ett skript skriver om filerna. **I dag finns ingen övning med skiss i banken, så den här ADR:n kräver ingen migrering.** Det är också skälet att besluta formatet nu, före fas 3.
 - **Läsbarheten i miniatyren är begränsad.** Vid 96 px och en fullstor plan är skissen en översiktsbild, inte något att läsa detaljer i. Det är accepterat i `designsystem.md` avsnitt 7, där miniatyren är klickbar för förstoring, men det bör bekräftas i den visuella granskningen.
-- **Beroenden till andra dokument.** Tre filer som andra äger behöver ändras, och de listas i rapporten: `content/ovningar/README.md` (fältet `planskiss` behöver en kort beskrivning och en hänvisning hit), ADR 0010 (undantaget i rad 91 gäller inte längre, och valideringsskriptet ska validera `planskiss`) och migrationen för `exercises` (storleksgränsen i avsnitt 6). Jag har inte ändrat något av dem.
+- **Beroenden till andra dokument.** Tre filer som andra äger behöver ändras, och de listas i rapporten: `content/ovningar/README.md` (fältet `planskiss` behöver en kort beskrivning, en hänvisning hit och regeln att en övning med `udda_antal_losning: true` ritar den vilande spelaren som en kö enligt avsnitt 4), ADR 0010 (undantaget i rad 91 gäller inte längre, och valideringsskriptet ska validera `planskiss`) och migrationen för `exercises` (storleksgränsen i avsnitt 6). Jag har inte ändrat något av dem.
+- **Teckenförklaringen är ett krav på varje läsbar vy, inte bara på ritmotorn.** Att förklaringen alltid ska visas bredvid skissen (avsnitt 3) binder också de vyer som UX-designern äger: öppnad övning, planläget och utskriften. Blir utrymmet trångt får skissen krympa, inte förklaringen tas bort. Det behöver bekräftas när `texter.md` och utskriftsvyn detaljeras.
