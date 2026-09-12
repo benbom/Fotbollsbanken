@@ -14,7 +14,7 @@ Datamodellen ska bära berättelserna i inkrement 3–7 och flödena i `docs/des
   - **Redaktör** är en roll för hela appen, inte för en klubb. En redaktör kan utse och återkalla andra redaktörer (18).
 - **Sparade pass** innehåller övningar, ordning, tider och underlaget (05.1). Ett pass utan lag syns bara för ledaren själv. Ett lagpass syns för lagets ledare och finns kvar när en ledare lämnar laget (12). Varje sparande skapar ett nytt pass (05, *Utanför*).
 - **Klubbens egna övningar** kan sparas ofullständiga (13.2). När en övning tas bort ska pass där den redan används inte påverkas i onödan (14.3).
-- **Inskickning och redaktörskö:** en inskickad övning får status `utkast` i kön (15.1). Redaktören sätter `godkand` eller `atgarda` med kommentar (16). Ledaren skickar in igen, och övningen får då `utkast` igen (17.2). Historiken med alla kommentarer ska finnas kvar (17.3). Samma övning kan inte ligga i kön två gånger (15.4). Ingen övning får `godkand` utan att en människa har godkänt den (16.4, `CLAUDE.md`).
+- **Inskickning och redaktörskö:** en inskickad övning får status `inskickad` i kön (15.1). Redaktören sätter `godkand` eller `atgarda` med kommentar (16). Ledaren skickar in igen, och övningen får då `inskickad` igen (17.2). Historiken med alla kommentarer ska finnas kvar (17.3). Samma övning kan inte ligga i kön två gånger (15.4). Ingen övning får `godkand` utan att en människa har godkänt den (16.4, `CLAUDE.md`).
 - **Säsongsplan:** en plan per lag med start- och slutdatum, indelad i veckor (23). En vecka kan ha flera pass (24.1, R-110). Veckans ålder följer R-113, där veckan hör till det år där dess torsdag ligger (ISO 8601).
 - Övningens innehållsfält, skissformatet och regelmotorns datastrukturer detaljeras i del B (ADR 0010 och framåt). Här beskrivs övningen bara som entitet.
 
@@ -152,7 +152,7 @@ erDiagram
     uuid id PK
     uuid exercise_id FK "klubbens övning"
     uuid club_id FK
-    text status "utkast, atgarda eller godkand"
+    text status "inskickad, atgarda eller godkand"
     jsonb content_snapshot
     uuid submitted_by FK
     uuid bank_exercise_id FK "sätts vid godkand"
@@ -241,15 +241,15 @@ Alla övningar i databasen ligger i **en tabell, `exercises`**. Kolumnen `scope`
 
 ```mermaid
 stateDiagram-v2
-  [*] --> utkast: submit_exercise (ledare i klubben)
-  utkast --> godkand: approve_submission (redaktör)
-  utkast --> atgarda: return_submission med kommentar (redaktör)
-  atgarda --> utkast: submit_exercise igen (ledare i klubben)
+  [*] --> inskickad: submit_exercise (ledare i klubben)
+  inskickad --> godkand: approve_submission (redaktör)
+  inskickad --> atgarda: return_submission med kommentar (redaktör)
+  atgarda --> inskickad: submit_exercise igen (ledare i klubben)
   godkand --> [*]
 ```
 
 - När ledaren skickar in sparas en **ögonblicksbild**, `content_snapshot`, av övningen. Redaktören granskar alltså exakt det som skickades in, även om klubbens övning ändras under tiden (14.4 varnar för det).
-- `submit_exercise` kontrollerar att alla obligatoriska fält finns (15.2) och att det inte redan finns en rad för övningen med status `utkast` (15.4). Det senare upprätthålls också av ett unikt partiellt index.
+- `submit_exercise` kontrollerar att alla obligatoriska fält finns (15.2) och att det inte redan finns en rad för övningen med status `inskickad` (15.4). Det senare upprätthålls också av ett unikt partiellt index.
 - **`approve_submission`** kan bara anropas av en redaktör. Funktionen skapar en ny rad i `exercises` med `scope = bank` och `origin = submission` från ögonblicksbilden, och sätter `status = godkand` på inskickningen i samma transaktion. Det finns ingen annan väg till `godkand`: klienten saknar skrivrättighet till `status`, och ingen trigger eller schemalagd process sätter den (16.4).
 - **`submission_events`** är historiken. Varje inskickning, återsändning med kommentar och godkännande blir en rad med tidpunkt och vem som gjorde det. Alla kommentarer syns därför, inte bara den senaste (17.3).
 - **Meddelandet** till ledaren vid `atgarda` (16.3) visas som status i appen i version 1: i ledarens lista och på övningen (15.3, 17.1). Om det också ska skickas e-post framgår av *Beslut som behövs* i rapporten.
@@ -401,4 +401,4 @@ En raderad ledare finns kvar i säkerhetskopior i upp till 30 dagar. Det är god
   
   När ett konto raderas tas profilen, medlemskapen och de personliga passen bort, medan lagpass och klubbövningar finns kvar med `created_by = null`. Vägen är `delete_my_account`, se *Radering av konto* ovan. Funktionen ingår i version 1 och byggs i inkrement 3.
 - **Rättslig grund och ansvar** (användarens beslut 2026-09-12): **avtal** är rättslig grund för ledarnas konton, inte samtycke. En ledare som måste använda appen för att kunna leda sitt lag samtycker inte frivilligt, och ett återkallat samtycke skulle tvinga fram radering mitt i säsongen. **Föreningen är ensam personuppgiftsansvarig**, och anslutna klubbar är organisatoriska enheter i tjänsten, inte egna ansvariga. Alternativet, gemensamt ansvar, hade krävt ett avtal per klubb enligt artikel 26. Detta ska stå i integritetspolicyn, som skrivs före K5.
-- **Motsägelse i dokumenten:** i `content/ovningar/README.md` sätts `utkast` av ovningsforfattare och har flödet `utkast → granskad → godkand`. Berättelse 13.1 använder `utkast` för en ofullständig egen övning, och 15.1 och 17.2 använder `utkast` för en inskickad övning i kön. Modellen ovan håller isär begreppen: klubbövningen har ingen granskningsstatus, och inskickningen har `utkast`, `atgarda` och `godkand`. Gränssnittet visar ”Inskickad” för `utkast`, som floden.md avsnitt 1.6 punkt 3 redan gör. Dokumenten behöver inte ändras för att modellen ska fungera, men produktägaren bör förtydliga begreppen, se rapporten.
+- **Begreppen `utkast` och `inskickad` hålls isär** (beslut vid K2, ADR 0010 avsnitt 4): `utkast` används bara om filer i `content/ovningar/`, som följer flödet `utkast → granskad → godkand` i git. En inskickad övning i appens redaktörskö har status `inskickad`, och en ofullständig egen övning i en klubb har ingen granskningsstatus alls, bara en härledd markering för om den är komplett. Kraven och designen är rättade efter samma beslut.
