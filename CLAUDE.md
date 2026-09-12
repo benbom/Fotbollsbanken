@@ -30,7 +30,7 @@ Version 1 innehåller generatorn, planskisser, konton med klubbar och lag, egna 
 | `docs/design/` | Flöden, skisser, designsystem, gränssnittstexter | ux-designer |
 | `docs/adr/` | Arkitekturbeslut | senior-systemutvecklare |
 | `docs/sakerhet/` | Säkerhets- och GDPR-granskningar | sakerhet-integritet (huvudsessionen sparar rapporterna) |
-| `content/ovningar/` | Övningsbanken | ovningsforfattare skriver, fotbollsexpert granskar |
+| `content/` | Övningsbanken. Licensieras under CC BY-SA 4.0, se `content/LICENSE`, till skillnad från koden som är Apache-2.0 | ovningsforfattare skriver, fotbollsexpert granskar |
 | Källkod (skapas i fas 2) | Appen | senior-systemutvecklare. Planskissmodulen ägs av planskissutvecklare och testerna av kvalitetssakrare |
 
 Läs de dokument som styr uppgiften innan du börjar. Om ett dokument saknas eller säger emot ett annat ska du rapportera det i stället för att gissa.
@@ -43,12 +43,12 @@ Huvudsessionen leder arbetet. Den delegerar till agenterna, samlar in deras rapp
 |---|---|---|
 | 0 Grund | Agenter, `CLAUDE.md`, mappstruktur | K0: agentlaget. Godkänd 2026-09-11 |
 | 1 Krav och domän | Krav och backlog, domänmodell, generatorregler | K1: godkänd 2026-09-11 |
-| 2 Design och arkitektur | Flöden, teknikval, datamodell, skissformat, behörighetsmodell | K2 |
+| 2 Design och arkitektur | Flöden, teknikval, datamodell, skissformat, behörighetsmodell | K2: godkänd 2026-09-12 |
 | 3 Övningsbank | Övningar i omgångar per spelform. Pågår parallellt med fas 4 | K3 per omgång |
 | 4 Bygge i inkrement | Se ordningen nedan | K4 per inkrement |
 | 5 Lansering | Säkerhets- och GDPR-genomgång, integritetspolicy, kontroll av åldersfaserna mot SvFF:s spelarutbildningsplan, driftsättning | K5 |
 
-**Aktuell fas: 2, design och arkitektur.** Krav och domänmodell i `docs/krav/` och `docs/doman/` är godkända och styr arbetet. Generatorreglernas nummer är frysta: nya regler får lediga nummer och överflödiga regler markeras som *Utgår*.
+**Aktuell fas: 3 och 4, övningsbank och bygge.** Krav, domänmodell, design och arkitektur är godkända och styr arbetet. Generatorreglernas nummer är frysta: nya regler får lediga nummer och överflödiga markeras som *Utgår*. Arkitekturbesluten i `docs/adr/` ändras inte i efterhand; ett ändrat beslut skrivs som en ny ADR.
 
 Inkrementen i fas 4, i tur och ordning:
 
@@ -80,8 +80,8 @@ Om övningen inte håller sätter fotbollsexperten eller redaktören status `atg
 
 ## Git
 
-- `main` ska alltid fungera. Kod byggs på grenar och mergas först efter kontrollpunkt.
-- Dokument får committas direkt på `main` med raden `Status: utkast`. Vid godkänd kontrollpunkt ändras raden till `Status: godkänd (K1, ÅÅÅÅ-MM-DD)`.
+- `main` är skyddad och tar bara emot pull requests som du har godkänt. Det gäller även dokument. Skyddet är grunden för att en övning bara kan bli godkänd av en människa (ADR 0010).
+- Varje ändring görs på en gren och läggs fram som en pull request. Statusraden i ett dokument ändras till `godkänd (K<n>, ÅÅÅÅ-MM-DD)` när du godkänt kontrollpunkten.
 - Commit-meddelanden skrivs på svenska i imperativ, till exempel ”Lägg till regler för passuppbyggnad”.
 - Använd aldrig force-push eller `reset --hard`, och skriv aldrig om publicerad historik.
 
@@ -115,4 +115,4 @@ SvFF:s nationella spelformer (2025 års versioner, hämtade 2026-09-11). Den ful
 
 ## Teknik
 
-Tekniken är inte beslutad än. Den beslutas vid K2 och dokumenteras i `docs/adr/`. Utgångsläget är Next.js med TypeScript som PWA, Supabase (Postgres i EU-region, åtkomstregler på radnivå), SVG-planskisser, Vitest och Playwright.
+Beslutad vid K2, se `docs/adr/`: React med TypeScript byggt med Vite som installerbar webbapp (PWA), Supabase (Postgres i EU-region) med åtkomstregler på radnivå, Cloudflare Pages och Brevo på gratisnivå, inloggning med engångskod via e-post, planskisser som SVG ritade ur skissdata, samt Vitest och Playwright för tester.

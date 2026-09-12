@@ -1,4 +1,4 @@
-Status: ändrad vid K2 (2026-09-12)
+Status: godkänd (K2, 2026-09-12)
 
 # Generatorregler
 

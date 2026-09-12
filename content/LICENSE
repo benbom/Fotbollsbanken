@@ -1,0 +1,20 @@
+Innehållet i katalogen content/ i Fotbollsbanken, det vill säga
+övningsbanken med dess texter och skissdata, licensieras under
+
+    Creative Commons Erkännande-DelaLika 4.0 Internationell
+    (CC BY-SA 4.0)
+
+Sammanfattning: https://creativecommons.org/licenses/by-sa/4.0/deed.sv
+Fullständig licenstext: https://creativecommons.org/licenses/by-sa/4.0/legalcode
+
+Du får använda, sprida och bearbeta övningarna, även kommersiellt, om du
+anger källan och delar vidare ditt bearbetade material under samma licens.
+
+Källhänvisning: Fotbollsbanken, https://github.com/benbom/Fotbollsbanken
+
+Övningarna bygger på principerna i Svenska Fotbollförbundets
+spelarutbildningsplan och nationella spelformer, men innehåller inte
+SvFF:s texter. SvFF:s eget material omfattas inte av den här licensen.
+
+Källkoden i repot licensieras separat under Apache License 2.0, se
+LICENSE i repots rot.

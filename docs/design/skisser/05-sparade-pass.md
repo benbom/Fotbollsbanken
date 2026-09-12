@@ -1,4 +1,4 @@
-Status: utkast
+Status: godkänd (K2, 2026-09-12)
 
 # Vy: Spara pass och Sparade pass
 
