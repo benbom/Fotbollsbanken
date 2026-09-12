@@ -1,0 +1,14 @@
+# Radslut lagras som LF i repot och checkas ut som LF på alla plattformar.
+# Utan raden får en utcheckning på Windows CRLF i arbetskopian, medan Prettier
+# förutsätter LF. Då faller `npm run format:check` lokalt men inte i CI.
+* text=auto eol=lf
+
+# Binära filer ska inte röras.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
