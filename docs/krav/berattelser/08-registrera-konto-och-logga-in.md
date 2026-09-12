@@ -1,4 +1,4 @@
-Status: godkänd (K1, 2026-09-11)
+Status: ändrad vid K2 (2026-09-12)
 
 # 08. Registrera konto och logga in
 
@@ -13,6 +13,7 @@ Status: godkänd (K1, 2026-09-11)
 3. **Givet** att fel inloggningsuppgifter anges, **när** personen försöker logga in, **då** visas ett tydligt felmeddelande, och personen loggas inte in.
 4. **Givet** att en person är inloggad, **när** personen loggar ut, **då** krävs inloggning igen innan personen kan se sina sparade pass eller sin klubbs material.
 5. **Givet** att ett nytt konto skapas, **då** lagras bara de personuppgifter som krävs för kontot (till exempel namn och e-post för ledaren själv), och inga uppgifter om spelare samlas in vid registreringen.
+6. **Givet** att appen skickar en inloggningskod till den angivna e-postadressen, **när** koden är skickad, **då** upplyser appen om att koden kan hamna i skräpposten, eftersom mejlen skickas från en delad avsändaradress (ingen egen domän i version 1, se backlog).
 
 ## Beroenden
 

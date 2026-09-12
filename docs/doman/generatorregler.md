@@ -1,4 +1,4 @@
-Status: godkänd (K1, 2026-09-11)
+Status: ändrad vid K2 (2026-09-12)
 
 # Generatorregler
 
@@ -17,6 +17,17 @@ Reglerna bygger på de andra domänfilerna och använder deras nycklar:
 | Passets delar | `del-uppvarmning`, `del-ovning`, `del-spelovning`, `del-spel`, `del-avslutning` | `passuppbyggnad.md` |
 | Grupptyper | `fri`, `par`, `tva-lag`, `fast-storlek` | `passuppbyggnad.md` |
 | Ytor | `yta-hel`, `yta-halv`, `yta-kvart` | den här filen, R-090 och R-091 |
+| Materialtyper | 8 nycklar: `boll`, `kon`, `markering`, `vast`, `mal`, `minimal`, `hinder`, `ovrigt` | `passuppbyggnad.md`, avsnittet *Material* |
+
+## Ändringar efter K1
+
+Domänmodellen godkändes vid K1 den 2026-09-11. Sedan dess har den här filen ändrats så här. Inga nummer har bytts och ingen regel har tagits bort.
+
+| Datum | Ändring |
+|---|---|
+| 2026-09-12 | **R-072 omformulerad.** Regeln binder nu algoritmens val i stället för mängden möjliga pass. Den gamla lydelsen krävde i praktiken det globalt bästa passet, vilket R-049 uttryckligen säger att generatorn inte behöver hitta (ADR 0011, avsnitt 4, grupp 8). |
+| 2026-09-12 | **R-120 tillagd.** Materialtyperna är en sluten lista. Själva listan står i `passuppbyggnad.md`, avsnittet *Material*. |
+| 2026-09-12 | **R-084 förtydligad.** Regeln pekar nu ut vilka materialtyper som räknas som mål (`mal` och `minimal`). Innebörden är oförändrad. |
 
 ## Så läser du reglerna
 
@@ -52,7 +63,7 @@ Reglerna bygger på de andra domänfilerna och använder deras nycklar:
 
 ---
 
-## Grupp 1: Övningens data som generatorn använder (R-001–R-009)
+## Grupp 1: Övningens data som generatorn använder (R-001–R-009, R-120)
 
 **Varför:** generatorn kan bara välja rätt om övningarna är märkta på ett sätt som går att lita på. Reglerna kan kontrolleras automatiskt när en övning sparas eller valideras. En övning som bryter mot någon av dem får inte användas av generatorn. Flera fält är nya eller ändrade jämfört med `content/ovningar/README.md`. Fältnamnen bestäms vid K2, men innehållet ska vara det som står här.
 
@@ -90,6 +101,13 @@ Krav. Övningen har exakt en grupptyp: `fri`, `par`, `tva-lag` eller `fast-storl
 
 ### R-009 Tid
 Krav. Övningen har en kortaste, en rekommenderad och en längsta tid i hela minuter, där 5 ≤ kortaste ≤ rekommenderad ≤ längsta. Om övningen bara har en rekommenderad tid gäller den som både kortaste och längsta.
+
+### R-120 Materialtyper är en sluten lista
+Krav. Varje post i övningens `material` har en typ ur den slutna listan i `passuppbyggnad.md`, avsnittet *Material*. I dag är listan `boll`, `kon`, `markering`, `vast`, `mal`, `minimal`, `hinder` och `ovrigt`. En typ som inte finns i listan underkänns när övningen valideras. Typen `ovrigt` kräver en anteckning som säger vad materialet är.
+
+Nycklarna är stabila och ändras aldrig. Om en typ behöver läggas till skrivs den in i listan i `passuppbyggnad.md`, som är den enda källan. Den här regeln pekar alltid på den listan.
+
+*Regeln är ny vid K2 (2026-09-12).* Den behövs för R-084: appen kan bara veta om en övning har mål när typerna är bestämda. Listan är inget filter. Generatorn väljer aldrig bort en övning för att klubben saknar material (kravspec, *Beslut vid K1*, punkt 1). Numret är taget från R-120 och uppåt, eftersom grupp 1 inte har några lediga nummer i sitt ursprungliga intervall.
 
 ---
 
@@ -462,7 +480,25 @@ Krav. En övning (samma `id`) förekommer högst en gång i ett pass, i ett mome
 Krav. Övningens lättare och svårare variant är inte egna övningar. R-070 gäller därför också för dem.
 
 ### R-072 Gränsen mellan fotbollsregler och algoritmval
-Krav. Om algoritmen ger olika pass när samma underlag genereras flera gånger får den bara välja bland giltiga pass som är lika bra enligt R-048. Variation får aldrig ge ett sämre pass enligt R-048.
+Krav. Regeln gäller de val algoritmen gör, inte mängden pass som skulle kunna finnas.
+
+1. **Slumpen är sista utslagsgivare.** När algoritmen använder slumpen, eller ett frö, för att välja mellan flera alternativ ska alternativen vara lika bra i den jämförelse algoritmen gör i just det beslutet. Alternativ som är sämre i den jämförelsen sorteras bort innan slumpen används.
+2. **Ingen medveten försämring.** Algoritmen väljer aldrig ett alternativ som den vid tillfället kan se är sämre enligt R-048 än ett annat alternativ den har att välja på.
+3. **Golvet gäller varje frö.** Passet som lämnas till ledaren uppfyller alltid R-049, oavsett vilket frö som användes.
+4. **Samma frö ger samma pass.** Samma underlag, samma bank och samma frö ger alltid samma pass.
+
+Regeln kräver inte att alla frön ger pass med samma poäng enligt R-048. Två frön får ge pass som skiljer sig, också i poäng, så länge punkt 1 till 4 är uppfyllda.
+
+**Så testas regeln:**
+
+- Varje ställe i koden där slumpen används pekas ut. Ett test visar att listan som slumpen väljer ur bara innehåller alternativ som är lika bra i den jämförelse som görs där, till exempel genom att listan först har filtrerats på det bästa värdet.
+- Pass från många olika frön prövas mot R-049. Varje resultat ska klara den uttömmande kontrollen av enkla ändringar.
+- Samma frö två gånger ger ett identiskt pass.
+- Att två frön ger olika poäng enligt R-048 är inte i sig ett fel.
+
+*Varför regeln ändrades 2026-09-12:* den tidigare lydelsen krävde att alla frön skulle ge pass som är lika bra enligt R-048. Det kravet går bara att uppfylla genom att alltid hitta det bästa av alla möjliga pass, och R-049 säger uttryckligen att generatorn inte behöver det: två sökningar kan hamna i olika lokala optima och ändå båda uppfylla R-049 (ADR 0011, avsnitt 4, grupp 8). Det fotbollsfackliga syftet är oförändrat: **ledaren ska aldrig få ett sämre pass för att generatorn slumpade annorlunda.** Syftet bärs nu av punkt 1 till 3. Punkt 3 är det som skyddar ledaren i praktiken. Varje pass som lämnas ut är ett pass som ingen enkel ändring kan förbättra, och skillnaden mellan två sådana pass är liten: den gäller aldrig kraven, som skyddar spelarna och gör passet genomförbart, utan bara önskemålen i R-048.
+
+*Uppföljning, inte ett krav:* om olika frön ofta ger skillnader på post 1 till 6 i R-048, alltså vilka delar som fylls, huvudträff i kärnan, röd tråd och att alla valda fokus finns med, är passen inte längre likvärdiga för ledaren. Då är det sökningen som fastnar för lätt. Det ska tas upp med fotbollsexperten som en fotbollsfacklig fråga, inte lösas genom att ändra den här regeln.
 
 Mellan olika pass finns ingen begränsning. Samma övning och samma fokus får återkomma i pass efter varandra och i på varandra följande veckor i en säsongsplan (se `sasongsprogression.md`).
 
@@ -512,7 +548,9 @@ Krav. `nickspel` kan bara väljas som fokus om ledaren också väljer minst ett 
 *Motivering:* utan den regeln kan R-041 och R-082 inte uppfyllas samtidigt, eftersom Öva och Spelövning tillsammans ofta är längre än nicktaket.
 
 ### R-084 Påminnelse om mål
-Krav. Om någon övning i passet har mål i sitt `material` visar passet en påminnelse om att alla mål, även små, ska vara förankrade så att de inte kan välta (`spelformer.md`).
+Krav. Om någon övning i passet har material av typen `mal` eller `minimal` (R-120) visar passet en påminnelse om att alla mål, även små, ska vara förankrade så att de inte kan välta (`spelformer.md`).
+
+Båda typerna räknas, eftersom ett minimål är lätt och välter minst lika lätt som ett stort mål.
 
 ### R-085 Påminnelse om benskydd
 Krav. Varje pass visar en påminnelse om benskydd, eftersom `del-spel` alltid innehåller närkamper (`spelformer.md`).
@@ -658,7 +696,7 @@ Krav. Åldern i säsongsplanen räknas som i R-010: den ålder spelarna fyller u
 
 | Grupp | Regler | Antal | Varav preliminära | Varav utgår |
 |---|---|---|---|---|
-| 1 Övningens data | R-001–R-009 | 9 | 0 | 0 |
+| 1 Övningens data | R-001–R-009, R-120 | 10 | 0 | 0 |
 | 2 Underlaget | R-010–R-021 | 12 | 0 | 0 |
 | 3 Vilka övningar, nivå | R-022–R-029 | 8 | 0 | 0 |
 | 4 Delar och tid | R-030–R-039 | 10 | 0 | 0 |
@@ -670,6 +708,6 @@ Krav. Åldern i säsongsplanen räknas som i R-010: den ålder spelarna fyller u
 | 10 Yta | R-090–R-094 | 5 | 0 | 0 |
 | 11 Inget matchande, byte | R-100–R-106 | 7 | 0 | 0 |
 | 12 Säsongsplan | R-110–R-113 | 4 | 1 (R-112) | 0 |
-| **Summa** | | **89** | **1** | **0** |
+| **Summa** | | **90** | **1** | **0** |
 
-Lediga nummer, reserverade för nya regler i respektive grupp: R-057–R-059 (grupp 6), R-068–R-069 (grupp 7), R-073–R-079 (grupp 8), R-086–R-089 (grupp 9), R-095–R-099 (grupp 10), R-107–R-109 (grupp 11) och R-114–R-119 (grupp 12). Grupp 1 till 5 har inga lediga nummer kvar. En ny regel i någon av dem får ett nummer från R-120 och uppåt och placeras i den grupp den hör till.
+Lediga nummer, reserverade för nya regler i respektive grupp: R-057–R-059 (grupp 6), R-068–R-069 (grupp 7), R-073–R-079 (grupp 8), R-086–R-089 (grupp 9), R-095–R-099 (grupp 10), R-107–R-109 (grupp 11) och R-114–R-119 (grupp 12). Grupp 1 till 5 har inga lediga nummer kvar i sina ursprungliga intervall. En ny regel i någon av dem får därför nästa lediga nummer från R-120 och uppåt och placeras i den grupp den hör till. R-120 är tagen av grupp 1, så nästa sådan regel får R-121.

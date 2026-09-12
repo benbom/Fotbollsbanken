@@ -1,4 +1,4 @@
-Status: godkänd (K1, 2026-09-11)
+Status: ändrad vid K2 (2026-09-12)
 
 # Kravspecifikation – Fotbollsbanken
 
@@ -80,6 +80,20 @@ De här frågorna kunde inte avgöras av produktägaren eller fotbollsexperten. 
 13. **Fråga om nickning i formuläret för egna övningar (Could):** ingår inte i version 1 och ligger i backloggen. I version 1 bygger nickreglerna (R-080 till R-083) för egna övningar på att ledaren själv märker övningen med fokusområdet `nickspel`. Egna övningar granskas inte av fotbollsexpert eller redaktör.
 
 Roll- och behörighetsmodellen som besluten bygger på (bara ledare, klubbadmin och redaktör i appen) beslutas slutgiltigt vid K2.
+
+## Beslut vid K2 (2026-09-12)
+
+De här frågorna fördes fram av säkerhetsgranskningen inför K2 (`docs/sakerhet/granskning-k2.md`) eller kunde inte avgöras av produktägaren ensam. Användaren har fattat följande beslut:
+
+1. **Statusnamn:** en inskickad övning har status `inskickad`, inte `utkast` (se berättelse 15, 16 och 17, och `docs/adr/0010-ovningsformat-och-lagring.md`, avsnitt 4). En egen övning i klubben har ingen granskningsstatus, bara en härledd markering – **Ofullständig** eller **Klar att använda** – av om den är komplett nog att bytas in i ett pass (R-106, berättelse 13, kriterium 2). Ordet `utkast` används bara om filer i `content/ovningar/`.
+2. **Radering av konto ingår i version 1** (GDPR, artikel 17), se den nya berättelse 26 i inkrement 3. Raderingen verkställs direkt. Delat material – till exempel lagets sparade pass, klubbens egna övningar eller en godkänd bankövning – finns kvar men avidentifierat. Är personen den sista klubbadminen i sin klubb måste en efterträdare utses först (se berättelse 09, kriterium 4, och berättelse 26, kriterium 3). Se säkerhetsgranskning K2, fynd S-10.
+3. **Ingen ritredigerare i version 1.** Ledaren kan inte själv rita eller redigera en planskiss för en egen övning. Kriteriet är flyttat till backloggen som Could. En egen övning saknar därför planskiss i version 1 (se berättelse 06, kriterium 2, och berättelse 13, Utanför).
+4. **"Logga ut på alla enheter" ingår inte i version 1.** Lagt i backloggen som Could, trots att det är ledarens enda skydd vid en borttappad, olåst telefon (säkerhetsgranskning K2, fynd S-11).
+5. **Ingen egen domän för e-post i version 1.** Inloggningsmejl skickas från en delad avsändaradress och kan hamna i skräpposten. Appen upplyser om detta (berättelse 08, kriterium 6). En egen domän är en Could-post i backloggen.
+6. **GDPR:** avtal, inte samtycke, är rättslig grund för behandlingen av ledarnas kontouppgifter. Föreningen är ensam personuppgiftsansvarig, inte klubbarna gemensamt. En integritetspolicy ska finnas, nåbar utan inloggning, före lansering. Se backloggen, "Innan lansering", och säkerhetsgranskning K2, avsnitt 3 och 5, punkt 1–2.
+7. **Repot görs publikt före fas 4**, sedan de åtgärder som säkerhetsgranskningen kräver är genomförda (`docs/sakerhet/granskning-k2.md`, avsnitt 4). Beslutet ändrar inga krav i sig, men innebär att `content/`-mappens licens bör avgöras separat (samma granskning, *Beslut som behövs*, punkt 5).
+8. **Personuppgifter i fritext (fynd S-20):** lagnamn, passnamn, fritext i egna övningar och redaktörens kommentar kan råka innehålla ett barns namn. Appen upplyser kort vid alla fyra fälten om att spelarnamn inte ska skrivas in (se berättelse 05, kriterium 5, berättelse 10, kriterium 4, berättelse 13, kriterium 3, och berättelse 16, kriterium 5). Texterna till upplysningarna skrivs av UX-designern.
+9. **Fel e-postadress avslöjas inte vid inloggning (fynd S-13):** appen svarar likadant oavsett om den angivna adressen har ett konto eller inte. Kontrollerat mot berättelse 08: kriterium 3 gäller fel *kod*, inte en okänd adress, och krockar därför inte med detta beslut.
 
 ## Källor
 

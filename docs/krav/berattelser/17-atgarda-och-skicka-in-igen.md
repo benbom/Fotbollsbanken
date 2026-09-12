@@ -1,4 +1,4 @@
-Status: godkänd (K1, 2026-09-11)
+Status: ändrad vid K2 (2026-09-12)
 
 # 17. Åtgärda och skicka in igen
 
@@ -9,7 +9,7 @@ Status: godkänd (K1, 2026-09-11)
 ## Acceptanskriterier
 
 1. **Givet** att en av ledarens inskickade övningar har fått status `atgarda` med en kommentar, **när** ledaren öppnar övningen, **då** ser ledaren kommentaren och vad som behöver ändras.
-2. **Givet** att ledaren har ändrat övningen enligt kommentaren, **när** ledaren skickar in den igen, **då** återgår övningen till redaktörskön för ny granskning (status `utkast`, se `content/ovningar/README.md`).
+2. **Givet** att ledaren har ändrat övningen enligt kommentaren, **när** ledaren skickar in den igen, **då** återgår övningen till redaktörskön för ny granskning (status `inskickad`, se `content/ovningar/README.md`).
 3. **Givet** att en övning har fått `atgarda` flera gånger, **när** ledaren tittar på övningens historik, **då** kan ledaren se tidigare kommentarer, inte bara den senaste.
 
 ## Beroenden

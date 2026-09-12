@@ -1,4 +1,4 @@
-Status: godkänd (K1, 2026-09-11)
+Status: ändrad vid K2 (2026-09-12)
 
 # Backlog – Fotbollsbanken
 
@@ -37,8 +37,11 @@ Beslutat vid K1 (2026-09-11, se `kravspec.md`): generatorn har ett valfritt ytfi
 | 10 | [Klubbadmin hanterar lag](berattelser/10-klubbadmin-hanterar-lag.md) | Must |
 | 11 | [Klubbadmin bjuder in ledare](berattelser/11-klubbadmin-bjuder-in-ledare.md) | Must |
 | 12 | [Dela sparat pass inom laget](berattelser/12-dela-sparat-pass-inom-laget.md) | Must |
+| 26 | [Radera sitt konto](berattelser/26-radera-konto.md) | Must |
 | – | Klubbadmin kan se en logg över vem som gjort vad i klubben | Could |
 | – | En person kan vara medlem i flera klubbar samtidigt | Should (rimligt för ledare som tränar i flera klubbar, men inte grundflödet) |
+| – | Egen domän för utskick av inloggningsmejl, för att minska risken att koden hamnar i skräpposten | Could. Beslutat vid K2 (2026-09-12), se berättelse 08, kriterium 6, och kravspec. |
+| – | "Logga ut på alla enheter" | Could. Beslutat vid K2 (2026-09-12): det är ledarens enda skydd vid en borttappad, olåst telefon (säkerhetsgranskning K2, fynd S-11), men bedöms inte vara Must för version 1. |
 
 ## Inkrement 4 – Egna och inskickade övningar med redaktörskö
 
@@ -53,6 +56,7 @@ Beslutat vid K1 (2026-09-11, se `kravspec.md`): generatorn har ett valfritt ytfi
 | – | Formuläret för egna övningar frågar rakt ut om övningen innehåller nickning och märker den då med `nickspel` (beslut vid K1, punkt 13) | Could |
 | – | Kommentera/diskutera en inskickad övning innan beslut | Could |
 | – | Statistik över hur många övningar en klubb har fått godkända | Could |
+| – | Ledaren kan rita eller redigera en planskiss för sin egen övning | Could. Beslutat vid K2 (2026-09-12): ingen ritredigerare i version 1, så en egen övning saknar planskiss (se berättelse 06, kriterium 2, och berättelse 13, Utanför). |
 
 ## Inkrement 5 – Planläge med timer
 
@@ -88,6 +92,8 @@ Beslutat vid K1 (2026-09-11, se `kravspec.md`): generatorn har ett valfritt ytfi
 | # | Uppgift | Prioritet |
 |---|---|---|
 | – | Kontrollera åldersfaserna i `docs/doman/aldrar-och-fokus.md` mot SvFF:s spelarutbildningsplan, och justera fokusområdenas K/R-tabell i `docs/doman/fokusomraden.md` vid behov | Must, innan K5. Se `kravspec.md` – Beslut vid K1, punkt 3. |
+| – | Fastställ rättslig grund för behandlingen av ledarnas kontouppgifter (avtal, inte samtycke) och att föreningen är ensam personuppgiftsansvarig, inte klubbarna gemensamt | Must, innan K5. Se säkerhetsgranskning K2 (`docs/sakerhet/granskning-k2.md`), avsnitt 3 och 5, punkt 1–2, och `kravspec.md` – Beslut vid K2, punkt 6. |
+| – | Skriv och publicera en integritetspolicy, nåbar utan inloggning | Must, innan K5. Se säkerhetsgranskning K2 (`docs/sakerhet/granskning-k2.md`), avsnitt 3. |
 
 ## Won't – uttryckligen utanför version 1
 

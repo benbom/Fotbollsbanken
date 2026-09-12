@@ -1,4 +1,4 @@
-Status: godkänd (K1, 2026-09-11)
+Status: ändrad vid K2 (2026-09-12)
 
 # Passuppbyggnad
 
@@ -253,7 +253,36 @@ Regler för stationer (R-060 till R-066):
 
 ## Tillgänglig yta
 
-Ledaren kan välja om passet ska göras på hel, halv eller kvarts plan, eller låta bli (beslut 2026-09-11). När ledaren har valt yta används bara moment som får plats på den, med 3 meter mellan grupper eller stationer som ligger bredvid varandra. Momenten görs efter varandra och får använda samma yta. Reglerna är R-090 till R-094. Appen tar inte hänsyn till material, som antal bollar och koner, i version 1. Inomhushall kommer i en senare version.
+Ledaren kan välja om passet ska göras på hel, halv eller kvarts plan, eller låta bli (beslut 2026-09-11). När ledaren har valt yta används bara moment som får plats på den, med 3 meter mellan grupper eller stationer som ligger bredvid varandra. Momenten görs efter varandra och får använda samma yta. Reglerna är R-090 till R-094. Appen tar inte hänsyn till hur mycket material klubben har, som antal bollar och koner, i version 1 (se nästa avsnitt). Inomhushall kommer i en senare version.
+
+## Material
+
+*Avsnittet är tillagt 2026-09-12, efter K1, på fråga från senior systemutvecklare.*
+
+Varje övning listar vad den behöver i fältet `material` (`content/ovningar/README.md`, ADR 0010). Fältet gör två saker i version 1: det säger ledaren vad som ska plockas fram, och det gör att appen vet när passet ska påminna om att mål ska vara förankrade (R-084). **Det är inget filter.** Generatorn väljer aldrig bort en övning för att klubben saknar material (beslut 2026-09-11, `docs/krav/kravspec.md`, *Beslut vid K1*, punkt 1).
+
+### Materialtyper
+
+Listan är sluten (R-120). Nycklarna är stabila och ändras aldrig, precis som fokusområdenas nycklar. Namnet som visas för ledaren kan ändras. Listan är kort med flit: den ska täcka det en vanlig ungdomsledare har i bollpåsen och vid planen, inte allt som finns i en materialbod.
+
+| Nyckel | Namn | Vad som avses |
+|---|---|---|
+| `boll` | Boll | Fotboll i den storlek spelformen anger (`spelformer.md`). Övningen behöver inte ange storleken. |
+| `kon` | Kon | Strutkon att markera med. |
+| `markering` | Markeringsplatta | Platt markering eller platt kona, som går att springa på utan att snubbla. |
+| `vast` | Väst | Överdragsväst, för att skilja lag eller roller åt. |
+| `mal` | Mål | Mål i en spelforms storlek, från 3 mot 3 till 11 mot 11, fast eller flyttbart (`spelformer.md`). |
+| `minimal` | Minimål | Litet mål, ungefär 1–1,5 meter brett, av den typ som ofta ställs ut på träning. |
+| `hinder` | Hinder | Häck, käpp, koordinationsstege eller liknande att ta sig över, runt eller igenom. |
+| `ovrigt` | Övrigt | Allt annat, till exempel sarg i 3 mot 3. Kräver en anteckning som säger vad det är (R-120). |
+
+Att tänka på:
+
+- **Både `mal` och `minimal` utlöser säkerhetspåminnelsen** i R-084. Ett minimål är lätt och välter minst lika lätt som ett stort mål, och det är den viktigaste säkerhetsregeln i SvFF:s planstorleksdokument (`spelformer.md`).
+- **Antalet avser en grupp**, precis som `spelare` och `ledarbehov`. En övning som körs i fyra grupper behöver alltså fyra uppsättningar. Ledaren räknar ihop det själv i version 1.
+- **Målvaktens egen utrustning**, till exempel handskar, listas inte som material. Den hör till spelaren, inte till övningen.
+- **Planskissen beskriver samma verklighet.** Skissobjekten `kon`, `markering`, `mal` och `boll` motsvarar materialtyperna med samma namn, och skissens målstorlek `smamal` motsvarar `minimal` (ADR 0012).
+- **Ett materialfilter**, där ledaren anger hur många bollar och mål klubben har, är en Could-punkt i backloggen och kräver ett nytt beslut av användaren.
 
 ## Exempel
 

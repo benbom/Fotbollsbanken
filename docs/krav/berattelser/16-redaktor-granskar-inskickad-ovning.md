@@ -1,4 +1,4 @@
-Status: godkänd (K1, 2026-09-11)
+Status: ändrad vid K2 (2026-09-12)
 
 # 16. Redaktören granskar en inskickad övning
 
@@ -14,6 +14,7 @@ Status: godkänd (K1, 2026-09-11)
 2. **Givet** att redaktören anser att en övning håller måttet, **när** redaktören godkänner övningen, **då** får övningen status `godkand` och blir valbar för generatorn i alla klubbar.
 3. **Givet** att redaktören anser att en övning behöver ändras, **när** redaktören sätter status `atgarda` och skriver en kommentar, **då** meddelas den ledare som skickade in övningen om att den behöver ändras, tillsammans med kommentaren.
 4. **Givet** att ingen människa har godkänt en övning, **då** kan övningen aldrig få status `godkand` automatiskt, i linje med principen i `CLAUDE.md` att bara en människa sätter den statusen.
+5. **Givet** att redaktören skriver en kommentar till den ledare som skickade in övningen, **när** redaktören skriver, **då** upplyser appen om att kommentaren inte ska innehålla namn på spelare (säkerhetsgranskning K2, fynd S-20).
 
 ## Beroenden
 

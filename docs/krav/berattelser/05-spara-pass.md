@@ -1,4 +1,4 @@
-Status: godkänd (K1, 2026-09-11)
+Status: ändrad vid K2 (2026-09-12)
 
 # 05. Spara ett pass
 
@@ -12,6 +12,7 @@ Status: godkänd (K1, 2026-09-11)
 2. **Givet** att ett pass har sparats, **när** ledaren senare öppnar sin lista över sparade pass, **då** visas det sparade passet med de uppgifter det sparades med.
 3. **Givet** att ledaren sparar ett pass utan att själv ange ett namn, **när** passet sparas, **då** får det ett namnförslag som gör det möjligt att känna igen det, till exempel med datum, spelform och fokusområde.
 4. **Givet** att ledaren sparar ett pass, **när** sparandet är klart, **då** kan ledaren fortsätta använda appen (till exempel generera ett nytt pass) utan att det sparade passet påverkas.
+5. **Givet** att ledaren skriver ett eget namn på passet i stället för att använda namnförslaget, **när** ledaren skriver, **då** upplyser appen om att namnet inte ska innehålla namn på spelare (säkerhetsgranskning K2, fynd S-20).
 
 ## Beroenden
 

@@ -1,4 +1,4 @@
-Status: godkänd (K1, 2026-09-11)
+Status: ändrad vid K2 (2026-09-12)
 
 # 06. Visa planskiss för en övning
 
@@ -20,5 +20,5 @@ Status: godkänd (K1, 2026-09-11)
 
 ## Utanför denna berättelse
 
-- Att ledaren själv ritar eller redigerar en planskiss för en befintlig övning i banken (endast läsning i denna berättelse; att skapa planskiss för egna övningar hanteras i berättelse 13).
+- Att ledaren själv ritar eller redigerar en planskiss (endast läsning i denna berättelse). Beslutat vid K2 (2026-09-12): ingen ritredigerare i version 1, så en egen övning (berättelse 13) saknar planskiss och visas enligt kriterium 2 ovan. En ritredigerare för egna övningar ligger i backloggen som Could.
 - Att visa flera övningars planskisser samlat för ett helt pass (se berättelse 07).

@@ -56,7 +56,7 @@ Fullständiga regler, typer och intervall står i ADR 0010, avsnitt 1. `Krävs` 
 | `udda_antal_losning` | `true` eller `false`. Bara för `fast-storlek` | villkorat | R-008 |
 | `tid` | `kortast`, `rekommenderad` och `langst` i hela minuter, minst 5 | ja | R-009 |
 | `yta` | Mått per spelform, eller `alla` för samma mått överallt | ja | R-092 |
-| `material` | Lista med `typ`, `antal` och `anteckning`. Använd `mal` för mål | ja | R-084 |
+| `material` | Lista med `typ`, `antal` och `anteckning`. `typ` väljs ur den slutna listan i `docs/doman/passuppbyggnad.md`: `boll`, `kon`, `markering`, `vast`, `mal`, `minimal`, `hinder`, `ovrigt`. `ovrigt` kräver en anteckning | ja | R-084, R-120 |
 | `coachningspunkter` | 2–4 punkter | ja | |
 | `varianter` | `lattare` och `svarare` | ja | R-029 |
 | `anpassning` | `fler_spelare`, `udda_antal` och `ledare` | ja | |

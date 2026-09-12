@@ -1,4 +1,4 @@
-Status: godkänd (K1, 2026-09-11)
+Status: ändrad vid K2 (2026-09-12)
 
 # 15. Skicka in en övning till den gemensamma banken
 
@@ -8,7 +8,7 @@ Status: godkänd (K1, 2026-09-11)
 
 ## Acceptanskriterier
 
-1. **Givet** att ledaren har en egen övning med alla obligatoriska fält ifyllda (se berättelse 13), **när** ledaren skickar in övningen till banken, **då** får övningen status `utkast` i redaktörskön (se `content/ovningar/README.md`) och blir synlig för redaktören.
+1. **Givet** att ledaren har en egen övning med alla obligatoriska fält ifyllda, det vill säga en övning som är **Klar att använda** (se berättelse 13, kriterium 2), **när** ledaren skickar in övningen till banken, **då** får övningen status `inskickad` i redaktörskön (se `content/ovningar/README.md`) och blir synlig för redaktören.
 2. **Givet** att en övning saknar obligatoriska fält, **när** ledaren försöker skicka in den, **då** hindras insändningen, och appen visar vad som saknas.
 3. **Givet** att en övning har skickats in, **när** ledaren tittar på övningen i sin egen lista, **då** ser ledaren att den är inskickad och vilken status den har i granskningen.
 4. **Givet** att en övning redan är inskickad och väntar på granskning, **när** ledaren försöker skicka in samma övning igen, **då** informeras ledaren om att den redan är inskickad, i stället för att en dubblett skapas.
