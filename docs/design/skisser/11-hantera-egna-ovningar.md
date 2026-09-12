@@ -17,7 +17,13 @@ Status: utkast
 │ │ Vår passningslek            │  │
 │ │ Passning och mottagning ·    │  │
 │ │ Skapad av Anna L.            │  │
-│ │ Status: Utkast               │  │
+│ │ Ofullständig                 │  │
+│ │        [Öppna]              │  │
+│ └───────────────────────────┘  │
+│ ┌───────────────────────────┐  │
+│ │ Kullek utan mål              │  │
+│ │ Avslut · Skapad av Anna L.   │  │
+│ │ Klar att använda             │  │
 │ │        [Öppna] [Skicka in]  │  │
 │ └───────────────────────────┘  │
 │ ┌───────────────────────────┐  │
@@ -96,8 +102,9 @@ Status: utkast
 - **Under granskning (14.4):** "Redigera" och "Ta bort" är dolda/utbytta mot en förklarande text (se tredje skissen) i stället för att vara klickbara men ge ett fel efteråt.
 - **Skicka in (15.1, 15.2):** knappen "Skicka in" visas bara på övningar med alla obligatoriska fält ifyllda. Saknas fält visas i stället en gråmarkerad knapp med texten "Komplettera för att skicka in" som leder till formuläret och visar vad som saknas.
 - **Redan inskickad (15.4):** "Skicka in"-knappen ersätts av statusen "Inskickad, väntar på granskning" utan någon insändningsknapp kvar, så att en dubblett aldrig kan skapas av misstag.
-- **Status i egen lista (15.3):** varje övning visar sin aktuella status i klartext (Utkast, Inskickad – väntar på granskning, Godkänd, Åtgärda), inte bara statuskoden.
-- **Åtgärda-flödet (17.1–17.3):** kommentaren från senaste granskningen visas överst och kan inte missas. Tidigare kommentarer nås i en utfällbar historik, i kronologisk ordning. Efter "Spara och skicka in igen" återgår status till `utkast` i redaktörskön.
+- **Två skilda markeringar, inte en statuskedja (`docs/adr/0010-ovningsformat-och-lagring.md`, avsnitt 4):** en egen övning som inte är inskickad visar bara om den är **"Ofullständig"** eller **"Klar att använda"** – det är inget den granskas mot, bara ett härlett resultat av vilka fält som är ifyllda. Så fort övningen skickas in ersätts den markeringen av dess **status i redaktörskön**: "Inskickad, väntar på granskning", "Godkänd" eller "Åtgärda". En övning har alltså aldrig båda samtidigt.
+- **Redan inskickad (15.4):** "Skicka in"-knappen ersätts av statusen "Inskickad, väntar på granskning" utan någon insändningsknapp kvar, så att en dubblett aldrig kan skapas av misstag.
+- **Åtgärda-flödet (17.1–17.3):** kommentaren från senaste granskningen visas överst och kan inte missas. Tidigare kommentarer nås i en utfällbar historik, i kronologisk ordning. Efter "Spara och skicka in igen" återgår status till `inskickad` i redaktörskön.
 
 ## Tillgänglighet
 

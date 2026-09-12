@@ -16,6 +16,10 @@ Status: utkast
 │  ┌───────────────────────────┐ │
 │  │ IK Exempel                │ │
 │  └───────────────────────────┘ │
+│  Använd klubbens riktiga namn,  │
+│  inte ett lags. Skriv inga      │
+│  namn på spelare någonstans i   │
+│  appen.                         │
 │                                 │
 │ ┌───────────────────────────┐  │
 │ │      Skapa klubb            │  │
@@ -119,10 +123,10 @@ Status: utkast
 
 ## Beteende och tillstånd
 
-- **Skapa klubb (09.1):** personen kopplas automatiskt som klubbadmin till den nya klubben.
+- **Skapa klubb (09.1):** personen kopplas automatiskt som klubbadmin till den nya klubben. Hjälptexten under Klubbnamn ("Skriv inga namn på spelare någonstans i appen") är den plats där en ny klubbadmin först möter regeln, eftersom hen ofta sätter tonen för hur laget/klubbens namn väljs (säkerhetsgranskningens fynd S-20).
 - **Namnkrock (09.2):** varningen låter klubbadmin gå vidare ändå (appen kan inte veta om det verkligen är samma klubb), men gör det tydligt att kontrollera först. Ingen teknisk spärr, bara en tydlig varning.
 - **En klubb ser bara sitt eget (09.3):** listor över lag, ledare och övningar innehåller aldrig data från andra klubbar – detta är i grunden en behörighetsfråga (se `docs/adr/`, beslutas vid K2 av senior-systemutvecklare/säkerhetsagenten), men gränssnittet visar aldrig ens en antydan om att andra klubbar finns.
-- **Skapa lag (10.1):** namn och ålder krävs; spelform föreslås utifrån åldern precis som i generatorn (samma komponent som `01-underlag.md`), men går att ändra fritt här (laget begränsas inte till grannspelformer på samma sätt som ett enskilt pass, eftersom ett lag kan spela en annan spelform än den vanliga i sitt distrikt).
+- **Skapa lag (10.1):** namn och ålder krävs; spelform föreslås utifrån åldern precis som i generatorn (samma komponent som `01-underlag.md`), men går att ändra fritt här (laget begränsas inte till grannspelformer på samma sätt som ett enskilt pass, eftersom ett lag kan spela en annan spelform än den vanliga i sitt distrikt). Fältet Lagnamn har hjälptexten "Skriv inga namn på spelare", eftersom lagnamnet är det som syns för hela klubben och följer med i varje pass (säkerhetsgranskningens fynd S-20, som lyfter just lagnamnet som exempel).
 - **Redigera lag (10.2):** ändringar (namn, ålder, spelform) gäller omedelbart för alla kopplade till laget.
 - **Arkivera lag (10.3):** varningsdialogen visas alltid om laget har sparade pass eller en säsongsplan kopplad, med exakt antal, innan borttagningen bekräftas.
 - **Bjuda in (11.1):** e-postadress räcker; personen får en länk till `14-inloggning.md` med förifylld inbjudan.

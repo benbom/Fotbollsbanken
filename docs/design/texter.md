@@ -27,20 +27,35 @@ Platshållare skrivs inom `{hakparentes}`.
 
 ## 2. Inloggning och konto (berättelse 08, `skisser/14-inloggning.md`)
 
+Inloggning sker med en engångskod via e-post, utan lösenord (`docs/adr/0004-inloggning.md`). Samma kodsteg används vid inloggning och registrering.
+
 | Sammanhang | Text |
 |---|---|
 | Rubrik | Logga in |
 | Rubrik, registrering | Skapa konto |
-| Fält | E-post / Lösenord / Namn |
+| Fält | E-post / Namn |
 | Hjälptext, namn | Visas för andra ledare i dina lag. |
 | Hjälptext, personuppgifter | Vi sparar bara det som behövs för ditt konto. Inga uppgifter om spelare. |
-| Knapp | Logga in / Skapa konto / Logga ut |
-| Länk | Glömt lösenord? |
-| Fel: fel uppgifter | E-postadressen eller lösenordet stämmer inte. Kontrollera och försök igen. |
-| Fel: kontot finns redan | Det finns redan ett konto med den här e-postadressen. Vill du logga in i stället? |
+| Hjälptext, captcha | En kort kontroll som visar att det är en person som loggar in, inte ett program. |
+| Knapp, steg 1 | Skicka kod |
+| Knapp, logga ut | Logga ut |
+| Rubrik, kodsteg | Skriv in koden |
+| Ingress, kodsteg | Vi har skickat en kod till {e-post}. |
+| Hjälptext, skräppost (lugn ton, ingen varningsikon) | Hittar du inget mejl om en liten stund? Kolla även i skräpposten. |
+| Fält, kod | Kod (6 siffror) |
+| Knapp, bekräfta kod | Bekräfta kod |
+| Knapp, skicka ny kod (väntar) | Skicka ny kod ({sekunder} s) |
+| Knapp, skicka ny kod (klar) | Skicka ny kod |
+| Länk, fel adress angiven | Fel e-postadress? Gå tillbaka |
+| Bekräftelse efter steg 1 (samma oavsett om kontot finns, S-13) | Om adressen finns hos oss har vi skickat en kod. |
+| Fel: fel kod | Koden stämmer inte. Kontrollera siffrorna och försök igen. |
+| Fel: för många felaktiga försök | Du har försökt för många gånger. Begär en ny kod för att fortsätta. |
+| Fel: koden har gått ut | Koden har gått ut. Begär en ny kod. |
 | Fel: obligatoriskt fält saknas | Fyll i {fältnamn} för att fortsätta. |
 | Inbjudan, banner | Du är inbjuden till {lagnamn} i {klubbnamn}. |
 | Efter accepterad inbjudan | Du är nu kopplad till {lagnamn}. |
+
+**Viktigt:** appen ska aldrig säga att en adress "redan har ett konto" eller att uppgifter "inte stämmer" för en okänd adress (S-13). Vid fel kod, däremot, ska felmeddelandet vara tydligt – det handlar inte om att avslöja kontots existens, utan om att koden personen just skrev in är fel.
 
 ---
 
@@ -130,6 +145,7 @@ Platshållare skrivs inom `{hakparentes}`.
 |---|---|
 | Rubrik, dialog | Spara pass |
 | Fält, namn | Namn på passet |
+| Hjälptext, namn på passet | Skriv inga namn på spelare. |
 | Namnförslag | {ålder} år · {spelform} · {huvudfokus} {datum} |
 | Fält, lag | Lag |
 | Hjälptext, lag | Delas med alla ledare i {lagnamn}. |
@@ -189,7 +205,8 @@ Platshållare skrivs inom `{hakparentes}`.
 | Rubrik, lista | Klubbens egna övningar |
 | Knapp | + Ny övning |
 | Sparad med saknade fält | Övningen är sparad, men saknar: {lista}. Den kan inte användas i ett pass förrän de är ifyllda. |
-| Status i lista | Utkast / Inskickad, väntar på granskning / Godkänd / Åtgärda |
+| Komplett-markering i lista (egen övning, inte inskickad) | Ofullständig / Klar att använda |
+| Status i lista (efter insändning, ur `submissions.status`) | Inskickad, väntar på granskning / Godkänd / Åtgärda |
 | Under granskning, spärr | Den här övningen är inskickad och väntar på granskning i den gemensamma banken. Du kan inte ändra eller ta bort den förrän granskningen är klar. |
 | Ta bort, bekräftelse | Ta bort "{övningsnamn}"? Pass som redan använder den påverkas inte. |
 | Skicka in, ofullständig | Komplettera för att skicka in |
@@ -199,6 +216,8 @@ Platshållare skrivs inom `{hakparentes}`.
 | Åtgärda, historik | Tidigare kommentarer |
 | Knapp | Spara och skicka in igen |
 | Nickspel, för låg ålder | Nickspel kan bara användas för övningar med lägsta ålder 13 år eller äldre. |
+
+**Viktigt:** en egen övning har antingen komplett-markeringen (Ofullständig/Klar att använda) eller status i redaktörskön (Inskickad/Godkänd/Åtgärda), aldrig båda samtidigt (`docs/adr/0010-ovningsformat-och-lagring.md`, avsnitt 4). Ordet "Utkast" används inte om egna övningar i appen – det finns bara som filstatus i `content/ovningar/`.
 
 ---
 
@@ -213,6 +232,7 @@ Platshållare skrivs inom `{hakparentes}`.
 | Bekräftelse, godkänd | Godkänd – nu valbar för alla klubbar. |
 | Knapp | Skicka åtgärda |
 | Fält, kommentar | Kommentar till {ledarens namn} |
+| Hjälptext, kommentar | Skriv inga namn på spelare. |
 | Fel, tom kommentar | Skriv en kommentar som förklarar vad som behöver ändras. |
 | Rubrik, redaktörer | Redaktörer |
 | Knapp | Gör till redaktör |
@@ -227,10 +247,12 @@ Platshållare skrivs inom `{hakparentes}`.
 |---|---|
 | Rubrik | Skapa din klubb |
 | Fält | Klubbnamn |
+| Hjälptext, klubbnamn (S-20) | Använd klubbens riktiga namn, inte ett lags. Skriv inga namn på spelare någonstans i appen. |
 | Varning, namn upptaget | Det finns redan en klubb med det namnet. Kontrollera om din klubb redan är registrerad innan du skapar en ny. |
 | Knapp | Skapa klubb / Skapa klubb ändå |
 | Knapp | + Lag |
 | Fält, lag | Lagnamn / Ålder / Spelform |
+| Hjälptext, lagnamn (S-20) | Skriv inga namn på spelare. |
 | Varning, arkivera lag | Laget har {antal} sparade pass{ och en säsongsplan, om aktuellt}. De påverkas inte, men laget tas bort från de aktiva listorna och kan inte längre väljas för nya pass. |
 | Knapp | Arkivera ändå |
 | Fält, inbjudan | Bjud in ledare via e-post |
@@ -266,12 +288,38 @@ Platshållare skrivs inom `{hakparentes}`.
 
 ## 15. Generella fel och tillstånd
 
+Vad som faktiskt fungerar utan nät styrs av `docs/adr/0005-daligt-nat-och-offline.md`. Sparade pass, planläget och utskrift fungerar offline; allt som ändrar något i databasen kräver nät, och det finns ingen kö som skickar iväg en ändring automatiskt när nätet kommer tillbaka (ADR 0005, punkt 6). Texterna nedan får därför aldrig antyda att en ändring "sparas ändå" – bara att den ligger kvar ifylld tills ledaren försöker igen.
+
 | Sammanhang | Text |
 |---|---|
 | Något gick fel (oväntat tekniskt fel) | Något gick fel just nu. Försök igen om en liten stund. |
-| Ingen internetanslutning | Du verkar sakna internetanslutning. Dina ändringar sparas när du är uppkopplad igen. |
+| Anslutningsindikator (banderoll, `designsystem.md` avsnitt 9) | Ingen anslutning · Visar sparad data från {tidpunkt} |
+| Anslutningsindikator, återställd | Uppdaterat |
+| Fel, handling kräver nät (spara, ändra, skicka in, godkänna, bjuda in, logga in, radera konto) | Du verkar sakna internetanslutning. Det du skrivit finns kvar – försök igen när du är uppkopplad. |
 | Bekräftelse, osparade ändringar | Du har ändringar som inte är sparade. Vill du lämna sidan ändå? |
 | Laddar innehåll | Hämtar … |
+
+---
+
+## 16. Mitt konto och radera konto (berättelse 26, `skisser/15-radera-konto.md`)
+
+| Sammanhang | Text |
+|---|---|
+| Rubrik | Mitt konto |
+| Knapp | Logga ut på alla enheter |
+| Knapp, destruktiv | Radera mitt konto |
+| Rubrik, blockerad | Radera mitt konto |
+| Blockerad, ensam klubbadmin | Du är den enda klubbadminen i {klubbnamn}. Utse en efterträdare innan du kan radera ditt konto. |
+| Knapp, blockerad | Utse en efterträdare |
+| Rubrik, vad som händer | Det här raderas |
+| Rubrik, vad som blir kvar | Det här blir kvar, avidentifierat |
+| Text, avidentifierat | Skaparen visas då som "Borttagen användare". |
+| Varning, kan inte ångras | Det går inte att ångra. |
+| Fält, bekräfta med namn | Skriv ditt namn för att bekräfta |
+| Fel, namnet stämmer inte | Namnet du skrev stämmer inte. Kontrollera stavningen. |
+| Knapp | Radera mitt konto |
+| Knapp | Avbryt |
+| Bekräftelse efter radering | Ditt konto är raderat. Du är utloggad. |
 
 ---
 

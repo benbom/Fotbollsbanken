@@ -73,6 +73,7 @@ Status: utkast
 │ │ kantzonerna ska markeras.   │  │
 │ │ Lägg gärna till ett mått.   │  │
 │ └───────────────────────────┘  │
+│ Skriv inga namn på spelare.     │
 │                                 │
 │ ┌───────────────────────────┐  │
 │ │  Skicka åtgärda-begäran     │  │
@@ -109,9 +110,9 @@ Status: utkast
 
 ## Beteende och tillstånd
 
-- **Kön (16.1):** listar alla inskickade övningar (status `utkast` i redaktörskön, se `content/ovningar/README.md`) med den information redaktören behöver för att bedöma utan att öppna varje övning: namn, insändare, klubb, datum, ålder, spelform, huvudfokus.
+- **Kön (16.1):** listar alla övningar med status `inskickad` (`submissions.status`, se `docs/adr/0010-ovningsformat-och-lagring.md`, avsnitt 4 – ordet `utkast` gäller bara filer i repot, aldrig en insänd övning) med den information redaktören behöver för att bedöma utan att öppna varje övning: namn, insändare, klubb, datum, ålder, spelform, huvudfokus.
 - **Godkänn (16.2):** en enda tydlig knapp. Ingen bekräftelsedialog krävs, men en kort bekräftelse ("Godkänd – nu valbar för alla klubbar") visas efteråt, och övningen försvinner ur kön.
-- **Skicka åtgärda (16.3):** kommentarfältet är obligatoriskt (kan inte skickas tomt) – en övning ska aldrig skickas tillbaka utan förklaring. Insändaren meddelas (kanal beslutas vid K2, till exempel e-post eller notis i appen).
+- **Skicka åtgärda (16.3):** kommentarfältet är obligatoriskt (kan inte skickas tomt) – en övning ska aldrig skickas tillbaka utan förklaring. Hjälptexten "Skriv inga namn på spelare" står under fältet, eftersom en fri kommentartext är precis den plats där ett barns namn kan smyga sig in (säkerhetsgranskningens fynd S-20). Insändaren meddelas (kanal beslutas vid K2, till exempel e-post eller notis i appen).
 - **Ingen automatisk godkännande (16.4):** det finns inget gränssnitt eller genväg någonstans i appen som sätter status `godkand` utan att en redaktör tryckt "Godkänn" i den här vyn.
 - **Utse redaktör (18.1, 18.2):** sökfältet matchar bara mot redan registrerade konton. Hittas ingen träff visas "Personen har inget konto än. Be personen registrera sig först."
 - **Återkalla behörighet (18.3):** "Ta bort behörighet" tar bort redaktörsrollen men rör inte personens övriga roller (ledare, klubbadmin).

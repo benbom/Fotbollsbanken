@@ -66,12 +66,15 @@ Planläget använder de mest extrema kombinationerna som går: ren svart text p�
 
 ### 2.4 Statusfärger för övningar (redaktörskö, egna övningar)
 
-| Status | Färg (ljust) | Färg (mörkt) | Alltid tillsammans med text |
-|---|---|---|---|
-| Utkast | Grå `#595959` | Grå `#C7C7C7` | "Utkast" |
-| Inskickad/väntar | Blå `#1A5FB4` (kontrast 5,6:1 mot vitt) | Ljusblå `#7AB0F5` | "Inskickad, väntar på granskning" |
-| Godkänd | Grön `#0B6B3A` | Ljusgrön `#57C98A` | "Godkänd" + ✔ |
-| Åtgärda | Röd/orange `#B3261E` | `#E4685D` | "Åtgärda" + ⚠ |
+En egen övning som klubben äger har **ingen granskningsstatus** – bara en härledd komplett-markering. Först när den skickas in får den en status i redaktörskön. En övning visar aldrig båda samtidigt (`docs/adr/0010-ovningsformat-och-lagring.md`, avsnitt 4). Ordet "Utkast" förekommer inte i appen – det är bara en filstatus i `content/ovningar/`.
+
+| Markering | Sammanhang | Färg (ljust) | Färg (mörkt) | Alltid tillsammans med text |
+|---|---|---|---|---|
+| Ofullständig | Egen övning, ej inskickad | Grå `#595959` | Grå `#C7C7C7` | "Ofullständig" |
+| Klar att använda | Egen övning, ej inskickad | Grön `#0B6B3A` | Ljusgrön `#57C98A` | "Klar att använda" + ✔ |
+| Inskickad, väntar på granskning | `submissions.status` | Blå `#1A5FB4` (kontrast 5,6:1 mot vitt) | Ljusblå `#7AB0F5` | "Inskickad, väntar på granskning" |
+| Godkänd | `submissions.status` | Grön `#0B6B3A` | Ljusgrön `#57C98A` | "Godkänd" + ✔ |
+| Åtgärda | `submissions.status` | Röd/orange `#B3261E` | `#E4685D` | "Åtgärda" + ⚠ |
 
 ---
 
@@ -168,7 +171,7 @@ Själva ritningen av en planskiss (SVG från skissdata) ägs av planskissutveckl
 | Byt övning (`04`) | Samma miniatyrformat som ovan, i varje alternativkort | – |
 | Planläget (`06`) | Stort, minst 70 % av skärmbredden, centralt placerat direkt under timern | Måste vara läsbar utan att zooma (19.3); proportionerlig oavsett spelform |
 | Utskrift (`07`) | Fast bredd cirka 45 mm i A4-layouten, svart på vit, inga färgberoende linjer | Måste fungera i svartvit utskrift |
-| Skapa egen övning (`10`) | Redigeringsyta enligt planskissmodulens eget gränssnitt | Utanför denna design; se planskissutvecklarens ansvar |
+| Skapa egen övning (`10`) | Inget skissfält alls | Version 1 har ingen ritredigerare (beslutat i backlogen). En egen övning saknar alltid planskiss och visas med "Planskiss saknas", enligt den genomgående regeln nedan – formuläret lovar ingen ritfunktion |
 | Redaktörskö (`12`) | Samma storlek som i pass-vyn, för att redaktören ska se samma sak som ledaren kommer se | – |
 
 Genomgående regel: saknas skissdata visas alltid en tydligt inramad yta med texten "Planskiss saknas" i samma mått som skissen skulle haft, aldrig en tom lucka eller ett brutet bildikon (06.2, 07.2, jämför komponent 6.3).
@@ -188,6 +191,35 @@ Genomgående regel: saknas skissdata visas alltid en tydligt inramad yta med tex
 | 2.5.8 Storlek på klickyta (minimum) | 48 × 48 px genomgående, se avsnitt 5 – klart över minimikravet på 24 × 24 px. |
 | 2.5.7 Dragrörelser | Inga funktioner kräver drag-och-släpp (ordningen i planläget är låst, säsongsplanen har inga dra-kalendrar i version 1). |
 | 3.3.7 Redundant inmatning | Namn/e-post frågas inte igen i samma flöde (t.ex. inbjudan förifyller e-post, se `14-inloggning.md`). |
-| 3.3.8 Tillgänglig autentisering (minimum) | Inloggning kräver ingen kognitiv pusseluppgift (till exempel bild-CAPTCHA); lösenordshantering ska stödja klistra in och lösenordshanterare (tekniskt val vid K2, men designkravet gäller). |
+| 3.3.8 Tillgänglig autentisering (minimum) | Det finns inget lösenord att komma ihåg (`docs/adr/0004-inloggning.md`). Inloggning sker med en engångskod som går att klistra in och som fylls i automatiskt av enheten (`autocomplete="one-time-code"`, se `skisser/14-inloggning.md`). Turnstile-kontrollen är i normalfallet osynlig/automatisk och kräver ingen kognitiv pusseluppgift som bild-CAPTCHA. |
 
 Fullständig kontroll (till exempel automatiserad axe/Lighthouse-granskning och manuell skärmläsartest) görs av kvalitetssäkraren när komponenterna är byggda. Det här dokumentet anger målvärdena, inte ett genomfört testresultat.
+
+---
+
+## 9. Offline och anslutning
+
+`docs/adr/0005-daligt-nat-och-offline.md` avgör vad som faktiskt fungerar utan nät. Det här avsnittet styr bara hur det syns för ledaren. Texterna finns i `texter.md`, avsnitt 15.
+
+### 9.1 Anslutningsindikator
+
+En smal rad högst upp i planeringsläget, aldrig i planläget (`skisser/06-planlage.md`), som aldrig hämtar något och inte ska störas av en statusrad ovanpå timern.
+
+- **Visas** när appen saknar anslutning, eller när den senaste lyckade uppdateringen ligger en bit tillbaka.
+- **Ikon + text, aldrig bara en färgprick**, med samma princip som komponent 6.4: "Ingen anslutning · Visar sparad data från {tidpunkt}".
+- **Ljust läge:** bakgrund `#FFF6DA`, text `#6B4300` (samma som varningsrutan i 2.1).
+- **Mörkt läge:** bakgrund `#3A2E10`, text `#F5D98A` (samma som varningsrutan i 2.2).
+- **Skärmläsare:** raden finns i `aria-live="polite"`, så ändringen annonseras utan att ledaren behöver leta efter den.
+- **Återställning:** när anslutningen kommer tillbaka och något hämtats på nytt visas kort "Uppdaterat", sedan försvinner raden.
+
+### 9.2 Handlingar som kräver nät
+
+Enligt ADR 0005 finns ingen kö som skickar en ändring automatiskt när nätet kommer tillbaka. Knappar för spara pass, koppla pass till säsongsplanen, skapa/ändra/skicka in/godkänna en övning, bjuda in, logga in och radera konto förblir klickbara (samma princip som `skisser/14-inloggning.md`: aldrig `disabled` utan förklaring), men visar vid tryck ett tydligt fel i stället för att låtsas köa handlingen:
+
+> "Du verkar sakna internetanslutning. Det du skrivit finns kvar – försök igen när du är uppkopplad."
+
+Ifyllt innehåll i formuläret rensas aldrig av detta fel.
+
+### 9.3 Det som fungerar utan nät visar ingen indikator
+
+Sparade pass, planläget och utskrift hämtar ingenting och ska kännas precis lika snabba och tillförlitliga utan nät som med, enligt tabellen "Det här fungerar utan nät" i ADR 0005. Anslutningsindikatorn (9.1) visas därför bara i vyer som faktiskt hämtar eller skriver mot servern.

@@ -17,11 +17,13 @@ Alla flöden nedan förutsätter inloggning (08), utom själva inloggningsflöde
 
 **Vy:** `skisser/14-inloggning.md`
 
-1. Ny person öppnar appen, väljer "Skapa konto", anger namn och e-post (08.1, 08.5).
-2. Personen loggar in med sina uppgifter (08.2).
-3. Fel uppgifter ger tydligt felmeddelande, ingen inloggning sker (08.3).
+Inloggning sker med en engångskod via e-post, utan lösenord (`docs/adr/0004-inloggning.md`). Det finns ingen "Glömt lösenord?"-länk, eftersom det inte finns något lösenord.
+
+1. Ny person öppnar appen, väljer "Skapa konto", anger namn och e-post, bekräftar en CAPTCHA-ruta och trycker "Skicka kod" (08.1, 08.5).
+2. Personen loggar in genom att ange e-post, bekräfta CAPTCHA-rutan och trycka "Skicka kod" (08.2). Appen svarar likadant oavsett om adressen har ett konto eller inte: "Om adressen finns hos oss har vi skickat en kod" (S-13). Kodsteget visar en lugn upplysning om att även titta i skräpposten, eftersom appen inte har en egen avsändardomän i version 1.
+3. Personen skriver in den sexsiffriga koden. Fel kod ger ett tydligt felmeddelande utan att avslöja om adressen har ett konto, ingen inloggning sker (08.3). En ny kod kan begäras tidigast efter en väntetid. För många felaktiga försök gör koden ogiltig och kräver en ny.
 4. Utloggning kräver ny inloggning för att se sparade pass eller klubbens material (08.4).
-5. En inbjuden ledare (11.1) kommer hit via en inbjudningslänk i sin e-post, skapar konto eller loggar in, och kopplas automatiskt till laget hon eller han bjöds in till.
+5. En inbjuden ledare (11.1) kommer hit via en inbjudningslänk i sin e-post, med e-postfältet förifyllt och låst, skapar konto eller loggar in med kod, och kopplas automatiskt till laget hon eller han bjöds in till.
 
 Efter inloggning kommer ledaren till startsidan (`Mina pass`), klubbadmin till klubbens översikt och redaktören ser en extra flik för redaktörskön om personen har den rollen.
 
@@ -85,8 +87,8 @@ Ingen egen vy – planskisser visas inbäddade i genererat pass, sparat pass, by
 
 **Skapa egen övning (13):**
 1. Ledaren väljer "Skapa egen övning" och fyller i samma fält som en bankövning (13.1).
-2. Saknas obligatoriska fält för att övningen ska kunna bytas in i ett pass, sparas den ändå som `utkast`, men appen visar tydligt vilka fält som saknas och att övningen inte kan användas i ett pass förrän de är ifyllda (13.2).
-3. Ledaren kan lägga till planskiss eller lämna den tom (13.3).
+2. Saknas obligatoriska fält för att övningen ska kunna bytas in i ett pass, sparas den ändå, med markeringen "Ofullständig", men appen visar tydligt vilka fält som saknas och att övningen inte kan användas i ett pass förrän de är ifyllda (13.2). En egen övning har ingen granskningsstatus – den är antingen "Ofullständig" eller "Klar att använda" (`docs/adr/0010-ovningsformat-och-lagring.md`, avsnitt 4).
+3. Version 1 har ingen ritredigerare för planskisser. En egen övning saknar planskiss och visas med "Planskiss saknas", precis som en bankövning utan skiss (13.3, jämför 06.2). En egen ritredigerare är inte en del av version 1.
 
 **Hantera klubbens egna övningar (14):**
 1. Ledaren öppnar "Klubbens övningar" och ser alla övningar som klubbens ledare skapat (14.1).
@@ -95,7 +97,7 @@ Ingen egen vy – planskisser visas inbäddade i genererat pass, sparat pass, by
 4. En övning som väntar på granskning i den gemensamma banken kan inte redigeras eller tas bort utan en varning om att den är under granskning (14.4).
 
 **Skicka in en övning (15):**
-1. Från en egen övning med alla obligatoriska fält väljer ledaren "Skicka in till banken". Övningen får status `utkast` i redaktörskön (15.1).
+1. Från en egen övning med alla obligatoriska fält väljer ledaren "Skicka in till banken". Övningen får status `inskickad` i redaktörskön (15.1).
 2. Saknas obligatoriska fält hindras insändningen och appen visar vad som saknas (15.2).
 3. Ledaren ser status (inskickad, väntar, godkänd, åtgärda) i sin egen lista (15.3).
 4. Försöker ledaren skicka in samma övning igen informeras hon eller han om att den redan är inskickad (15.4).
@@ -104,7 +106,7 @@ Ingen egen vy – planskisser visas inbäddade i genererat pass, sparat pass, by
 
 **Åtgärda och skicka in igen (17):**
 1. Ledaren öppnar en övning med status `atgarda` och ser redaktörens kommentar (17.1).
-2. Ledaren ändrar övningen och skickar in igen; status blir `utkast` och övningen går till kön igen (17.2).
+2. Ledaren ändrar övningen och skickar in igen; status blir `inskickad` och övningen går till kön igen (17.2).
 3. Ledaren kan se alla tidigare kommentarer i övningens historik, inte bara den senaste (17.3).
 
 ### 1.7 Säsongsplanering (23–25)
@@ -190,6 +192,20 @@ Planläget ändrar aldrig ordningen på övningarna – den ordningen sätts i p
 
 ---
 
+## 5. Radera sitt konto (alla roller)
+
+**Vy:** `skisser/15-radera-konto.md`
+
+**Uppfyller:** berättelse 26 (produktägaren skriver acceptanskriterierna parallellt). Grunden är säkerhetsgranskningens fynd S-10: rätten till radering är ovillkorlig och ska gå att utföra i appen, inte bara för hand i drift.
+
+1. Ledaren öppnar kontoinställningarna och väljer "Radera mitt konto".
+2. Är personen klubbadmin och den enda klubbadminen i sin klubb, blockerar appen raderingen tills en efterträdare är utsedd, och länkar dit.
+3. Appen visar tydligt vad som raderas (profil, personliga pass utan lagkoppling, medlemskap och inbjudningar) och vad som blir kvar avidentifierat (lagets delade pass, klubbens egna övningar och godkända bidrag till den gemensamma banken, med skaparen ersatt av "Borttagen användare").
+4. Ledaren bekräftar genom att skriva klubbens eller sitt eget namn i en textruta, och får en sista tydlig varning om att raderingen inte går att ångra.
+5. Efter radering loggas personen ut och kan inte längre logga in med samma e-postadress på det gamla kontot.
+
+---
+
 ## Beroendekarta mellan flöden
 
 ```
@@ -204,7 +220,8 @@ Planläget ändrar aldrig ordningen på övningarna – den ordningen sätts i p
  │                                                          └─ 18 Utse redaktör
  ├─ 19 Starta planläge ─ 20 Timer ─ 21 Navigera
  ├─ 22 Skriv ut/PDF
- └─ 23 Skapa säsongsplan ─ 24 Lägg pass i vecka ─ 25 Översikt
+ ├─ 23 Skapa säsongsplan ─ 24 Lägg pass i vecka ─ 25 Översikt
+ └─ 26 Radera sitt konto (kräver att en ensam klubbadmin först utser en efterträdare, se 09/10)
 ```
 
 ## Konstaterade motsägelser och gränsfall att lösa vid K2
