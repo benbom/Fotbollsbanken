@@ -1,0 +1,145 @@
+# Satter status: godkand pa omgangens granskade ovningar efter att agaren mergat pull requesten
+# (ADR 0013 avsnitt 4). Utlosaren ar push till main, aldrig pull_request eller
+# pull_request_target: ett arbetsflode som utloses av en pull request kors fran pull requestens
+# egen version av filen, och en gren skulle da kunna skriva om filen och fa contents: write.
+#
+# Jobb 1 laser, validerar hela banken och visar vad som skulle andras. Jobb 2 kraver miljon
+# godkannande, som vantar pa agarens andra klick, och ar det enda jobb som har contents: write.
+name: Godkann omgang
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - content/ovningar/**
+
+permissions:
+  contents: read
+
+# Tva korningar far aldrig skriva till main samtidigt, och en pagaende korning avbryts inte:
+# den kan sta och vanta pa miljogodkannandet.
+concurrency:
+  group: godkann-omgang
+  cancel-in-progress: false
+
+jobs:
+  forbered:
+    name: Validera banken och visa vad som skulle andras
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      pr: ${{ steps.pull.outputs.nummer }}
+      av: ${{ steps.pull.outputs.av }}
+      antal: ${{ steps.torrkorning.outputs.antal }}
+    steps:
+      - name: Hamta koden
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Bada commitarna i pushen behovs, eftersom skriptet jamfor dem.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Satt upp Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Installera beroenden
+        run: npm ci
+
+      - name: Validera hela ovningsbanken
+        run: npm run validera:ovningar
+
+      - name: Sla upp den mergade pull requesten
+        id: pull
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          nummer=$(gh api "repos/$REPO/commits/$SHA/pulls" \
+            --jq 'map(select(.merged_at != null)) | first | .number // empty')
+          if [ -z "$nummer" ]; then
+            echo "Ingen mergad pull request for $SHA. Ingenting skrivs."
+            exit 0
+          fi
+          av=$(gh api "repos/$REPO/pulls/$nummer" --jq '.merged_by.login // empty')
+          if [ -z "$av" ]; then
+            echo "Pull request #$nummer saknar merged_by. Ingenting skrivs."
+            exit 0
+          fi
+          echo "Omgangen kommer fran pull request #$nummer, mergad av $av."
+          echo "nummer=$nummer" >> "$GITHUB_OUTPUT"
+          echo "av=$av" >> "$GITHUB_OUTPUT"
+
+      - name: Torrkorning
+        id: torrkorning
+        if: steps.pull.outputs.nummer != ''
+        env:
+          FORE: ${{ github.event.before }}
+          EFTER: ${{ github.sha }}
+          AV: ${{ steps.pull.outputs.av }}
+          PR: ${{ steps.pull.outputs.nummer }}
+        run: |
+          set -o pipefail
+          npm run --silent godkannande -- godkann \
+            --fore "$FORE" --efter "$EFTER" --av "$AV" --pr "$PR" | tee torrkorning.txt
+          echo "antal=$(grep -c '^Lyfter ' torrkorning.txt || true)" >> "$GITHUB_OUTPUT"
+
+  skriv:
+    name: Satt godkand pa omgangens granskade ovningar
+    needs: forbered
+    # Kors inte alls nar omgangen inte innehaller nagon granskad ovning, sa att miljon inte
+    # ber om ett godkannande i onodan.
+    if: needs.forbered.outputs.antal != '' && needs.forbered.outputs.antal != '0'
+    runs-on: ubuntu-latest
+    # Miljon vantar pa agarens andra klick. Utan den skulle skrivningen folja av mergen ensam.
+    environment: godkannande
+    permissions:
+      contents: write
+    steps:
+      - name: Hamta koden
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Satt upp Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Installera beroenden
+        run: npm ci
+
+      - name: Satt godkand
+        env:
+          FORE: ${{ github.event.before }}
+          EFTER: ${{ github.sha }}
+          AV: ${{ needs.forbered.outputs.av }}
+          PR: ${{ needs.forbered.outputs.pr }}
+        run: |
+          npm run --silent godkannande -- godkann \
+            --fore "$FORE" --efter "$EFTER" --av "$AV" --pr "$PR" --skriv
+
+      - name: Validera banken efter skrivningen
+        run: npm run validera:ovningar
+
+      - name: Committa och pusha till main
+        env:
+          PR: ${{ needs.forbered.outputs.pr }}
+          GREN: ${{ github.ref_name }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- content/ovningar
+          if git diff --cached --quiet; then
+            echo "Inget att committa."
+            exit 0
+          fi
+          git commit --message "Sätt godkand på omgången från pull request #$PR"
+          git push origin "HEAD:$GREN"

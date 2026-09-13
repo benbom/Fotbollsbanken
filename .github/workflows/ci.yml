@@ -19,7 +19,6 @@ concurrency:
 
 jobs:
   kontroll:
-    name: Lint, typkontroll, tester och ovningar
     runs-on: ubuntu-latest
     steps:
       - name: Hamta koden
@@ -53,3 +52,40 @@ jobs:
 
       - name: Kanda sarbarheter
         run: npm audit --audit-level=high
+
+  # Jobb-id:t ar checkens namn i grenskyddet nar jobbet saknar `name`, och ADR 0013 kraver att
+  # den obligatoriska kontrollen heter godkannande. Andra inte id:t.
+  godkannande:
+    # Kontrollen kor basgrenens kod, aldrig pull requestens, och laser pull requestens innehall
+    # som git-objekt (S-03, ADR 0013 avsnitt 3 lager 3).
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Hamta basgrenens kod
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Hamta pull requestens commit
+        env:
+          HUVUD: ${{ github.event.pull_request.head.sha }}
+        run: git fetch --no-tags origin "$HUVUD"
+
+      - name: Satt upp Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Installera beroenden fran basgrenens lasfil
+        run: npm ci
+
+      - name: Kontrollera omgangen
+        env:
+          BAS: ${{ github.event.pull_request.base.sha }}
+          HUVUD: ${{ github.event.pull_request.head.sha }}
+        run: npm run --silent godkannande -- kontroll --bas "$BAS" --huvud "$HUVUD"
