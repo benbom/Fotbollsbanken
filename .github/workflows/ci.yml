@@ -1,6 +1,6 @@
 # Kontroll av varje pull request: lint, typkontroll, tester och validering av
-# ovningsbanken. ADR 0002 beslut 4: forvalt GITHUB_TOKEN-lage ar read-only, varje arbetsflode
-# begar bara det det behover, ingen utlosare ar pull_request_target och actions pinnas till
+# övningsbanken. ADR 0002 beslut 4: förvalt GITHUB_TOKEN-läge är read-only, varje arbetsflöde
+# begär bara det det behöver, ingen utlösare är pull_request_target och actions pinnas till
 # en version (kommenterad SHA).
 name: Kontroll
 
@@ -20,12 +20,12 @@ jobs:
   kontroll:
     runs-on: ubuntu-latest
     steps:
-      - name: Hamta koden
+      - name: Hämta koden
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - name: Satt upp Node
+      - name: Sätt upp Node
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version-file: .nvmrc
@@ -46,45 +46,54 @@ jobs:
       - name: Tester
         run: npm test
 
-      - name: Validera ovningsbanken
+      - name: Validera övningsbanken
         run: npm run validera:ovningar
 
-      - name: Kanda sarbarheter
+      - name: Kända sårbarheter
         run: npm audit --audit-level=high
 
-  # Jobb-id:t ar checkens namn i grenskyddet nar jobbet saknar `name`, och ADR 0013 kraver att
-  # den obligatoriska kontrollen heter godkannande. Andra inte id:t.
+  # Jobb-id:t är checkens namn i grenskyddet när jobbet saknar `name`, och ADR 0013 kräver att
+  # den obligatoriska kontrollen heter godkannande. Ändra inte id:t.
   godkannande:
-    # Kontrollen kor basgrenens kod, aldrig pull requestens, och laser pull requestens innehall
+    # Kontrollen kör basgrenens kod, aldrig pull requestens, och läser pull requestens innehåll
     # som git-objekt (S-03, ADR 0013 avsnitt 3 lager 3).
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
-      - name: Hamta basgrenens kod
+      - name: Hämta basgrenens kod
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event.pull_request.base.sha }}
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Hamta pull requestens commit
+      - name: Hämta pull requestens commit
         env:
           HUVUD: ${{ github.event.pull_request.head.sha }}
         run: git fetch --no-tags origin "$HUVUD"
 
-      - name: Satt upp Node
+      - name: Sätt upp Node
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version-file: .nvmrc
           cache: npm
 
-      - name: Installera beroenden fran basgrenens lasfil
+      - name: Installera beroenden från basgrenens låsfil
         run: npm ci
 
-      - name: Kontrollera omgangen
+      - name: Kontrollera omgången
         env:
           BAS: ${{ github.event.pull_request.base.sha }}
           HUVUD: ${{ github.event.pull_request.head.sha }}
-        run: npm run --silent godkannande -- kontroll --bas "$BAS" --huvud "$HUVUD"
+        run: |
+          if [ ! -f scripts/godkannande.ts ]; then
+            echo "Basgrenen saknar scripts/godkannande.ts, så kontrollen kan inte köras."
+            echo "Kontrollen kör alltid basgrenens kod, aldrig pull requestens (S-03), och"
+            echo "underkänner därför i stället för att släppa igenom när den saknas."
+            echo "Det inträffar bara för den pull request som inför kontrollen. När den är"
+            echo "mergad ligger skriptet på basgrenen och kontrollen kör som avsett."
+            exit 1
+          fi
+          npm run godkannande -- kontroll --bas "$BAS" --huvud "$HUVUD"
