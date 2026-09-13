@@ -1,11 +1,11 @@
-# Kontroll av varje pull request mot main: lint, typkontroll, tester och validering av
+# Kontroll av varje pull request: lint, typkontroll, tester och validering av
 # ovningsbanken. ADR 0002 beslut 4: forvalt GITHUB_TOKEN-lage ar read-only, varje arbetsflode
 # begar bara det det behover, ingen utlosare ar pull_request_target och actions pinnas till
 # en version (kommenterad SHA).
 name: Kontroll
 
 on:
-    branches: [main]
+  pull_request:
   push:
     branches: [main]
 
