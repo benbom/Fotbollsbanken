@@ -1,0 +1,104 @@
+schema: 1
+id: overtal-i-forsvar
+namn: Övertal i försvar
+syfte: Spelarna ska försvara tillsammans genom att täcka och pressa i underläge.
+beskrivning: |
+  Tre anfallare möter två försvarare på en yta om 25 x 18 meter med två minimål på
+  kortlinjen, med ungefär tio meter mellan målen. Försvararna ska täcka varandra, pressa
+  bollhållaren och vinna bollen eller täcka det läge anfallarna siktar på, eftersom de
+  måste välja vilket av de två målen de stänger. Efter varje avslut eller bollvinst byts
+  två nya försvarare in.
+organisation: |
+  En grupp om fem spelare per yta: tre anfallare, två försvarare. Ledaren styr byte av
+  vilka som försvarar.
+fokusomraden:
+  - forsvarsspel
+alder:
+  min: 10
+  max: 12
+spelformer:
+  - 7mot7
+niva:
+  - niva-2
+  - niva-3
+passdelar:
+  - del-spelovning
+ledarbehov: 1
+ledaruppgift: Ledaren styr byte av försvarare, servar nya bollar och stoppar kort för att peka på var täckningen brast.
+spelare:
+  min: 5
+  max: 5
+grupptyp: fast-storlek
+udda_antal_losning: true
+tid:
+  kortast: 8
+  rekommenderad: 12
+  langst: 15
+yta:
+  alla:
+    langd: 25
+    bredd: 18
+material:
+  - typ: kon
+    antal: 6
+  - typ: minimal
+    antal: 2
+    anteckning: på kortlinjen med ungefär tio meter mellan sig
+  - typ: vast
+    antal: 2
+    anteckning: till de två försvararna
+  - typ: boll
+    antal: 4
+    anteckning: en i spel och några i reserv hos ledaren, så att nästa omgång startar direkt
+coachningspunkter:
+  - Den som är närmast bollen pressar, de andra täcker bakom.
+  - Prata med varandra om vem som tar vem.
+  - Sikta på att styra anfallaren bort från mål, inte bara jaga bollen.
+varianter:
+  lattare: Smalare yta, 20 x 14 meter, och åtta meter mellan målen, så att försvararna har mindre yta att täcka.
+  svarare: Bredare yta, 30 x 22 meter, och tolv meter mellan målen, så att försvararna måste täcka på bredden också.
+anpassning:
+  fler_spelare: Bygg en andra yta med samma uppställning bredvid.
+  udda_antal: En sjätte spelare rullar in nya bollar i stället för att spela.
+  ledare: En ledare per yta hinner både serva bollar och coacha. Med två ledare kan en serva och en coacha försvararna.
+kalla: Egen övning, inspirerad av vanliga övertalsövningar i försvarsspel.
+status: granskad
+granskning:
+  - datum: 2026-09-12
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: >-
+      Tre mot två är en bra form för att öva press och täckning, och coachningspunkterna är
+      korrekta och begripliga. Tre saker måste ändras innan övningen kan användas. 1. Materiallistan
+      saknar mål, trots att beskrivningen och coachningspunkterna utgår från ett mål. Utan mål i
+      listan visar passet ingen påminnelse om att mål ska vara förankrade. 2. Ta ställning till vad
+      anfallarna ska göra mål i. Gruppen är fem spelare utan målvakt, och ett tomt mål på fem gånger
+      två meter gör att varje skott blir mål, vilket tar bort poängen med att täcka skottläget. Jag
+      rekommenderar två minimål på kortlinjen i stället, eftersom försvararna då måste välja vilket
+      läge de stänger. Skriv om beskrivningen och materiallistan efter det du väljer. 3. Båda
+      varianterna ändrar antalet spelare i gruppen, från fem till sju i den lättare och till fyra i
+      den svårare, vilket krockar med grupptypen fast-storlek och gör att generatorn delar gruppen
+      fel. Dessutom är två mot två inte svårare för försvararna än tre mot två, utan lättare,
+      eftersom övertalet försvinner. Skriv varianter som håller fem spelare, till exempel en smalare
+      yta som lättare variant och en bredare yta eller fri touch för anfallarna som svårare.
+  - datum: 2026-09-13
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: >-
+      Alla tre anmärkningarna är åtgärdade. Två minimål på kortlinjen är rätt lösning: försvararna
+      måste välja vilket läge de stänger, och båda målen ligger i materiallistan så att påminnelsen
+      om förankring visas (R-084). Varianterna håller nu fem spelare och ändrar bara ytan, åt rätt
+      håll i båda fallen. Jag lade till att målen står med ungefär tio meter mellan sig, och åtta
+      respektive tolv meter i varianterna. Utan ett avstånd kunde målen ställas intill varandra, och
+      då kan en enda försvarare täcka båda, vilket tar bort valet som är hela poängen. Ledarbehov 1
+      behåller jag. Att stoppa spelet kort och peka på var täckningen brast är själva lärandet i en
+      försvarsövning, och en ny boll behövs efter var femtonde sekund. Två följder ska ledaren och
+      användaren känna till. Övningen kräver en ledare per yta, alltså två ledare vid tolv spelare,
+      och den kan inte användas alls vid tretton, fjorton eller nitton spelare: fjorton delas i tre
+      grupper om 5, 5 och 4, och gruppen om fyra är mindre än övningens minsta antal (R-052). Det är
+      en följd av att gruppen är fast vid fem spelare och inte ett fel i övningen, men det betyder att
+      forsvarsspel som valt fokus saknar övning vid de vanligaste lagstorlekarna. Banken behöver
+      därför på sikt en försvarsövning till, med en gruppstorlek som delar sig jämnare, till exempel
+      fyra eller sex spelare. Två mindre rättelser: bollarna höjs från två till fyra, eftersom
+      omgångarna är korta och skotten går ut, och raden om ledare beskriver nu vad en respektive två
+      ledare gör i stället för att antyda att övningen går utan ledare.

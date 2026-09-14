@@ -1,0 +1,64 @@
+schema: 1
+id: omstallning-med-jokrar
+namn: Omställning med jokrar
+syfte: Spelarna ska ställa om snabbt både till anfall och försvar när bollen byter lag.
+beskrivning: |
+  Två lag om fyra spelare möts på en yta om 35 x 25 meter med två jokrar som alltid
+  spelar med laget som har bollen. Så fort ett lag vinner bollen ska det anfalla snabbt
+  innan motståndarna hinner organisera sig, och det lag som förlorar bollen ska pressa
+  direkt för att vinna tillbaka den.
+organisation: |
+  Två lag om fyra spelare plus två jokrar, totalt upp till tio spelare per yta. Mål eller
+  minimål i var ände.
+fokusomraden:
+  - omstallning
+  - spelbarhet
+alder:
+  min: 10
+  max: 12
+spelformer:
+  - 7mot7
+niva:
+  - niva-2
+  - niva-3
+passdelar:
+  - del-spelovning
+ledarbehov: 0
+spelare:
+  min: 6
+  max: 10
+grupptyp: tva-lag
+tid:
+  kortast: 10
+  rekommenderad: 14
+  langst: 15
+yta:
+  alla:
+    langd: 35
+    bredd: 25
+material:
+  - typ: vast
+    antal: 6
+    anteckning: fyra i en färg till det ena laget och två i en annan färg till jokrarna
+  - typ: boll
+    antal: 2
+  - typ: minimal
+    antal: 2
+coachningspunkter:
+  - Reagera direkt när bollen byter lag, stå inte kvar.
+  - Sök djup snabbt när ditt lag just vunnit bollen.
+  - Pressa bollhållaren direkt om ditt lag förlorar bollen.
+varianter:
+  lattare: Ingen press tillåten de första två sekunderna efter en bollvinst.
+  svarare: Ta bort jokrarna så att lagen möts jämnt.
+anpassning:
+  fler_spelare: Gör ytan större och lägg till en spelare i varje lag.
+  udda_antal: Den udda spelaren blir en tredje joker som alltid spelar med bollförande lag.
+  ledare: Övningen är självgående när lagen och reglerna är satta.
+kalla: Egen övning, inspirerad av allmänt kända omställningsspel med jokrar.
+status: granskad
+granskning:
+  - datum: 2026-09-12
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: Omställning är kärnområde för fas-10-12 och jokrarna gör att bollen byter lag ofta, vilket är precis det spelarna ska öva. Ytan 35 x 25 meter för upp till tio spelare ger utrymme att kontra, tiden ligger inom gränsen för en spelövning i fasen och övningen är självgående. Jag rättade materiallistan, som angav två västar för två lag. Antalet avser antal plagg, och jokrarna måste dessutom synas i en egen färg, så det står nu fyra västar i en färg till det ena laget och två i en annan till jokrarna. Lösningen för udda antal med en tredje joker fungerar.

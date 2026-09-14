@@ -1,0 +1,81 @@
+schema: 1
+id: spela-ut-bakifran
+namn: Spela ut bakifrån
+syfte: Spelarna ska spela ut bollen från målvakten och ta sig vidare framåt under press.
+beskrivning: |
+  Sju spelare delas i ett uppspelslag med målvakt och tre utespelare och tre spelare som
+  pressar, på en yta om 30 x 20 meter med ett mål i ena änden. Uppspelslaget ska spela ut
+  från målvakten och ta sig igenom pressen till motsatt kortlinje, medan de tre pressar på
+  riktigt för att vinna bollen. Rollerna byts efter en lyckad genomspelning eller efter en
+  bestämd tid.
+organisation: |
+  En grupp om sju spelare per yta: målvakt plus sex utespelare, varav tre pressar.
+  Ledaren styr byte av roller.
+fokusomraden:
+  - speluppbyggnad
+  - malvaktsspel
+alder:
+  min: 10
+  max: 12
+spelformer:
+  - 7mot7
+niva:
+  - niva-2
+  - niva-3
+passdelar:
+  - del-spelovning
+ledarbehov: 1
+ledaruppgift: Ledaren styr när rollerna byts och påminner målvakten om att lägga ner bollen och spela med fötterna i stället för att sparka ut den.
+spelare:
+  min: 7
+  max: 7
+grupptyp: fast-storlek
+udda_antal_losning: true
+tid:
+  kortast: 10
+  rekommenderad: 12
+  langst: 15
+yta:
+  alla:
+    langd: 30
+    bredd: 20
+material:
+  - typ: mal
+    antal: 1
+  - typ: vast
+    antal: 3
+    anteckning: till de tre som pressar
+  - typ: boll
+    antal: 2
+  - typ: kon
+    antal: 4
+    anteckning: markerar ytans hörn
+coachningspunkter:
+  - Målvakten lägger ner bollen och passar med fötterna, sparkar inte ut den.
+  - Sprid ut er i bredd så att det finns passningsvägar.
+  - Titta upp innan du tar emot bollen så att du vet var pressen kommer ifrån.
+varianter:
+  lattare: Bara en spelare pressar i stället för tre.
+  svarare: Sätt en tidsgräns för hur snabbt laget ska ta sig igenom pressen.
+anpassning:
+  fler_spelare: Bygg en andra yta med samma uppställning bredvid.
+  udda_antal: En spelare vilar och byter in med den som var mest aktiv i pressen.
+  ledare: Utan extra ledare får den ordinarie ledaren också hålla koll på tiden för rollbyte.
+kalla: Egen övning, inspirerad av speluppbyggnad som utnyttjar retreatlinjen i 7 mot 7.
+status: granskad
+granskning:
+  - datum: 2026-09-12
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: >-
+      Speluppbyggnad från målvakten är kärninnehåll i 7 mot 7, eftersom retreatlinjen ger tid och
+      målvakten inte får sparka ut bollen ur händerna, och coachningspunkten om att lägga ner
+      bollen och passa är korrekt. Jag avgjorde de två frågorna så här. Antalet sju behålls, alltså
+      målvakt och tre som bygger upp mot tre som pressar. Tre utespelare räcker för att skapa
+      bredd och en passningsväg framåt, och fler skulle göra ytan trång. Däremot ändrade jag syftet,
+      eftersom lagdelar är ett begrepp för 9 mot 9 och äldre. Syftet handlar nu om att spela ut från
+      målvakten och vidare framåt, vilket är det fokusomraden.md menar med speluppbyggnad i den
+      här åldern. Jag tog också bort ordet passiva. Övningen ligger i spelövningsdelen och på nivå
+      2 och 3, och där ska pressen vara verklig, precis som coachningspunkterna förutsätter. Den
+      lättare varianten med bara en pressande spelare är rätt sätt att sänka svårigheten. Jag lade
+      till fyra koner för att märka ut ytan.

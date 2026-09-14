@@ -1,0 +1,61 @@
+schema: 1
+id: jonglera-och-boll-i-rorelse
+namn: Boll i rörelse
+syfte: Spelarna ska hålla bollen i rörelse med olika delar av foten samtidigt som de rör sig fritt i ytan.
+beskrivning: |
+  Alla spelare har en egen boll i en avgränsad ruta på ungefär 20 x 20 meter. De dribblar
+  fritt i ytan och byter riktning på ledarens signal, med krav som att bara röra bollen med
+  utsidan, insidan eller sulan. På signalen "frys" stannar alla med foten ovanpå bollen.
+organisation: |
+  En gemensam ruta för hela gruppen, markerad med koner i hörnen. Ledaren ropar ut nya
+  krav med jämna mellanrum.
+fokusomraden:
+  - bollkansla
+  - koordination
+alder:
+  min: 10
+  max: 12
+spelformer:
+  - 7mot7
+niva:
+  - niva-1
+  - niva-2
+passdelar:
+  - del-uppvarmning
+ledarbehov: 0
+spelare:
+  min: 4
+  max: 14
+grupptyp: fri
+tid:
+  kortast: 5
+  rekommenderad: 8
+  langst: 10
+yta:
+  alla:
+    langd: 20
+    bredd: 20
+material:
+  - typ: boll
+    antal: 1
+    anteckning: en per spelare
+  - typ: kon
+    antal: 6
+coachningspunkter:
+  - Håll huvudet uppe och se dig omkring mellan toucherna.
+  - Använd båda fötterna, inte bara den starka.
+  - Korta, lätta toucher så att bollen stannar nära.
+varianter:
+  lattare: Mindre krav på vilken del av foten som ska användas.
+  svarare: Gör ytan mindre så att spelarna måste undvika varandra oftare.
+anpassning:
+  fler_spelare: Gör ytan större när fler spelare är med och mindre när de är färre, ungefär 25 kvadratmeter per spelare.
+  udda_antal: Alla har egen boll, så udda antal spelar ingen roll.
+  ledare: Det räcker med en ledare som ropar ut nya krav.
+kalla: Egen övning, inspirerad av allmänt kända bollkänsloövningar i ruta.
+status: granskad
+granskning:
+  - datum: 2026-09-12
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: Bra uppvärmning med egen boll åt alla och inga köer, och huvudfokus bollkänsla stämmer med innehållet. Jag ökade ytan från 18 x 14 till 20 x 20 meter, eftersom 14 spelare med varsin boll på 252 kvadratmeter blir för trångt och eftersom den svårare varianten går ut på att krympa ytan. Namnet och beskrivningen handlar om att driva bollen, inte om att jonglera, vilket är rätt för fasen även om övningens id säger något annat.

@@ -1,0 +1,63 @@
+schema: 1
+id: knakontroll-uppvarmning
+namn: Knäkontroll i uppvärmningen
+syfte: Spelarna ska öva landningsteknik och kroppskontroll som grund för skadeförebyggande träning.
+beskrivning: |
+  Spelarna joggar mellan sex markeringar i en cirkel och gör en övning vid varje markering:
+  enbenshopp med mjuk landning, sidohopp över en linje och stillastående balans på ett ben.
+  Ledaren visar varje övning innan gruppen sätter igång och går runt för att rätta till
+  knäläget vid landning.
+organisation: |
+  En cirkel med sex markeringar per grupp om upp till tolv spelare, en eller två vid varje
+  markering. Spelarna roterar medurs mellan stationerna på ledarens signal.
+fokusomraden:
+  - skadeforebyggande
+  - koordination
+alder:
+  min: 10
+  max: 12
+spelformer:
+  - 7mot7
+niva:
+  - niva-1
+  - niva-2
+  - niva-3
+passdelar:
+  - del-uppvarmning
+ledarbehov: 1
+ledaruppgift: Ledaren visar varje övning, går runt och rättar till knäläget vid landning så att knäna inte viker inåt.
+spelare:
+  min: 6
+  max: 12
+grupptyp: fri
+tid:
+  kortast: 6
+  rekommenderad: 10
+  langst: 12
+yta:
+  alla:
+    langd: 12
+    bredd: 10
+material:
+  - typ: markering
+    antal: 6
+  - typ: kon
+    antal: 4
+coachningspunkter:
+  - Landa mjukt på hela foten med lätt böjda knän.
+  - Låt inte knäna vika inåt vid landning.
+  - Håll blicken framåt, inte ner mot fötterna.
+varianter:
+  lattare: Ta bort hoppen och gör bara balansövningen vid varje station.
+  svarare: Håll balansen tre sekunder efter varje landning och blunda under balansövningen på ett ben.
+anpassning:
+  fler_spelare: Bygg en andra cirkel med samma sex stationer bredvid.
+  udda_antal: Spelarna roterar i egen takt, så udda antal spelar ingen roll.
+  ledare: Med två ledare kan en visa och en rätta till teknik samtidigt.
+kalla: Egen övning, inspirerad av skadeförebyggande program som SvFF rekommenderar.
+status: granskad
+granskning:
+  - datum: 2026-09-12
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: Landningsteknik och kroppskontroll är rätt innehåll för fas-10-12 och coachningspunkterna om mjuk landning och knäläge är korrekta och lätta att förstå. Jag lade till niva-1, eftersom skadeförebyggande uppvärmning gäller alla nivåer och den lättare varianten passar en grundgrupp. Jag sänkte max från 16 till 12 spelare per grupp, vilket är taket per ledare i fasen och stämmer med att övningen är ledarstyrd. Den svårare varianten krävde en boll som inte fanns i materiallistan, så jag bytte den mot en progression utan boll.

@@ -1,0 +1,88 @@
+schema: 1
+id: reaktionskull-med-boll
+namn: Reaktionslek med boll
+syfte: Spelarna ska reagera snabbt på en signal och göra korta explosiva spurter med boll.
+beskrivning: |
+  Alla spelare rör sig fritt med egen boll i en ruta om 25 x 20 meter med en kon i varje
+  hörn. Ledaren ropar ut ett hörn, till exempel genom färg eller siffra, och alla ska
+  genast föra bollen dit i högsta fart och stanna bollen inne i hörnrutan. De tre som är
+  först framme får varsin poäng, och var och en räknar sina egna poäng högt. Sedan
+  fortsätter leken med ett nytt rop.
+organisation: |
+  En ruta för hela gruppen, med en boll per spelare. Ledaren står vid sidan och ropar ut
+  signalerna. Hörnet är en yta på några meter runt konen, inte en exakt punkt, så att alla
+  får plats att bromsa utan att springa in i varandra. De första minuterna körs i lugnare
+  tempo, och farten skruvas upp först när kroppen är varm. Låt några sekunder gå mellan
+  ropen, så att spelarna hinner andas ut och kan springa fort igen. Med fler än arton
+  spelare läggs en andra ruta bredvid, och samma ledare ropar till båda rutorna.
+fokusomraden:
+  - snabbhet
+  - dribbling
+  - lek
+alder:
+  min: 10
+  max: 12
+spelformer:
+  - 7mot7
+niva:
+  - niva-1
+  - niva-2
+  - niva-3
+passdelar:
+  - del-uppvarmning
+ledarbehov: 0
+spelare:
+  min: 6
+  max: 18
+grupptyp: fri
+tid:
+  kortast: 5
+  rekommenderad: 8
+  langst: 10
+yta:
+  alla:
+    langd: 25
+    bredd: 20
+material:
+  - typ: boll
+    antal: 1
+    anteckning: en per spelare
+  - typ: kon
+    antal: 4
+    anteckning: en i varje hörn
+coachningspunkter:
+  - Håll bollen nära fötterna även när du spurtar.
+  - Reagera direkt på ropet, vänta inte och se vad andra gör.
+  - Titta upp för att hitta snabbaste vägen till hörnet.
+  - Bromsa in med kontroll vid konen och se dig för, alla ska dit samtidigt.
+varianter:
+  lattare: Använd bara två hörn i stället för fyra, så blir valet enklare.
+  svarare: Lägg till ett falskt rop som spelarna ska lära sig ignorera.
+anpassning:
+  fler_spelare: Dela in i två rutor bredvid varandra med samma lek. Samma rop gäller båda rutorna.
+  udda_antal: Spelar ingen roll, alla rör sig fritt oavsett hur många de är.
+  ledare: En ledare räcker, också när gruppen är delad i två rutor, eftersom ropet hörs till båda.
+kalla: Egen övning, inspirerad av vanliga reaktionslekar med boll.
+status: granskad
+granskning:
+  - datum: 2026-09-13
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: >-
+      Övningen fyller luckan för snabbhet i uppvärmningen, och snabbheten syns i innehållet och inte
+      bara i taggen: reaktion på en signal, korta rusher i högsta fart och riktningsändringar med
+      boll, alltså det fokusområdet beskriver. Ledarbehov 0 är rätt trots att ledaren ropar
+      signalerna, eftersom ett rop hörs till alla rutor samtidigt och en enda ledare därför räcker
+      till hur många grupper som helst, vilket är just det ledarbehov 0 betyder i R-055. Jag skrev om
+      anpassningen, som tidigare krävde en ledare per ruta. Fem egna rättelser. 1. Poäng i stället
+      för straff. Att den som kommer sist får ett skämtsamt straff drabbar samma barn varje gång och
+      rimmar illa med att alla ska få vara med och tycka att det är roligt. Nu får de tre första en
+      poäng var. 2. Ytan höjs från 20 x 15 till 25 x 20 meter. Arton spelare som spurtar mot samma
+      hörn samtidigt behöver mer plats, annars blir det kollisioner. 3. Hörnet är nu en yta på några
+      meter runt konen och inte en punkt, och en fjärde coachningspunkt säger att man bromsar med
+      kontroll och ser sig för. 4. De första minuterna körs i lugnare tempo, och det ska gå några
+      sekunder mellan ropen. Snabbhet tränas bara när spelaren hunnit återhämta sig, och en
+      uppvärmning ska börja lugnt. 5. Fokusområdena. Bollkänsla byttes mot dribbling, eftersom
+      spelarna för bollen i fart och stannar den i stället för att vända och känna på den. Jag lade
+      till lek, som är vad leken faktiskt är och som saknades helt i omgången för fas-10-12. Namnet
+      ändrades från Reaktionskull till Reaktionslek, eftersom ingen kullar någon. Id:t är oförändrat.
