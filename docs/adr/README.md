@@ -11,7 +11,7 @@ Ett beslut ändras aldrig i efterhand. Om det ersätts skrivs en ny ADR, och den
 ```markdown
 # NNNN: Titel
 
-Status: föreslagen | beslutad (K2, ÅÅÅÅ-MM-DD) | ersatt av NNNN
+Status: föreslagen | beslutad (K2, ÅÅÅÅ-MM-DD) | delvis ersatt av NNNN | ersatt av NNNN
 
 ## Kontext
 Vilket problem som ska lösas och vilka krav och begränsningar som gäller.

@@ -1,8 +1,10 @@
-Status: godkänd (K2, 2026-09-12)
+Status: ändrad vid K3 (2026-09-14)
 
 # Passuppbyggnad
 
 **Ägare:** fotbollsexpert
+
+*Ändring 2026-09-14:* två tillägg om att taket per ledare inte gäller i delen Spel, i avsnitten *Hur spelarna delas i grupper* och *Hur många spelare en ledare kan ha*. Tilläggen speglar den nya regeln R-057 i `generatorregler.md`, godkänd av användaren 2026-09-14. Inga siffror och inga andra principer i filen är ändrade.
 
 Den här filen beskriver hur ett träningspass byggs upp: vilka delar passet har, hur lång tid varje del får i olika åldrar, hur vila och vätska läggs in, hur antalet ledare påverkar upplägget och hur spelarna delas i grupper. Den är underlag för generatorn (berättelse 02–04) och för reglerna i `generatorregler.md`. Där det står ett regel-ID, till exempel R-040, är det regeln i `generatorregler.md` som gäller exakt.
 
@@ -191,9 +193,9 @@ För att generatorn ska kunna dela gruppen och hantera udda antal behöver varje
 | `tva-lag` | Två lag mot varandra | 3 mot 3, 4 mot 4 med jokrar | Passet visar att en spelare blir joker och alltid är med laget som har bollen, om inte övningens `anpassning` beskriver en annan lösning (R-054). *Min bedömning:* för 6–9 år kan ledaren på plats lika gärna låta ena laget ha en spelare mer |
 | `fast-storlek` | Grupper med ett bestämt antal | Tre spelare där en anfaller mot två försvarare som roterar | Bara om övningen själv beskriver en lösning, till exempel att en spelare vilar och byter in |
 
-Så gör generatorn (R-050 till R-056):
+Så gör generatorn (R-050 till R-057):
 
-1. **Så få grupper som möjligt.** Generatorn väljer det minsta antal grupper där ingen grupp blir större än övningens största grupp. Det är oftast övningens högsta antal, men i en ledarstyrd övning får en grupp inte heller vara större än taket per ledare (se nedan), och en övning med fast storlek och en lösning för udda antal får ha grupper som är en spelare större (R-050).
+1. **Så få grupper som möjligt.** Generatorn väljer det minsta antal grupper där ingen grupp blir större än övningens största grupp. Det är oftast övningens högsta antal, men i en ledarstyrd övning får en grupp inte heller vara större än taket per ledare (se nedan), och en övning med fast storlek och en lösning för udda antal får ha grupper som är en spelare större (R-050). I delen Spel gäller inte taket per ledare: där spelas hela gruppen i ett spel så länge övningen rymmer den (R-057).
 2. **Jämnt fördelat.** Grupperna skiljer sig med högst en spelare.
 3. **Ingen grupp för liten.** Om någon grupp blir mindre än övningens minsta antal kan övningen inte användas med det antalet spelare.
 4. **Udda antal** hanteras enligt tabellen ovan. Bara övningar med grupptypen `fast-storlek` kan väljas bort på grund av udda antal (berättelse 02, kriterium 7).
@@ -233,6 +235,8 @@ Det här är det högsta antal spelare som en ledare rimligen kan ha hand om i e
 | `fas-15-19` | 16 |
 
 Samma tal används när det är många spelare per ledare i hela passet (R-021, beslutad av användaren 2026-09-11). Passet genereras ändå, men ledaren får ett tips om att be en förälder eller äldre spelare om hjälp.
+
+Taket gäller inte i delen Spel (R-057). Ett spel med två lag, mål och riktning driver sig självt, och ledaren dömer och coachar från sidan. Att dela ett 7 mot 7 i två mindre spel bara för att gruppen är större än taket skulle göra passets största del sämre, inte säkrare. Påminnelsen om förankrade mål gäller förstås fortfarande (R-084).
 
 ### Vad antalet ledare gör möjligt
 

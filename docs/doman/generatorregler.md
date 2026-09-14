@@ -1,4 +1,4 @@
-Status: godkänd (K2, 2026-09-12)
+Status: ändrad vid K3 (2026-09-14)
 
 # Generatorregler
 
@@ -28,6 +28,8 @@ Domänmodellen godkändes vid K1 den 2026-09-11. Sedan dess har den här filen �
 | 2026-09-12 | **R-072 omformulerad.** Regeln binder nu algoritmens val i stället för mängden möjliga pass. Den gamla lydelsen krävde i praktiken det globalt bästa passet, vilket R-049 uttryckligen säger att generatorn inte behöver hitta (ADR 0011, avsnitt 4, grupp 8). |
 | 2026-09-12 | **R-120 tillagd.** Materialtyperna är en sluten lista. Själva listan står i `passuppbyggnad.md`, avsnittet *Material*. |
 | 2026-09-12 | **R-084 förtydligad.** Regeln pekar nu ut vilka materialtyper som räknas som mål (`mal` och `minimal`). Innebörden är oförändrad. |
+| 2026-09-14 | **R-057 tillagd.** Taket per ledare i R-050 gäller inte i `del-spel`. Utan undantaget delade generatorn ett spel i dagens spelform i två mindre spel bara för att gruppen var större än taket. Frågan kom fram vid granskningen av omgång 1 av övningsbanken. Godkänd av användaren 2026-09-14. |
+| 2026-09-14 | **R-050 hänvisar till R-057.** Strecksatsen om taket per ledare pekar nu på undantaget, så att regeln inte blir missvisande läst för sig. Vad R-050 kräver är oförändrat. |
 
 ## Så läser du reglerna
 
@@ -391,14 +393,14 @@ Punkt 2 med ändring b är det som gör att en del bara står tom när generator
 
 ---
 
-## Grupp 6: Spelare, grupper och udda antal (R-050–R-056)
+## Grupp 6: Spelare, grupper och udda antal (R-050–R-057)
 
 **Varför:** alla spelare ska vara med i allt, och ingen ska stå i kö. När det är fler spelare än en övning rymmer delas de i flera grupper som gör samma sak sida vid sida. Udda antal ska nästan aldrig vara ett skäl att välja bort en övning, eftersom det finns enkla lösningar som alla ledare känner till: en trio i stället för ett par, eller en joker i ett spel. Principerna beskrivs för ledaren i `passuppbyggnad.md`.
 
 ### R-050 Största grupp
 Definition. Övningens största grupp är dess högsta antal spelare (R-007), med två undantag:
 - En övning med grupptypen `fast-storlek` och en lösning för udda antal (R-008) får ha grupper som är en spelare större än övningens storlek.
-- Om övningens ledarbehov är 1 eller 2 får en grupp inte ha fler spelare än taket per ledare gånger ledarbehovet.
+- Om övningens ledarbehov är 1 eller 2 får en grupp inte ha fler spelare än taket per ledare gånger ledarbehovet. Den här strecksatsen gäller inte i `del-spel`, se R-057.
 
 Den största gruppen är det minsta av de värden som gäller.
 
@@ -434,6 +436,17 @@ Krav. Ett helgruppsmoment med k grupper behöver k × ledarbehov ledare. Det få
 
 ### R-056 Alla är med
 Krav. I varje moment är summan av spelarna i alla grupper lika med N. Ingen spelare står utanför ett moment.
+
+### R-057 Taket per ledare gäller inte i `del-spel`
+Krav. Den andra strecksatsen i R-050, om taket per ledare, gäller inte för ett moment i `del-spel`. Där är övningens största grupp dess högsta antal spelare (R-007), oavsett om övningens ledarbehov är 0, 1 eller 2. Övriga krav gäller oförändrat, särskilt R-055: ett moment med k grupper behöver k × ledarbehov ledare, och det får aldrig vara fler än L.
+
+*Testfall:* `fas-10-12`, N = 14, L = 2, en övning i `del-spel` med ledarbehov 1 och spelare 10–14. Med R-057 blir det en grupp om 14 och ett moment som kräver en ledare. Utan regeln sätter taket största gruppen till 12, och 14 delas i två grupper om 7, alltså två spel och två ledare.
+
+*Motivering:* taket per ledare är satt för ledarstyrda övningar med upprepningar, kö och material som ska servas. Spelet är något annat: två lag, mål och riktning, där ledaren dömer och coachar från sidan medan spelet driver sig självt. Utan undantaget delar generatorn ett 7 mot 7 i två spel om 3 mot 3 plus målvakt bara för att gruppen är större än taket, med fyra mål och dubbelt så många ledare. Det bryter mot att spelet ska spelas i dagens spelform eller strax under (`passuppbyggnad.md`, *Passets delar*) och gör passets största del sämre, inte säkrare. Skyddet finns kvar på annat håll: R-021 ger ledaren tipset om att be om hjälp när det är många spelare per ledare, och R-084 påminner om att målen ska vara förankrade.
+
+*Samspelar med:* R-050 (regeln stänger av den andra strecksatsen i just `del-spel`), R-051 och R-055 (antal grupper och ledare räknas som vanligt), R-008 (en övning i `del-spel` har alltid grupptypen `tva-lag`, så den första strecksatsen i R-050 om `fast-storlek` kan aldrig bli aktuell här), R-021 (tipset) och R-060 (stationer finns inte i `del-spel`, så R-063 och R-064 berörs aldrig).
+
+*Regeln är ny vid K3 (2026-09-14).* Den kom fram när jag granskade omgång 1 av övningsbanken. Användaren godkände den 2026-09-14.
 
 ---
 
@@ -701,13 +714,13 @@ Krav. Åldern i säsongsplanen räknas som i R-010: den ålder spelarna fyller u
 | 3 Vilka övningar, nivå | R-022–R-029 | 8 | 0 | 0 |
 | 4 Delar och tid | R-030–R-039 | 10 | 0 | 0 |
 | 5 Fokusområden | R-040–R-049 | 10 | 0 | 0 |
-| 6 Grupper och udda antal | R-050–R-056 | 7 | 0 | 0 |
+| 6 Grupper och udda antal | R-050–R-057 | 8 | 0 | 0 |
 | 7 Ledare och stationer | R-060–R-067 | 8 | 0 | 0 |
 | 8 Variation | R-070–R-072 | 3 | 0 | 0 |
 | 9 Säkerhet | R-080–R-085 | 6 | 0 | 0 |
 | 10 Yta | R-090–R-094 | 5 | 0 | 0 |
 | 11 Inget matchande, byte | R-100–R-106 | 7 | 0 | 0 |
 | 12 Säsongsplan | R-110–R-113 | 4 | 1 (R-112) | 0 |
-| **Summa** | | **90** | **1** | **0** |
+| **Summa** | | **91** | **1** | **0** |
 
-Lediga nummer, reserverade för nya regler i respektive grupp: R-057–R-059 (grupp 6), R-068–R-069 (grupp 7), R-073–R-079 (grupp 8), R-086–R-089 (grupp 9), R-095–R-099 (grupp 10), R-107–R-109 (grupp 11) och R-114–R-119 (grupp 12). Grupp 1 till 5 har inga lediga nummer kvar i sina ursprungliga intervall. En ny regel i någon av dem får därför nästa lediga nummer från R-120 och uppåt och placeras i den grupp den hör till. R-120 är tagen av grupp 1, så nästa sådan regel får R-121.
+Lediga nummer, reserverade för nya regler i respektive grupp: R-058–R-059 (grupp 6), R-068–R-069 (grupp 7), R-073–R-079 (grupp 8), R-086–R-089 (grupp 9), R-095–R-099 (grupp 10), R-107–R-109 (grupp 11) och R-114–R-119 (grupp 12). Grupp 1 till 5 har inga lediga nummer kvar i sina ursprungliga intervall. En ny regel i någon av dem får därför nästa lediga nummer från R-120 och uppåt och placeras i den grupp den hör till. R-120 är tagen av grupp 1, så nästa sådan regel får R-121.
