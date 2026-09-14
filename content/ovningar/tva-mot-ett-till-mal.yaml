@@ -1,0 +1,89 @@
+schema: 1
+id: tva-mot-ett-till-mal
+namn: 2 mot 1 till mål
+syfte: Spelarna ska utnyttja ett numerärt överläge för att ta sig till ett fritt
+  avslutsläge.
+beskrivning: |
+  Två anfallare möter en försvarare på en yta om 15 x 10 meter med ett minimål utan
+  målvakt i ena änden. Anfallarna samarbetar med passningar eller dribbling för att
+  skapa ett fritt avslutsläge, medan försvararen försöker störa passningarna eller
+  vinna bollen. Efter ett avslut eller en bollvinst hämtar den som blir ny försvarare
+  reservbollen vid sidan och rullar in den till de två anfallarna, som startar en ny
+  omgång. Ingen skjuter mot en kö.
+organisation: |
+  En grupp om tre spelare per yta: två anfallare och en försvarare. Gruppen bestämmer en
+  turordning i början, och försvararrollen går vidare ett steg i den ordningen efter varje
+  avslut eller bollvinst, så att ingen behöver vänta i kö framför målet.
+fokusomraden:
+  - avslut
+  - spelbarhet
+alder:
+  min: 10
+  max: 12
+spelformer:
+  - 7mot7
+niva:
+  - niva-1
+  - niva-2
+passdelar:
+  - del-spelovning
+ledarbehov: 0
+spelare:
+  min: 3
+  max: 3
+grupptyp: fast-storlek
+udda_antal_losning: true
+tid:
+  kortast: 6
+  rekommenderad: 10
+  langst: 12
+yta:
+  alla:
+    langd: 15
+    bredd: 10
+material:
+  - typ: boll
+    antal: 2
+    anteckning: en i spel och en i reserv vid sidan av ytan
+  - typ: kon
+    antal: 4
+    anteckning: markerar ytans hörn
+  - typ: minimal
+    antal: 1
+coachningspunkter:
+  - Sprid ut er som anfallare så att försvararen inte kan täcka båda.
+  - Passa i rätt ögonblick, vänta inte för länge med bollen.
+  - Avsluta så fort ni har ett fritt läge, tveka inte.
+  - Som försvarare, styr anfallaren mot sidan och bort från mål.
+varianter:
+  lattare: Försvararen får bara jaga och störa passningar de första omgångarna, inte
+    tackla.
+  svarare: Sätt en tidsgräns på tio sekunder från start till avslut.
+anpassning:
+  fler_spelare: Bygg fler ytor med samma uppställning bredvid varandra.
+  udda_antal: En fjärde spelare rullar in nya bollar och byts in som ny försvarare nästa
+    omgång.
+  ledare: Övningen sköter sig själv när gruppen har förstått rollerna. En ledare kan gå
+    mellan ytorna och ge tips.
+kalla: Egen övning, inspirerad av vanliga överlägesövningar mot mål.
+status: granskad
+granskning:
+  - datum: 2026-09-14
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: >-
+      Övningen fyller luckan den skrevs för: en spelövning som täcker niva-1 med avslut som
+      huvudfokus. Övertalet två mot en är rätt form för niva-1, eftersom anfallarna hinner lyckas
+      trots motstånd, och det är precis vad passuppbyggnad.md efterfrågar för de lägre nivåerna.
+      Syftet hänger ihop med huvudfokus avslut, och spelbarhet som andra fokus stämmer med att
+      anfallarna måste sprida sig för att skapa läget. Båda är kärnområden för fas-10-12. Med tre
+      spelare per yta är alla aktiva hela tiden och kötiden är noll, vilket är det viktigaste
+      måttet i den här åldern. Ytan 15 x 10 meter är rimlig för två mot en, och minimålet utan
+      målvakt gör att skottmomentet inte har någon träffrisk. Ledarbehov 0 stämmer, eftersom
+      rollerna roterar efter en turordning som gruppen bestämmer själv. Fast storlek tre med
+      lösning för udda antal ger hela grupper vid alla vanliga antal, eftersom en grupp får vara
+      fyra. Varianterna är verkliga steg: passiv försvarare som lättare, tidsgräns som svårare.
+      En egen rättelse. Beskrivningen sa att ledaren eller en spelare vid sidan rullar in nya
+      bollar, men med bara tre spelare i gruppen står ingen vid sidan och ledarbehovet är 0. Jag
+      skrev om omstarten så att den som blir ny försvarare hämtar reservbollen och rullar in den.
+      Materiallistans två bollar räcker då för förloppet.

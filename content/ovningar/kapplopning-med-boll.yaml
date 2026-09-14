@@ -1,0 +1,81 @@
+schema: 1
+id: kapplopning-med-boll
+namn: Kapplöpning med boll i par
+syfte: Spelarna ska föra bollen i högt tempo och reagera snabbt på ledarens startsignal.
+beskrivning: |
+  Ett par ställer sig bredvid varandra bakom en linje, varsin boll. Framför varje spelare
+  står en egen vändkon 15 meter bort, och konerna står ett par meter isär så att spelarna
+  aldrig vänder på samma ställe. På ledarens signal dribblar båda så snabbt de kan till sin
+  egen kon, runt den och tillbaka. Den som är tillbaka först med bollen under kontroll
+  vinner omgången. Efter varje omgång hämtar sig paret och kör igen.
+organisation: |
+  Ett par delar en bana med två vändkoner. Fler par får varsin egen bana bredvid, med tre
+  meters mellanrum.
+fokusomraden:
+  - bollkansla
+  - snabbhet
+alder:
+  min: 8
+  max: 9
+spelformer:
+  - 5mot5
+niva:
+  - niva-1
+  - niva-2
+  - niva-3
+passdelar:
+  - del-uppvarmning
+ledarbehov: 0
+spelare:
+  min: 2
+  max: 2
+grupptyp: par
+tid:
+  kortast: 5
+  rekommenderad: 7
+  langst: 9
+yta:
+  alla:
+    langd: 18
+    bredd: 5
+material:
+  - typ: boll
+    antal: 2
+    anteckning: en per spelare i paret
+  - typ: kon
+    antal: 2
+    anteckning: en vändkon per spelare, 15 meter bort och ett par meter isär
+coachningspunkter:
+  - Titta upp och styr bollen med lätta toucher i full fart.
+  - Runda din egen kon med insidan av foten som är närmast konen.
+  - Håll dig i din egen bana hela vägen, både ut och hem.
+varianter:
+  lattare: Jogga banan i stället för att sprinta.
+  svarare: Kör två varv i följd utan paus emellan.
+anpassning:
+  fler_spelare: Bygg fler banor bredvid varandra med samma avstånd och mått.
+  udda_antal: Tre spelare bildar ett lag och springer var sin sträcka som en stafett.
+  ledare: En ledare räcker för att starta omgångarna. Fler ledare kan starta flera banor samtidigt.
+kalla: Egen övning, inspirerad av vanliga kapplöpningslekar med boll.
+status: granskad
+granskning:
+  - datum: 2026-09-14
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: >-
+      Formen passar fas-8-9 bra. Snabbhet ska enligt aldrar-och-fokus.md tränas i korta lekar och
+      tävlingar med boll i den här åldern, och det är precis vad övningen är. Två spelare per bana
+      med varsin boll ger många bollkontakter och naturlig vila mellan omgångarna, och bollkänsla
+      som huvudfokus stämmer med syftet, eftersom det är bollstyrningen i fart som avgör.
+      En egen rättelse av säkerhetsskäl. Beskrivningen hade en enda vändkon som båda i paret skulle
+      runda samtidigt, och materiallistan hade också bara en kon. Två åttaåringar som sprinter mot
+      samma kon och vänder där är en onödig krockrisk. Jag har gett varje spelare en egen vändkon
+      ett par meter från kompisens, lagt till en coachningspunkt om att hålla sig i sin bana och
+      rättat materiallistan till två koner. Banans mått 18 x 5 meter räcker för två banor bredvid
+      varandra i paret.
+      En egen rättelse av nivålistan. Övningen stod som enbart niva-3, och det håller inte. En
+      kapplöpning med boll ställer inga krav på spelförståelse eller på att passningar går fram,
+      och den lättare varianten, att jogga banan i stället för att sprinta, är gjord just för en
+      grupp som ännu tappar bollen i fart. Den svårare varianten med två varv i följd räcker för
+      niva-3. Jag har satt niva-1, niva-2 och niva-3. Ledarbehov 0 är rätt: ledaren startar
+      omgångarna, men samma signal startar alla banor samtidigt.

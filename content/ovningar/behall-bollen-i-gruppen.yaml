@@ -1,0 +1,82 @@
+schema: 1
+id: behall-bollen-i-gruppen
+namn: Behåll bollen i gruppen
+syfte: Spelarna ska hålla bollen inom laget genom att passa till en fri medspelare under lätt press.
+beskrivning: |
+  Två lag om tre spelare möts i en ruta om 14 x 12 meter tillsammans med en joker som alltid
+  spelar med laget som har bollen. Laget med boll ska hålla den genom passningar, och det
+  andra laget pressar för att vinna den. Laget som har boll får en poäng för fem passningar
+  i följd utan att tappa bollen.
+organisation: |
+  Två lag om tre spelare plus en joker per yta, totalt sju spelare. Är gruppen på ytan mindre
+  spelas två mot två med joker, eller två mot två utan joker om de bara är fyra. Flera ytor
+  läggs bredvid varandra om gruppen är större.
+fokusomraden:
+  - spelbarhet
+  - passning-mottagning
+alder:
+  min: 8
+  max: 9
+spelformer:
+  - 5mot5
+niva:
+  - niva-1
+  - niva-2
+passdelar:
+  - del-spelovning
+ledarbehov: 0
+spelare:
+  min: 4
+  max: 7
+grupptyp: tva-lag
+tid:
+  kortast: 8
+  rekommenderad: 10
+  langst: 10
+yta:
+  alla:
+    langd: 14
+    bredd: 12
+material:
+  - typ: vast
+    antal: 3
+    anteckning: till det ena laget, jokern spelar utan väst
+  - typ: boll
+    antal: 2
+coachningspunkter:
+  - Sprid ut er i rutan så att den som har boll har flera passningsalternativ.
+  - Rör dig direkt efter din passning för att bli spelbar igen.
+varianter:
+  lattare: Laget som har boll får obegränsat med toucher och ingen press de första sekunderna.
+  svarare: Bara två toucher tillåtna innan bollen ska passas vidare.
+anpassning:
+  fler_spelare: Bygg en till yta bredvid med samma mått och en egen joker.
+  udda_antal: Jokern spelar alltid med laget som har bollen, så udda antal löser sig automatiskt.
+  ledare: Övningen är självgående när lagen och poängregeln är satta.
+kalla: Egen övning, inspirerad av allmänt kända rondoövningar med joker.
+status: granskad
+granskning:
+  - datum: 2026-09-14
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: >-
+      Formen är rätt för fas-8-9. Jokern som alltid spelar med bollhållande laget ger ett övertag
+      som gör att passningar hinner gå fram, och det är precis vad en spelövning på de lägre
+      nivåerna ska ge. Spelbarhet och passning-mottagning är båda kärnområden för fasen och
+      stämmer med syftet. Ledarbehov 0 är rätt: när lagen och poängregeln är satta driver spelet
+      sig självt.
+      En egen rättelse av antalet spelare, och det är en viktig sådan. Fältet spelare gäller en
+      grupp, alltså en yta, men det stod högst fjorton medan organisationen och beskrivningen säger
+      sju per yta. Med fjorton spelare i en ruta om 14 x 12 meter hade generatorn packat tolv
+      kvadratmeter per spelare, vilket varken går att spela eller är säkert. Jag har satt högst
+      sju, som är tre mot tre med joker och det övningen faktiskt beskriver. Samtidigt sänkte jag
+      minsta antal från sex till fyra och skrev in i organisationen att mindre grupper spelar två
+      mot två med eller utan joker. Skälet är att generatorn delar gruppen: med minst sex och högst
+      sju hade övningen inte gått att använda vid åtta till elva spelare, som är de vanligaste
+      antalen på en träning i den här åldern. Med fyra till sju går varje antal från fyra och uppåt
+      jämnt ihop. Materiallistan räcker fortfarande, eftersom det största laget är tre spelare.
+      En egen rättelse av nivålistan. Övningen stod som enbart niva-1. Med jokern, den lättare
+      varianten utan press de första sekunderna och den svårare med två toucher täcker den både
+      niva-1 och niva-2, och niva-2 är egentligen dess naturliga hemvist. Jag har lagt till
+      niva-2. Niva-3 lämnar jag utanför: en grupp som håller bollen under press behöver ett spel
+      med riktning och mål, inte enbart bollhållning med övertag.

@@ -1,0 +1,83 @@
+schema: 1
+id: forsvara-tillsammans
+namn: Försvara tillsammans
+syfte: Spelarna ska försvara som ett lag genom att täcka för varandra och pressa gemensamt.
+beskrivning: |
+  Två lag om tre spelare möter varandra på en yta om 20 x 14 meter med minimål i var ände.
+  Laget utan boll ska försvara tillsammans: en spelare pressar bollhållaren medan de andra
+  täcker ytan bakom. Så fort laget vinner bollen ska det anfalla snabbt innan motståndarna
+  hinner organisera sig.
+organisation: |
+  Två lag om tre spelare per yta i grundläget, alltså sex spelare. Är gruppen på ytan mindre
+  spelas två mot två, är den större fyra mot fyra. Flera ytor läggs bredvid varandra om
+  gruppen är större än så, med tre meters mellanrum.
+fokusomraden:
+  - forsvarsspel
+  - omstallning
+alder:
+  min: 8
+  max: 9
+spelformer:
+  - 5mot5
+niva:
+  - niva-2
+  - niva-3
+passdelar:
+  - del-spelovning
+ledarbehov: 0
+spelare:
+  min: 4
+  max: 8
+grupptyp: tva-lag
+tid:
+  kortast: 8
+  rekommenderad: 10
+  langst: 10
+yta:
+  alla:
+    langd: 20
+    bredd: 14
+material:
+  - typ: vast
+    antal: 4
+    anteckning: till det ena laget
+  - typ: minimal
+    antal: 2
+  - typ: boll
+    antal: 2
+coachningspunkter:
+  - Pressa bollhållaren direkt, men låt en kompis täcka bakom dig.
+  - Anfall snabbt så fort ni vunnit tillbaka bollen.
+varianter:
+  lattare: Det försvarande laget får två sekunder utan press innan det ska erövra bollen.
+  svarare: Laget har bara tio sekunder på sig att vinna tillbaka bollen efter en förlust, annars får motståndarna en extra poäng.
+anpassning:
+  fler_spelare: Bygg en till yta bredvid med samma mått.
+  udda_antal: Ett lag spelar med en spelare mer än det andra.
+  ledare: Övningen är självgående när lagen och reglerna är satta.
+kalla: Egen övning, inspirerad av allmänt kända försvars- och omställningsspel.
+status: granskad
+granskning:
+  - datum: 2026-09-14
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: >-
+      Rätt form för att öva lagförsvar i fas-8-9. Tre mot tre är det minsta spelet där en pressar
+      och en annan täcker bakom, och att bollvinsten direkt ska följas av ett snabbt anfall gör att
+      både försvarsspel och omställning händer många gånger per minut. Båda fokusområdena är
+      relevanta för fasen och stämmer med syftet. Ledarbehov 0 är rätt, minimålen utan målvakt tar
+      bort träffrisken i avsluten, och tiderna ligger inom fasens gränser.
+      En egen rättelse av antalet spelare. Fältet gäller en grupp, alltså en yta, men det stod
+      högst fjorton medan ytan är 20 x 14 meter. Fjorton spelare där ger tjugo kvadratmeter per
+      spelare, alltså ett 7 mot 7 på en yta för 3 mot 3, vilket varken går att spela eller är
+      säkert. Jag har satt fyra till åtta spelare, alltså två mot två upp till fyra mot fyra, och
+      skrivit in det i organisationen. Med fyra som minsta antal går varje antal från fyra och
+      uppåt jämnt ihop när generatorn delar gruppen, vilket inte hade skett med sex som minsta
+      antal: då hade nio, tio och elva spelare inte gått att fördela. Två mot två håller kvar
+      poängen med övningen, eftersom en pressar och en täcker även där. Jag har också höjt antalet
+      västar från tre till fyra, så att de räcker till det största laget.
+      En egen rättelse av nivålistan. Övningen stod som enbart niva-3. Med den lättare varianten,
+      två sekunder utan press innan bollen ska erövras, är den fullt användbar på niva-2, och
+      niva-2 beskrivs i nivaer.md som gruppen som vet åt vilket håll den ska men tappar det när det
+      går fort, vilket är precis vad övningen tränar. Jag har lagt till niva-2. Niva-1 lämnar jag
+      utanför: en grupp som samlas runt bollen har ännu inte nytta av att öva täckning.

@@ -1,0 +1,77 @@
+schema: 1
+id: driva-forbi-i-par
+namn: Driva förbi i par
+syfte: Spelarna ska dribbla förbi en försvarare i en liten yta och försvara mot en anfallare.
+beskrivning: |
+  Två spelare möts i en ruta om 6 x 6 meter med en liten port av två koner i var ände.
+  Anfallaren startar med boll och försöker dribbla igenom försvararens port. Försvararen
+  försöker vinna bollen eller stoppa passagen utan att tacklas hårt. Efter varje försök
+  byter spelarna roll.
+organisation: |
+  Ett par delar en ruta. Fler par får varsin egen ruta bredvid, med tre meters mellanrum.
+fokusomraden:
+  - dribbling
+  - ett-mot-ett
+alder:
+  min: 8
+  max: 9
+spelformer:
+  - 5mot5
+niva:
+  - niva-1
+  - niva-2
+  - niva-3
+passdelar:
+  - del-ovning
+ledarbehov: 0
+spelare:
+  min: 2
+  max: 2
+grupptyp: par
+tid:
+  kortast: 8
+  rekommenderad: 10
+  langst: 10
+yta:
+  alla:
+    langd: 6
+    bredd: 6
+material:
+  - typ: boll
+    antal: 1
+    anteckning: en per par
+  - typ: kon
+    antal: 4
+    anteckning: två portar om två koner vardera
+coachningspunkter:
+  - Skydda bollen med kroppen när försvararen kommer nära.
+  - Byt riktning snabbt för att skapa en lucka att dribbla i.
+  - Som försvarare, spela på bollen med foten och spring inte in i kompisen.
+varianter:
+  lattare: Försvararen får bara gå, inte springa.
+  svarare: Anfallaren har bara tre toucher på sig innan porten ska passeras.
+anpassning:
+  fler_spelare: Bygg fler rutor bredvid varandra med samma mått.
+  udda_antal: Tre spelare delar en ruta och roterar, två spelar medan en väntar på sin tur.
+  ledare: Övningen är självgående när paren har fått en ruta och sett ett exempel.
+kalla: Egen övning, inspirerad av vanliga 1 mot 1-rutor med portar.
+status: granskad
+granskning:
+  - datum: 2026-09-14
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: >-
+      En av de bästa övningarna i omgången för fas-8-9. Två spelare per ruta betyder att alla är i
+      gång hela tiden, rollbytet efter varje försök är enkelt nog att gruppen sköter det själv, och
+      dribbling och 1 mot 1 är båda kärnområden för fasen. Syftet stämmer med huvudfokus. Rutan
+      6 x 6 meter är rätt storlek för 1 mot 1 i den här åldern, och tre meter mellan rutorna räcker.
+      Ledarbehov 0 är rätt.
+      En egen rättelse av nivålistan. Övningen stod som enbart niva-2. Den lättare varianten, att
+      försvararen bara får gå, gör den fullt användbar på niva-1, och 1 mot 1 är det första en
+      nybörjargrupp ska öva. Den svårare varianten, tre toucher innan porten ska passeras, är
+      precis det nivaer.md beskriver för niva-3: mindre yta och färre toucher. Jag har därför satt
+      niva-1, niva-2 och niva-3. Varianterna är verkliga steg och räcker för spannet.
+      Jag har också lagt till en tredje coachningspunkt om att försvararen spelar på bollen och
+      inte springer in i kompisen. Beskrivningen nämnde att det inte får tacklas hårt, men det
+      stod inte bland punkterna som ledaren läser vid planen, och det är den viktigaste
+      säkerhetspunkten i en 1 mot 1-ruta i den här åldern.
