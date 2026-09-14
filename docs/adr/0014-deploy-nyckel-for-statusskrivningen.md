@@ -210,6 +210,37 @@ skärmdump eller en chatt.
 4. Skapa en ny nyckel enligt bytesrutinen, från steg 1.
 5. Anteckna händelsen och åtgärderna i `docs/sakerhet/`, och lyft för sakerhet-integritet.
 
+### 8 Skrivningen går att köra om för hand
+
+Arbetsflödet har också utlösaren `workflow_dispatch`, med indata för commiten före omgången,
+commiten omgången kom in med och pull requestens nummer.
+
+**Varför det behövs.** En `push`-utlöst körning hämtar arbetsflödesfilen ur den pushade commiten.
+Ordningen mellan mergar spelar därför roll: mergas en omgång **före** en ändring av
+`godkann-omgang.yml`, körs omgången med den gamla filen. Det inträffade när omgång 1 (pull
+request 4) mergades före deploy-nyckeln (pull request 5): körningen fick versionen som pushade med
+`GITHUB_TOKEN`, som inte har något undantag i `Skydd av main` och alltså hade avvisats. Att köra om
+den körningen hjälper inte, eftersom en omkörning använder samma commit och därmed samma gamla fil.
+Utan en dispatch finns ingen väg alls: `push`-utlösaren startar bara på nya ändringar under
+`content/ovningar/**`, och en omgång som redan ligger på `main` ger ingen sådan push.
+
+**Vilka spärrar som gäller också vid dispatch.**
+
+| Spärr | Hur den gäller |
+|---|---|
+| Miljön `godkannande` | Jobbet `skriv` har `environment: godkannande` utan villkor. Det andra klicket krävs alltså även när körningen startats för hand, och deploy-nyckeln lämnas fortfarande inte ut förrän miljön släppt fram jobbet |
+| Kontot i granskningsraden | Hämtas ur `merged_by` i API:t, aldrig ur indata. Den som startar körningen anger bara pull requestens nummer och kan alltså inte skriva vilket namn som helst i filen |
+| Pull requesten måste vara mergad | Jobbet `forbered` faller om `merged_at` saknas, och om pull requestens `merge_commit_sha` inte är precis den angivna commiten. Ett nummer som inte hör till commiten skriver ingenting |
+| Intervallet måste vara mergens | Commiten före omgången ska vara merge-commitens första förälder, alltså detsamma som `github.event.before` i en push. Annars kan en dispatch svepa in granskade övningar ur andra omgångar och stämpla dem med fel pull request |
+| Bara `granskad` lyfts, bara `status` och `granskning` skrivs | Oförändrat: samma skript, samma torrkörning i `forbered` och samma validering av hela banken före och efter |
+| Ingen omskriven historik | Jobbet `skriv` checkar vid dispatch ut grenens topp, inte merge-commiten, och pushar utan `--force`. Innehållet som stämplas kommer ändå ur den angivna commiten, eftersom skriptet läser filerna ur git. Har `content/ovningar` ändrats sedan dess avbryts körningen i stället för att skriva över ändringarna |
+
+Ingenting i hanteringen av nyckeln ändrades, och `scripts/godkannande.ts` behövde ingen ändring:
+det tar redan intervallet, kontot och pull requestens nummer som argument.
+
+Dispatchvägen är **oprövad i en skarp körning**. Den kan inte köras lokalt, och den prövas första
+gången när omgång 1 körs om.
+
 ## Alternativ
 
 | Alternativ | Varför det valdes bort |
