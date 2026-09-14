@@ -1,6 +1,6 @@
 # 0014: Statusskrivningen pushar till main med en deploy-nyckel
 
-Status: förslag
+Status: beslutad (K3, 2026-09-14)
 
 ## Kontext
 

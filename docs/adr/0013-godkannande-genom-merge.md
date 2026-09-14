@@ -1,6 +1,6 @@
 # 0013: Godkännandet av en omgång sker genom att ägaren mergar
 
-Status: förslag
+Status: beslutad (K3, 2026-09-14), delvis ersatt av 0014
 
 ## Kontext
 
