@@ -30,7 +30,7 @@ utkast ──► granskad ──► godkand
 | `granskad` | fotbollsexpert | Fotbollsfackligt granskad och väntar på godkännande |
 | `godkand` | **bara arbetsflödet `godkann-omgang`** | Publicerad i banken och kan väljas av generatorn |
 
-**Skriv aldrig `godkand` för hand.** Varken en människa eller en agent sätter det värdet. Det skrivs av CI när användaren har godkänt omgångens pull request med sitt eget GitHub-konto. En pull request som ändrar en status till `godkand` på något annat sätt underkänns av kontrollen `godkannande`.
+**Skriv aldrig `godkand` för hand.** Varken en människa eller en agent sätter det värdet. Det skrivs av CI efter att användaren har mergat omgångens pull request med sitt eget GitHub-konto (ADR 0013). En pull request som ändrar en status till `godkand` på något annat sätt underkänns av kontrollen `godkannande`.
 
 ## Fälten
 
