@@ -1,0 +1,91 @@
+schema: 1
+id: tre-passningar-fore-skott
+namn: Tre passningar före skott
+syfte: Spelarna ska passa och ta emot bollen med kvalitet för att behålla bollen och
+  skapa ett bra avslutsläge.
+beskrivning: |
+  Två lag spelar mot varandra på en yta om 30 x 20 meter med två minimål. Ett lag måste
+  göra minst tre passningar inom laget innan det får skjuta mot mål. Kommer skottet för
+  tidigt räknas det inte som mål, och bollen går till motståndarna som spelar in den
+  snabbt där den gick ut. Lagen räknar sina egna passningar högt så att alla i laget vet
+  läget.
+organisation: |
+  Två lag om upp till fem spelare per lag, med en gemensam boll i spel och en reserv vid
+  sidan. Byt lagens sammansättning ungefär var femte minut.
+fokusomraden:
+  - passning-mottagning
+  - spelbarhet
+alder:
+  min: 10
+  max: 12
+spelformer:
+  - 7mot7
+niva:
+  - niva-2
+  - niva-3
+passdelar:
+  - del-spelovning
+ledarbehov: 0
+spelare:
+  min: 6
+  max: 10
+grupptyp: tva-lag
+tid:
+  kortast: 8
+  rekommenderad: 12
+  langst: 15
+yta:
+  alla:
+    langd: 30
+    bredd: 20
+material:
+  - typ: boll
+    antal: 2
+    anteckning: en i spel och en i reserv vid sidan av ytan
+  - typ: kon
+    antal: 4
+    anteckning: markerar planens hörn
+  - typ: minimal
+    antal: 2
+  - typ: vast
+    antal: 5
+    anteckning: till det ena laget
+coachningspunkter:
+  - Passa till en lagkamrat som gjort sig fri, inte till den som står närmast.
+  - Ta emot bollen med första touchen vänd mot spelplanen, inte rakt mot press.
+  - Räkna passningarna högt så hela laget vet läget.
+  - Sprid ut er på bredden och djupet för att skapa fler passningsvägar.
+varianter:
+  lattare: Sänk kravet till två passningar innan laget får skjuta mot mål.
+  svarare: Höj kravet till fyra passningar, och minst en av dem ska gå bakåt eller i sidled.
+anpassning:
+  fler_spelare: Bygg ett spel till på en yta bredvid med samma regler och egna mål.
+  udda_antal: Ett lag får en spelare mer, eller en joker spelar alltid med laget som har
+    bollen.
+  ledare: Övningen sköter sig själv när lagen har förstått regeln. En ledare kan gå mellan
+    planerna och påminna om att räkna passningarna högt.
+kalla: Egen övning, inspirerad av vanliga possessionsövningar med krav på antal passningar
+  före avslut.
+status: granskad
+granskning:
+  - datum: 2026-09-14
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: >-
+      Övningen fyller luckan den skrevs för: en riktig spelövning med passning-mottagning som
+      huvudfokus. Det finns motståndare, riktning och mål, och regeln om tre passningar gör att
+      fokuset händer ofta, vilket är just det en spelövning ska göra. Syftet hänger ihop med
+      huvudfokus, och spelbarhet som andra fokus stämmer, eftersom laget måste sprida ut sig för
+      att hitta tre passningar. Båda fokusområdena är kärnområden för fas-10-12. Nivåerna niva-2
+      och niva-3 är rätt satta: kravet på tre passningar i följd förutsätter att korta passningar
+      oftast går fram, vilket är beskrivningen av niva-2 i nivaer.md, och den svårare varianten
+      med fyra passningar där en ska gå bakåt är en verklig höjning för niva-3. Ytan 30 x 20 meter
+      ger vid tio spelare 60 kvadratmeter per spelare, alltså ungefär samma trängsel som en 5 mot
+      5-match, vilket är rimligt för ett bollhållningsspel. Ledarbehov 0 stämmer: när regeln är
+      satt driver spelet sig självt, och en ledare kan ha uppsikt över flera ytor. Materialet
+      räcker för förloppet, inklusive reservbollen som håller igång spelet, och västarna räcker
+      till det största laget. Tiderna ligger inom fasens gränser för spelövning. Coachningspunkterna
+      är konkreta och begripliga för en ideell ledare. Inga ändringar gjorda. En begränsning som
+      inte är ett fel i övningen: med minst sex och högst tio spelare kan generatorn inte använda
+      den vid exakt elva spelare, eftersom två grupper då blir sex och fem. Jag har rapporterat
+      det i täckningsbilden i stället för att ändra måtten.

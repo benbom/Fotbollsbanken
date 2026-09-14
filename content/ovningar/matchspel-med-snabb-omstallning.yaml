@@ -1,0 +1,82 @@
+schema: 1
+id: matchspel-med-snabb-omstallning
+namn: Matchspel med snabb omställning
+syfte: Spelarna ska ställa om snabbt till anfall och försvar i ett matchlikt spel med målvakt.
+beskrivning: |
+  Två lag om fyra utespelare och en målvakt spelar 5 mot 5 på en yta om 28 x 18 meter med
+  mål i var ände. Så fort ett lag vinner bollen ska det anfalla snabbt innan motståndarna
+  hinner organisera sig. Extra poäng ges för mål som görs inom tio sekunder efter en
+  bollvinst.
+organisation: |
+  Två lag om fyra utespelare plus varsin målvakt, totalt tio spelare per yta. Är gruppen åtta
+  eller nio spelare spelas tre mot tre med målvakt, och den nionde blir en extra utespelare i
+  ena laget. Målvakterna byts av under passet så att fler får prova.
+fokusomraden:
+  - omstallning
+  - forsvarsspel
+alder:
+  min: 8
+  max: 9
+spelformer:
+  - 5mot5
+niva:
+  - niva-2
+  - niva-3
+passdelar:
+  - del-spel
+ledarbehov: 0
+spelare:
+  min: 8
+  max: 10
+grupptyp: tva-lag
+tid:
+  kortast: 15
+  rekommenderad: 20
+  langst: 25
+yta:
+  alla:
+    langd: 28
+    bredd: 18
+material:
+  - typ: mal
+    antal: 2
+  - typ: vast
+    antal: 4
+    anteckning: till det ena laget
+  - typ: boll
+    antal: 3
+coachningspunkter:
+  - Reagera direkt när bollen byter lag, stå inte kvar.
+  - Sök djup snabbt när ditt lag just vunnit bollen.
+  - Pressa bollhållaren direkt om ditt lag förlorar bollen.
+varianter:
+  lattare: Ta bort tidsgränsen och ge poäng för alla mål som görs efter en bollvinst.
+  svarare: Bonuspoängen kräver mål inom fem sekunder efter bollvinsten i stället för tio.
+anpassning:
+  fler_spelare: Gör ytan större och spela med fem utespelare i varje lag.
+  udda_antal: Ett lag spelar med en utespelare mer i stället för att sakna målvakt.
+  ledare: Övningen är självgående. Ledaren dömer, byter målvakter och peppar från sidan.
+kalla: Egen övning, inspirerad av allmänt kända omställningsspel i matchform.
+status: granskad
+granskning:
+  - datum: 2026-09-14
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: >-
+      Det här är dagens spelform på träning, vilket är precis vad spel-delen ska vara enligt
+      passuppbyggnad.md. Ytan 28 x 18 meter ger vid tio spelare ungefär femtio kvadratmeter per
+      spelare, alltså samma trängsel som SvFF:s planmått för 5 mot 5, 30 x 15–20 meter
+      (spelformer.md). Målen i spelformens storlek och två lag med målvakt gör spelet matchlikt.
+      Omställning och försvarsspel är relevanta för fas-8-9, syftet stämmer med huvudfokus, och
+      bonuspoängen inom tio sekunder gör att omställningen händer ofta i stället för att bara
+      pratas om. Att målvakterna byts av under passet är rätt för åldern: alla bör få prova att
+      stå i mål. Ledarbehov 0 är rätt, och i spel-delen gäller inte taket per ledare (R-057), så
+      hela gruppen kan spela ett spel med en ledare vid sidan. Tiderna, femton till tjugofem
+      minuter, ligger inom fasens gräns för spel och räcker för perioder med vila emellan.
+      Nivåerna niva-2 och niva-3 är rätt satta: en grupp som ännu samlas runt bollen har inte nytta
+      av en tidsregel för omställning, och den svårare varianten med fem sekunder räcker för
+      niva-3. En egen rättelse: organisationen sa tio spelare per yta medan fältet tillåter åtta,
+      så jag skrev in vad som gäller vid åtta och nio spelare. En begränsning som ledaren och
+      redaktören bör känna till: med åtta till tio spelare i gruppen kan generatorn inte använda
+      övningen vid elva till femton spelare, eftersom två grupper då blir för små. För de antalen
+      är det litet spel till småmål som fyller spel-delen.
