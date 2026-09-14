@@ -56,9 +56,13 @@ anpassning:
   udda_antal: Den udda spelaren blir en tredje joker som alltid spelar med bollförande lag.
   ledare: Övningen är självgående när lagen och reglerna är satta.
 kalla: Egen övning, inspirerad av allmänt kända omställningsspel med jokrar.
-status: granskad
+status: godkand
 granskning:
   - datum: 2026-09-12
     av: fotbollsexpert
     roll: fotbollsexpert
     kommentar: Omställning är kärnområde för fas-10-12 och jokrarna gör att bollen byter lag ofta, vilket är precis det spelarna ska öva. Ytan 35 x 25 meter för upp till tio spelare ger utrymme att kontra, tiden ligger inom gränsen för en spelövning i fasen och övningen är självgående. Jag rättade materiallistan, som angav två västar för två lag. Antalet avser antal plagg, och jokrarna måste dessutom synas i en egen färg, så det står nu fyra västar i en färg till det ena laget och två i en annan till jokrarna. Lösningen för udda antal med en tredje joker fungerar.
+  - datum: 2026-09-14
+    av: benbom
+    roll: redaktör
+    kommentar: "Godkänd genom merge av pull request #4."

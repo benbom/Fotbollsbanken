@@ -55,10 +55,11 @@ varianter:
   svarare: Avslutaren får bara en touch innan skottet.
 anpassning:
   fler_spelare: Bygg en till grupp med mål bredvid, till exempel det andra planens mål.
-  udda_antal: Ingen åtgärd behövs. Gruppen fungerar med fem, sex eller sju spelare, rotationen blir bara en position längre.
+  udda_antal: Ingen åtgärd behövs. Gruppen fungerar med fem, sex eller sju spelare, rotationen blir
+    bara en position längre.
   ledare: Med en ledare vid varje mål kan hon eller han ge snabb feedback på varje avslut.
 kalla: Egen övning, inspirerad av vanliga avslutsstationer med rotation.
-status: granskad
+status: godkand
 granskning:
   - datum: 2026-09-12
     av: fotbollsexpert
@@ -72,23 +73,27 @@ granskning:
       vid de två mål en plan har. Då byts grupptypen från fast-storlek till fri och fältet
       udda_antal_losning tas bort. 2. Ta ställning till ledarbehovet igen när gruppen är större.
       Rotationen och bollarna klarar spelarna själva, så 0 räcker om extra bollar ligger vid målet.
-      Behåll 1 bara om ledaren verkligen behövs hela tiden, och beskriv det i ledaruppgiften.
-      3. Lägg till en rad om säkerhet i organisationen. Den som står i mål gör det frivilligt och
-      byts ofta, och avslut sker från minst tio meter, eftersom målvakten är en utespelare utan
-      handskar. Kontrollera samtidigt att antalet bollar räcker för den nya gruppstorleken.
+      Behåll 1 bara om ledaren verkligen behövs hela tiden, och beskriv det i ledaruppgiften. 3.
+      Lägg till en rad om säkerhet i organisationen. Den som står i mål gör det frivilligt och byts
+      ofta, och avslut sker från minst tio meter, eftersom målvakten är en utespelare utan handskar.
+      Kontrollera samtidigt att antalet bollar räcker för den nya gruppstorleken.
   - datum: 2026-09-13
     av: fotbollsexpert
     roll: fotbollsexpert
     kommentar: >-
-      Alla tre anmärkningarna är åtgärdade. Grupptypen fri med en större grupp vid ett mål gör
-      att tolv spelare blir två grupper vid planens två mål, säkerhetsraden om frivillig målvakt och
-      tio meter finns i organisationen och i en coachningspunkt, och sex bollar vid målet räcker för
-      att hålla tempot uppe. Att sänka ledarbehovet till 0 fungerar här, eftersom rotationen är en
+      Alla tre anmärkningarna är åtgärdade. Grupptypen fri med en större grupp vid ett mål gör att
+      tolv spelare blir två grupper vid planens två mål, säkerhetsraden om frivillig målvakt och tio
+      meter finns i organisationen och i en coachningspunkt, och sex bollar vid målet räcker för att
+      hålla tempot uppe. Att sänka ledarbehovet till 0 fungerar här, eftersom rotationen är en
       position i taget och bollarna ligger framme, alltså ingen styrning som kräver en vuxen. Jag
       gjorde två egna rättelser. Största gruppen höjs från sex till sju spelare. Med max sex kunde
       generatorn inte använda övningen alls vid tretton eller fjorton spelare, som är det vanligaste
-      antalet i ett 7 mot 7-lag: fjorton delas då i tre grupper om 5, 5 och 4, och gruppen om fyra är
-      mindre än övningens minsta antal (R-052). Med max sju blir fjorton två grupper om sju vid de
-      två mål en plan har. Sju i en grupp ger fortfarande kort kö, eftersom nästa boll läggs till rätta
-      direkt. Jag lade också till att kön står vid sidan om målet, aldrig bakom målet eller i
+      antalet i ett 7 mot 7-lag: fjorton delas då i tre grupper om 5, 5 och 4, och gruppen om fyra
+      är mindre än övningens minsta antal (R-052). Med max sju blir fjorton två grupper om sju vid
+      de två mål en plan har. Sju i en grupp ger fortfarande kort kö, eftersom nästa boll läggs till
+      rätta direkt. Jag lade också till att kön står vid sidan om målet, aldrig bakom målet eller i
       skottlinjen, och skrev om lösningen för udda antal, som blev överflödig när max höjdes.
+  - datum: 2026-09-14
+    av: benbom
+    roll: redaktör
+    kommentar: "Godkänd genom merge av pull request #4."

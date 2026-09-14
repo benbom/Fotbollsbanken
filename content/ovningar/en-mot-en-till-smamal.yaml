@@ -55,9 +55,13 @@ anpassning:
   udda_antal: Tre spelare turas om, två spelar och en väntar med en ny boll redo.
   ledare: Övningen sköter sig själv när paren väl har kommit igång.
 kalla: Egen övning, inspirerad av vanliga duellövningar mot småmål.
-status: granskad
+status: godkand
 granskning:
   - datum: 2026-09-12
     av: fotbollsexpert
     roll: fotbollsexpert
     kommentar: Duellspel mot småmål är kärninnehåll för fas-10-12 och coachningspunkterna om omställning, kroppsskydd och att möta anfallaren i vinkel är korrekta. Jag rättade tre saker. Materiallistan saknade boll helt, så jag lade till två bollar per par. Ytan var 8 x 6 meter, vilket är för trångt för att växla fart och möta i vinkel och ger onödig risk att springa in i målen, så jag ökade den till 12 x 8 meter. Beskrivningen sa att nästa par rullar in nya bollar, trots att alla par spelar samtidigt, så nu ligger extra bollar vid sidan av ytan. Jag skrev också att två koner kan ersätta minimålen, eftersom sex par kräver tolv småmål.
+  - datum: 2026-09-14
+    av: benbom
+    roll: redaktör
+    kommentar: "Godkänd genom merge av pull request #4."

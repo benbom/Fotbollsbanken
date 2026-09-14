@@ -59,10 +59,11 @@ varianter:
   svarare: En touch, direktspel, i stället för två.
 anpassning:
   fler_spelare: Bygg en till triangel bredvid med egen boll.
-  udda_antal: En femte spelare tar en fjärde punkt med den extra konen, så att formen blir en kvadrat med åtta meters sidor och spelet fyra mot en.
+  udda_antal: En femte spelare tar en fjärde punkt med den extra konen, så att formen blir en kvadrat
+    med åtta meters sidor och spelet fyra mot en.
   ledare: Med en ledare vid varje triangel kan hen påminna om touchbegränsningen och byta jagare snabbare.
 kalla: Egen övning, inspirerad av vanliga rondoövningar med touchbegränsning.
-status: granskad
+status: godkand
 granskning:
   - datum: 2026-09-13
     av: fotbollsexpert
@@ -71,14 +72,18 @@ granskning:
       Övningen fyller luckan för en Öva-övning på niva-3. Touchbegränsning och en jagare som pressar
       är just det som gör en övning svårare för en grupp som redan klarar grunderna, och den lättare
       varianten med fri touch gör den användbar på niva-2. Den ligger rätt som Öva och inte som
-      spelövning, eftersom motståndet är begränsat till en jagare och det varken finns riktning eller
-      mål. Syftet hänger ihop med huvudfokus passning-mottagning, och coachningspunkten om att titta
-      upp innan bollen kommer är det viktigaste i två touch. Åtta meters sidor och 10 x 10 meters yta
-      passar fas-10-12, och fyra spelare med lösning för udda antal delar sig jämnt vid tolv till
-      fjorton spelare. Tre egna rättelser. Bytesvillkoret sa "dålig passning", vilket ingen grupp kan
-      avgöra utan ledare, och är nu ett tydligt villkor: tappad boll, passning utanför triangeln
-      eller erövrad boll. Jag lade till en reservboll, eftersom bollen ofta går ut vid två touch och
-      hämtning annars äter upp aktiv tid. Lösningen för udda antal var en andra jagare, alltså tre
-      mot två i en triangel, vilket är för svårt för att bollen ska hållas i gång i den här åldern.
-      Nu blir formen i stället en kvadrat och spelet fyra mot en, som är den lättare och vanligare
-      formen, med en extra kon i materiallistan.
+      spelövning, eftersom motståndet är begränsat till en jagare och det varken finns riktning
+      eller mål. Syftet hänger ihop med huvudfokus passning-mottagning, och coachningspunkten om att
+      titta upp innan bollen kommer är det viktigaste i två touch. Åtta meters sidor och 10 x 10
+      meters yta passar fas-10-12, och fyra spelare med lösning för udda antal delar sig jämnt vid
+      tolv till fjorton spelare. Tre egna rättelser. Bytesvillkoret sa "dålig passning", vilket
+      ingen grupp kan avgöra utan ledare, och är nu ett tydligt villkor: tappad boll, passning
+      utanför triangeln eller erövrad boll. Jag lade till en reservboll, eftersom bollen ofta går ut
+      vid två touch och hämtning annars äter upp aktiv tid. Lösningen för udda antal var en andra
+      jagare, alltså tre mot två i en triangel, vilket är för svårt för att bollen ska hållas i gång
+      i den här åldern. Nu blir formen i stället en kvadrat och spelet fyra mot en, som är den
+      lättare och vanligare formen, med en extra kon i materiallistan.
+  - datum: 2026-09-14
+    av: benbom
+    roll: redaktör
+    kommentar: "Godkänd genom merge av pull request #4."

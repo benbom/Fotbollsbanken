@@ -53,9 +53,13 @@ anpassning:
   udda_antal: Alla har egen boll, så udda antal spelar ingen roll.
   ledare: Det räcker med en ledare som ropar ut nya krav.
 kalla: Egen övning, inspirerad av allmänt kända bollkänsloövningar i ruta.
-status: granskad
+status: godkand
 granskning:
   - datum: 2026-09-12
     av: fotbollsexpert
     roll: fotbollsexpert
     kommentar: Bra uppvärmning med egen boll åt alla och inga köer, och huvudfokus bollkänsla stämmer med innehållet. Jag ökade ytan från 18 x 14 till 20 x 20 meter, eftersom 14 spelare med varsin boll på 252 kvadratmeter blir för trångt och eftersom den svårare varianten går ut på att krympa ytan. Namnet och beskrivningen handlar om att driva bollen, inte om att jonglera, vilket är rätt för fasen även om övningens id säger något annat.
+  - datum: 2026-09-14
+    av: benbom
+    roll: redaktör
+    kommentar: "Godkänd genom merge av pull request #4."

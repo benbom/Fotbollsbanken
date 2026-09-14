@@ -60,25 +60,30 @@ varianter:
 anpassning:
   fler_spelare: Gör planen större och spela med fler spelare i varje lag.
   udda_antal: Ett lag får en spelare mer, eller en joker spelar med laget som har färre.
-  ledare: Med en ledare som dömer blir de fasta situationerna mest matchlika. Utan ledare dömer lagen själva, vilket också tränar fair play.
+  ledare: Med en ledare som dömer blir de fasta situationerna mest matchlika. Utan ledare dömer lagen
+    själva, vilket också tränar fair play.
 kalla: Egen övning, inspirerad av vanligt smålagsspel med fasta situationer inbyggda.
-status: granskad
+status: godkand
 granskning:
   - datum: 2026-09-12
     av: fotbollsexpert
     roll: fotbollsexpert
     kommentar: >-
       Att spela in de fasta situationerna i ett vanligt spel är rätt sätt att träna dem i den här
-      åldern, i stället för att öva dem torrt. Jag avgjorde måttfrågan så här. Ytan höjs från 45 x 30
-      till 50 x 30 meter, alltså SvFF minsta mått för 7 mot 7. Skälet är att övningen med flit
+      åldern, i stället för att öva dem torrt. Jag avgjorde måttfrågan så här. Ytan höjs från 45 x
+      30 till 50 x 30 meter, alltså SvFF minsta mått för 7 mot 7. Skälet är att övningen med flit
       använder fasta mål och 7 mot 7 vanliga regler för hörnor och frisparkar, och då ska avstånden
       till mål och kortlinje vara matchlika. 50 x 30 får fortfarande plats på en kvarts plan, så
-      övningen kan användas av lag som delar plan. Jag ändrade också ledarbehovet från 1 till 0.
-      Ett smålagsspel är självgående, och med ledarbehov 1 hade taket på tolv spelare per ledare
-      tvingat generatorn att dela fjorton spelare i två spel med fyra mål. Ledaren dömer från sidan
-      och att lagen ibland dömer själva tränar fair play. Jag lade till att hörnor och frisparkar
-      slås längs marken eller till en spelare som tar emot bollen, eftersom nickning inte tränas
-      före 13 år, och samma sak som coachningspunkt. Västarna angavs som två för två lag, men
-      antalet avser antal plagg, så det står nu sju till det ena laget. Jag lade till niva-3,
-      eftersom matchspel med fasta situationer fungerar på alla tre nivåer och den svårare varianten
-      med två toucher efter en återstart ger utmaning nog.
+      övningen kan användas av lag som delar plan. Jag ändrade också ledarbehovet från 1 till 0. Ett
+      smålagsspel är självgående, och med ledarbehov 1 hade taket på tolv spelare per ledare tvingat
+      generatorn att dela fjorton spelare i två spel med fyra mål. Ledaren dömer från sidan och att
+      lagen ibland dömer själva tränar fair play. Jag lade till att hörnor och frisparkar slås längs
+      marken eller till en spelare som tar emot bollen, eftersom nickning inte tränas före 13 år,
+      och samma sak som coachningspunkt. Västarna angavs som två för två lag, men antalet avser
+      antal plagg, så det står nu sju till det ena laget. Jag lade till niva-3, eftersom matchspel
+      med fasta situationer fungerar på alla tre nivåer och den svårare varianten med två toucher
+      efter en återstart ger utmaning nog.
+  - datum: 2026-09-14
+    av: benbom
+    roll: redaktör
+    kommentar: "Godkänd genom merge av pull request #4."

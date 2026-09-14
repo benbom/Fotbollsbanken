@@ -53,9 +53,13 @@ anpassning:
   udda_antal: En trea roterar, två dribblar och byter mot den tredje efter varje försök.
   ledare: Med en ledare i närheten kan hen ropa ut för alla par samtidigt när intensiteten ska höjas.
 kalla: Egen övning, inspirerad av allmänt känd 1 mot 1-träning med stigande motstånd.
-status: granskad
+status: godkand
 granskning:
   - datum: 2026-09-12
     av: fotbollsexpert
     roll: fotbollsexpert
     kommentar: Stigande motstånd från passiv till aktiv försvarare är rätt sätt att öva dribbling i fas-10-12, och coachningspunkterna om fint, kroppsskydd och fartväxling är korrekta. Jag ändrade ledarbehovet från 1 till 0, eftersom 1 gäller per grupp och tolv spelare då hade krävt sex ledare. Att ropa när intensiteten höjs klarar en ledare för alla par samtidigt, vilket nu står i organisationen. Jag skrev också om målen till konmål, eftersom materiallistan bara har koner, och angav hur många koner som behövs.
+  - datum: 2026-09-14
+    av: benbom
+    roll: redaktör
+    kommentar: "Godkänd genom merge av pull request #4."

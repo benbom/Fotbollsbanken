@@ -24,7 +24,8 @@ niva:
 passdelar:
   - del-spel
 ledarbehov: 2
-ledaruppgift: En ledare vid varje mål coachar sin målvakt i utkast, positionering och spel med fötterna, och styr byte av vem som står i mål.
+ledaruppgift: En ledare vid varje mål coachar sin målvakt i utkast, positionering och spel med
+  fötterna, och styr byte av vem som står i mål.
 spelare:
   min: 10
   max: 14
@@ -60,7 +61,7 @@ anpassning:
   udda_antal: Ett lag får en utespelare mer i stället för att sakna målvakt.
   ledare: Med bara en ledare coachas målvakterna växelvis, en period i taget.
 kalla: Egen övning, inspirerad av vanligt smålagsspel med fokus på målvaktens spel med fötterna.
-status: granskad
+status: godkand
 granskning:
   - datum: 2026-09-12
     av: fotbollsexpert
@@ -74,3 +75,7 @@ granskning:
       i beskrivningen med koner i materiallistan. Utan dem faller själva poängen med övningen, för
       det är retreatlinjen som ger målvakten tid att spela ut bollen med fötterna. Västarna angavs
       som två för två lag, men antalet avser antal plagg, så det står nu sju till det ena laget.
+  - datum: 2026-09-14
+    av: benbom
+    roll: redaktör
+    kommentar: "Godkänd genom merge av pull request #4."

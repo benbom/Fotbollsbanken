@@ -25,7 +25,8 @@ niva:
 passdelar:
   - del-spelovning
 ledarbehov: 1
-ledaruppgift: Ledaren styr när rollerna byts och påminner målvakten om att lägga ner bollen och spela med fötterna i stället för att sparka ut den.
+ledaruppgift: Ledaren styr när rollerna byts och påminner målvakten om att lägga ner bollen och
+  spela med fötterna i stället för att sparka ut den.
 spelare:
   min: 7
   max: 7
@@ -62,20 +63,24 @@ anpassning:
   udda_antal: En spelare vilar och byter in med den som var mest aktiv i pressen.
   ledare: Utan extra ledare får den ordinarie ledaren också hålla koll på tiden för rollbyte.
 kalla: Egen övning, inspirerad av speluppbyggnad som utnyttjar retreatlinjen i 7 mot 7.
-status: granskad
+status: godkand
 granskning:
   - datum: 2026-09-12
     av: fotbollsexpert
     roll: fotbollsexpert
     kommentar: >-
       Speluppbyggnad från målvakten är kärninnehåll i 7 mot 7, eftersom retreatlinjen ger tid och
-      målvakten inte får sparka ut bollen ur händerna, och coachningspunkten om att lägga ner
-      bollen och passa är korrekt. Jag avgjorde de två frågorna så här. Antalet sju behålls, alltså
-      målvakt och tre som bygger upp mot tre som pressar. Tre utespelare räcker för att skapa
-      bredd och en passningsväg framåt, och fler skulle göra ytan trång. Däremot ändrade jag syftet,
-      eftersom lagdelar är ett begrepp för 9 mot 9 och äldre. Syftet handlar nu om att spela ut från
-      målvakten och vidare framåt, vilket är det fokusomraden.md menar med speluppbyggnad i den
-      här åldern. Jag tog också bort ordet passiva. Övningen ligger i spelövningsdelen och på nivå
-      2 och 3, och där ska pressen vara verklig, precis som coachningspunkterna förutsätter. Den
-      lättare varianten med bara en pressande spelare är rätt sätt att sänka svårigheten. Jag lade
-      till fyra koner för att märka ut ytan.
+      målvakten inte får sparka ut bollen ur händerna, och coachningspunkten om att lägga ner bollen
+      och passa är korrekt. Jag avgjorde de två frågorna så här. Antalet sju behålls, alltså målvakt
+      och tre som bygger upp mot tre som pressar. Tre utespelare räcker för att skapa bredd och en
+      passningsväg framåt, och fler skulle göra ytan trång. Däremot ändrade jag syftet, eftersom
+      lagdelar är ett begrepp för 9 mot 9 och äldre. Syftet handlar nu om att spela ut från
+      målvakten och vidare framåt, vilket är det fokusomraden.md menar med speluppbyggnad i den här
+      åldern. Jag tog också bort ordet passiva. Övningen ligger i spelövningsdelen och på nivå 2 och
+      3, och där ska pressen vara verklig, precis som coachningspunkterna förutsätter. Den lättare
+      varianten med bara en pressande spelare är rätt sätt att sänka svårigheten. Jag lade till fyra
+      koner för att märka ut ytan.
+  - datum: 2026-09-14
+    av: benbom
+    roll: redaktör
+    kommentar: "Godkänd genom merge av pull request #4."

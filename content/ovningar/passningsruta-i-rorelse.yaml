@@ -54,9 +54,13 @@ anpassning:
   udda_antal: Den femte spelaren går in i rutan, en vilar och byter in efter någon minut.
   ledare: Utan ledare klarar sig övningen själv när den väl är igång.
 kalla: Egen övning, inspirerad av allmänt känd passningsövning i rörlig ruta.
-status: granskad
+status: godkand
 granskning:
   - datum: 2026-09-12
     av: fotbollsexpert
     roll: fotbollsexpert
     kommentar: Godkänd utan ändringar. Syftet, huvudfokus passning-mottagning och innehållet hänger ihop, och första touchen och rörelsen efter passningen är rätt innehåll för fas-10-12. Fyra spelare och en boll på 10 x 10 meter ger många bollkontakter utan kö, övningen är självgående när den är igång, och de båda varianterna är verkliga steg i svårighet. Lösningen för udda antal med en femte spelare som byter in fungerar.
+  - datum: 2026-09-14
+    av: benbom
+    roll: redaktör
+    kommentar: "Godkänd genom merge av pull request #4."

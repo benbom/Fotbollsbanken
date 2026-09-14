@@ -58,9 +58,10 @@ varianter:
 anpassning:
   fler_spelare: Bygg en till yta med samma uppställning och ett eget mål bredvid.
   udda_antal: En femte spelare rullar in nya bollar och byts in som ny försvarare efter varje mål.
-  ledare: Övningen sköter sig själv när gruppen förstått rollerna, men en ledare kan gå mellan ytorna och ge tips.
+  ledare: Övningen sköter sig själv när gruppen förstått rollerna, men en ledare kan gå mellan ytorna
+    och ge tips.
 kalla: Egen övning, inspirerad av vanliga överlägesövningar mot mål.
-status: granskad
+status: godkand
 granskning:
   - datum: 2026-09-13
     av: fotbollsexpert
@@ -72,10 +73,14 @@ granskning:
       hitta en fri passningsväg i överläge, hänger ihop med huvudfokus spelbarhet, och avslut som
       andra fokus stämmer med att varje omgång slutar i ett skott. Organisationen är enkel nog att
       visas på under en minut. Gruppstorleken fungerar bra i generatorn: fyra spelare med lösning
-      för udda antal ger hela grupper vid tolv, tretton och fjorton spelare, och med ledarbehov 0 kan
-      alla tre ytorna köras med en ledare. Ytan 18 x 12 meter och minimål utan målvakt är rimliga för
-      fas-10-12, och utan målvakt finns ingen risk i skottmomentet. Varianterna är verkliga steg:
-      passiv försvarare i början, tidsgräns som svårare. En egen rättelse. Beskrivningen sa bara att
-      rollerna byts, inte i vilken ordning. Med ledarbehov 0 måste bytet vara självgående, annars
-      blir det diskussion i varje omgång, så jag skrev in att gruppen bestämmer en turordning i
-      början och att försvararrollen går vidare ett steg i den ordningen.
+      för udda antal ger hela grupper vid tolv, tretton och fjorton spelare, och med ledarbehov 0
+      kan alla tre ytorna köras med en ledare. Ytan 18 x 12 meter och minimål utan målvakt är
+      rimliga för fas-10-12, och utan målvakt finns ingen risk i skottmomentet. Varianterna är
+      verkliga steg: passiv försvarare i början, tidsgräns som svårare. En egen rättelse.
+      Beskrivningen sa bara att rollerna byts, inte i vilken ordning. Med ledarbehov 0 måste bytet
+      vara självgående, annars blir det diskussion i varje omgång, så jag skrev in att gruppen
+      bestämmer en turordning i början och att försvararrollen går vidare ett steg i den ordningen.
+  - datum: 2026-09-14
+    av: benbom
+    roll: redaktör
+    kommentar: "Godkänd genom merge av pull request #4."

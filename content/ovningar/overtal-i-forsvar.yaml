@@ -24,7 +24,8 @@ niva:
 passdelar:
   - del-spelovning
 ledarbehov: 1
-ledaruppgift: Ledaren styr byte av försvarare, servar nya bollar och stoppar kort för att peka på var täckningen brast.
+ledaruppgift: Ledaren styr byte av försvarare, servar nya bollar och stoppar kort för att peka på
+  var täckningen brast.
 spelare:
   min: 5
   max: 5
@@ -55,23 +56,26 @@ coachningspunkter:
   - Prata med varandra om vem som tar vem.
   - Sikta på att styra anfallaren bort från mål, inte bara jaga bollen.
 varianter:
-  lattare: Smalare yta, 20 x 14 meter, och åtta meter mellan målen, så att försvararna har mindre yta att täcka.
-  svarare: Bredare yta, 30 x 22 meter, och tolv meter mellan målen, så att försvararna måste täcka på bredden också.
+  lattare: Smalare yta, 20 x 14 meter, och åtta meter mellan målen, så att försvararna har mindre yta
+    att täcka.
+  svarare: Bredare yta, 30 x 22 meter, och tolv meter mellan målen, så att försvararna måste täcka på
+    bredden också.
 anpassning:
   fler_spelare: Bygg en andra yta med samma uppställning bredvid.
   udda_antal: En sjätte spelare rullar in nya bollar i stället för att spela.
-  ledare: En ledare per yta hinner både serva bollar och coacha. Med två ledare kan en serva och en coacha försvararna.
+  ledare: En ledare per yta hinner både serva bollar och coacha. Med två ledare kan en serva och en
+    coacha försvararna.
 kalla: Egen övning, inspirerad av vanliga övertalsövningar i försvarsspel.
-status: granskad
+status: godkand
 granskning:
   - datum: 2026-09-12
     av: fotbollsexpert
     roll: fotbollsexpert
     kommentar: >-
-      Tre mot två är en bra form för att öva press och täckning, och coachningspunkterna är
-      korrekta och begripliga. Tre saker måste ändras innan övningen kan användas. 1. Materiallistan
-      saknar mål, trots att beskrivningen och coachningspunkterna utgår från ett mål. Utan mål i
-      listan visar passet ingen påminnelse om att mål ska vara förankrade. 2. Ta ställning till vad
+      Tre mot två är en bra form för att öva press och täckning, och coachningspunkterna är korrekta
+      och begripliga. Tre saker måste ändras innan övningen kan användas. 1. Materiallistan saknar
+      mål, trots att beskrivningen och coachningspunkterna utgår från ett mål. Utan mål i listan
+      visar passet ingen påminnelse om att mål ska vara förankrade. 2. Ta ställning till vad
       anfallarna ska göra mål i. Gruppen är fem spelare utan målvakt, och ett tomt mål på fem gånger
       två meter gör att varje skott blir mål, vilket tar bort poängen med att täcka skottläget. Jag
       rekommenderar två minimål på kortlinjen i stället, eftersom försvararna då måste välja vilket
@@ -96,9 +100,13 @@ granskning:
       användaren känna till. Övningen kräver en ledare per yta, alltså två ledare vid tolv spelare,
       och den kan inte användas alls vid tretton, fjorton eller nitton spelare: fjorton delas i tre
       grupper om 5, 5 och 4, och gruppen om fyra är mindre än övningens minsta antal (R-052). Det är
-      en följd av att gruppen är fast vid fem spelare och inte ett fel i övningen, men det betyder att
-      forsvarsspel som valt fokus saknar övning vid de vanligaste lagstorlekarna. Banken behöver
+      en följd av att gruppen är fast vid fem spelare och inte ett fel i övningen, men det betyder
+      att forsvarsspel som valt fokus saknar övning vid de vanligaste lagstorlekarna. Banken behöver
       därför på sikt en försvarsövning till, med en gruppstorlek som delar sig jämnare, till exempel
       fyra eller sex spelare. Två mindre rättelser: bollarna höjs från två till fyra, eftersom
       omgångarna är korta och skotten går ut, och raden om ledare beskriver nu vad en respektive två
       ledare gör i stället för att antyda att övningen går utan ledare.
+  - datum: 2026-09-14
+    av: benbom
+    roll: redaktör
+    kommentar: "Godkänd genom merge av pull request #4."

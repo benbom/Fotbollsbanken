@@ -56,9 +56,13 @@ anpassning:
   udda_antal: Alla kör med egen boll i eget tempo, så udda antal spelar ingen roll.
   ledare: Med fler ledare kan en peppa vid start och en vid hindren.
 kalla: Egen övning, inspirerad av vanliga koordinationsbanor med boll.
-status: granskad
+status: godkand
 granskning:
   - datum: 2026-09-12
     av: fotbollsexpert
     roll: fotbollsexpert
     kommentar: Innehåll, syfte och fokusområden hänger ihop och passar uppvärmning för 10-12 år. Jag ändrade antalet spelare per grupp från 6-16 till 4-8, eftersom organisationen säger en bana per grupp om upp till åtta och eftersom 16 spelare på en bana ger för lång kö för fasen. Med max 8 delar generatorn själv upp i flera banor. Jag förklarade också vad de åtta konerna används till.
+  - datum: 2026-09-14
+    av: benbom
+    roll: redaktör
+    kommentar: "Godkänd genom merge av pull request #4."
