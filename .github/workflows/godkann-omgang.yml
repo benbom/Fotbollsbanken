@@ -1,11 +1,13 @@
-# Satter status: godkand pa omgangens granskade ovningar efter att agaren mergat pull requesten
-# (ADR 0013 avsnitt 4). Utlosaren ar push till main, aldrig pull_request eller
-# pull_request_target: ett arbetsflode som utloses av en pull request kors fran pull requestens
-# egen version av filen, och en gren skulle da kunna skriva om filen och fa contents: write.
+# Sätter status: godkand på omgångens granskade övningar efter att ägaren mergat pull requesten
+# (ADR 0013 avsnitt 4). Utlösaren är push till main, aldrig pull_request eller
+# pull_request_target: ett arbetsflöde som utlöses av en pull request körs från pull requestens
+# egen version av filen, och en gren skulle då kunna skriva om filen och få contents: write.
 #
-# Jobb 1 laser, validerar hela banken och visar vad som skulle andras. Jobb 2 kraver miljon
-# godkannande, som vantar pa agarens andra klick, och ar det enda jobb som har contents: write.
-name: Godkann omgang
+# Jobb 1 läser, validerar hela banken och visar vad som skulle ändras. Jobb 2 kräver miljön
+# godkännande, som väntar på ägarens andra klick, och är det enda jobb som pushar. Båda jobben
+# kor med contents: read: GITHUB_TOKEN kan inte skriva till main. Pushen sker i stället over SSH
+# med deploy-nyckeln i hemligheten GODKANN_OMGANG_DEPLOY_KEY (ADR 0014).
+name: Godkänn omgång
 
 on:
   push:
@@ -16,15 +18,15 @@ on:
 permissions:
   contents: read
 
-# Tva korningar far aldrig skriva till main samtidigt, och en pagaende korning avbryts inte:
-# den kan sta och vanta pa miljogodkannandet.
+# Två körningar får aldrig skriva till main samtidigt, och en pågående körning avbryts inte:
+# den kan stå och vänta på miljögodkännandet.
 concurrency:
   group: godkann-omgang
   cancel-in-progress: false
 
 jobs:
   forbered:
-    name: Validera banken och visa vad som skulle andras
+    name: Validera banken och visa vad som skulle ändras
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -34,14 +36,14 @@ jobs:
       av: ${{ steps.pull.outputs.av }}
       antal: ${{ steps.torrkorning.outputs.antal }}
     steps:
-      - name: Hamta koden
+      - name: Hämta koden
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # Bada commitarna i pushen behovs, eftersom skriptet jamfor dem.
+          # Båda commitarna i pushen behövs, eftersom skriptet jämför dem.
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Satt upp Node
+      - name: Sätt upp Node
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version-file: .nvmrc
@@ -50,10 +52,10 @@ jobs:
       - name: Installera beroenden
         run: npm ci
 
-      - name: Validera hela ovningsbanken
+      - name: Validera hela övningsbanken
         run: npm run validera:ovningar
 
-      - name: Sla upp den mergade pull requesten
+      - name: Slå upp den mergade pull requesten
         id: pull
         env:
           GH_TOKEN: ${{ github.token }}
@@ -63,7 +65,7 @@ jobs:
           nummer=$(gh api "repos/$REPO/commits/$SHA/pulls" \
             --jq 'map(select(.merged_at != null)) | first | .number // empty')
           if [ -z "$nummer" ]; then
-            echo "Ingen mergad pull request for $SHA. Ingenting skrivs."
+            echo "Ingen mergad pull request för $SHA. Ingenting skrivs."
             exit 0
           fi
           av=$(gh api "repos/$REPO/pulls/$nummer" --jq '.merged_by.login // empty')
@@ -71,11 +73,11 @@ jobs:
             echo "Pull request #$nummer saknar merged_by. Ingenting skrivs."
             exit 0
           fi
-          echo "Omgangen kommer fran pull request #$nummer, mergad av $av."
+          echo "Omgången kommer från pull request #$nummer, mergad av $av."
           echo "nummer=$nummer" >> "$GITHUB_OUTPUT"
           echo "av=$av" >> "$GITHUB_OUTPUT"
 
-      - name: Torrkorning
+      - name: Torrkörning
         id: torrkorning
         if: steps.pull.outputs.nummer != ''
         env:
@@ -90,24 +92,28 @@ jobs:
           echo "antal=$(grep -c '^Lyfter ' torrkorning.txt || true)" >> "$GITHUB_OUTPUT"
 
   skriv:
-    name: Satt godkand pa omgangens granskade ovningar
+    name: Sätt godkand på omgångens granskade övningar
     needs: forbered
-    # Kors inte alls nar omgangen inte innehaller nagon granskad ovning, sa att miljon inte
-    # ber om ett godkannande i onodan.
+    # Körs inte alls när omgången inte innehåller någon granskad övning, så att miljön inte
+    # ber om ett godkännande i onödan.
     if: needs.forbered.outputs.antal != '' && needs.forbered.outputs.antal != '0'
     runs-on: ubuntu-latest
-    # Miljon vantar pa agarens andra klick. Utan den skulle skrivningen folja av mergen ensam.
+    # Miljon väntar på ägarens andra klick. Utan den skulle skrivningen följa av mergen ensam.
     environment: godkannande
+    # Jobbet pushar med deploy-nyckeln, inte med GITHUB_TOKEN, så token behöver ingen skrivrätt.
     permissions:
-      contents: write
+      contents: read
     steps:
-      - name: Hamta koden
+      - name: Hämta koden
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.sha }}
           fetch-depth: 0
+          # Den inbyggda token får inte ligga kvar i git-konfigurationen: den kan ändå inte
+          # pusha till main, och pushen ska ske med deploy-nyckeln.
+          persist-credentials: false
 
-      - name: Satt upp Node
+      - name: Sätt upp Node
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version-file: .nvmrc
@@ -116,7 +122,7 @@ jobs:
       - name: Installera beroenden
         run: npm ci
 
-      - name: Satt godkand
+      - name: Sätt godkand
         env:
           FORE: ${{ github.event.before }}
           EFTER: ${{ github.sha }}
@@ -129,11 +135,38 @@ jobs:
       - name: Validera banken efter skrivningen
         run: npm run validera:ovningar
 
+      # Nyckeln skrivs till en fil som bara körningen kan läsa, och pekas ut med core.sshCommand
+      # så att den gäller pushen nedan. Värdnyckeln förankras med ssh-keyscan i stället för att
+      # stängas av med StrictHostKeyChecking=no. Ingenting av detta echas.
+      - name: Sätt upp deploy-nyckeln
+        env:
+          DEPLOY_KEY: ${{ secrets.GODKANN_OMGANG_DEPLOY_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${DEPLOY_KEY:-}" ]; then
+            echo "Hemligheten GODKANN_OMGANG_DEPLOY_KEY saknas. Pushen kan inte ske." >&2
+            exit 1
+          fi
+          umask 077
+          mkdir -p "$HOME/.ssh"
+          chmod 700 "$HOME/.ssh"
+          printf '%s\n' "$DEPLOY_KEY" > "$HOME/.ssh/godkann-omgang"
+          chmod 600 "$HOME/.ssh/godkann-omgang"
+          ssh-keyscan github.com > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/known_hosts"
+          if [ ! -s "$HOME/.ssh/known_hosts" ]; then
+            echo "ssh-keyscan gav ingen värdnyckel för github.com. Pushen kan inte ske." >&2
+            exit 1
+          fi
+          git config core.sshCommand \
+            "ssh -i $HOME/.ssh/godkann-omgang -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$HOME/.ssh/known_hosts"
+
       - name: Committa och pusha till main
         env:
           PR: ${{ needs.forbered.outputs.pr }}
           GREN: ${{ github.ref_name }}
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- content/ovningar
@@ -142,4 +175,12 @@ jobs:
             exit 0
           fi
           git commit --message "Sätt godkand på omgången från pull request #$PR"
-          git push origin "HEAD:$GREN"
+          # Deploy-nyckeln är registrerad på liebertech/Fotbollsbanken och är den enda aktör
+          # som regeluppsättningen Skydd av main gör undantag för (ADR 0014).
+          git push git@github.com:liebertech/Fotbollsbanken.git "HEAD:$GREN"
+
+      - name: Ta bort nyckelfilen
+        if: always()
+        run: |
+          rm -f "$HOME/.ssh/godkann-omgang"
+          git config --unset core.sshCommand || true

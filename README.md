@@ -72,8 +72,10 @@ att `src/` och `scripts/` typkontrolleras med skilda `tsconfig`-filer (ADR 0001)
 
 `main` är skyddad och tar bara emot pull requests. En övning publiceras i den gemensamma banken
 först när en människa har godkänt den: statusen `godkand` skrivs bara av arbetsflödet
-`godkann-omgang` som svar på ett godkännande i GitHub, aldrig för hand och aldrig av en agent
-(ADR 0010, avsnitt 3).
+`godkann-omgang` efter att användaren har mergat omgångens pull request med sitt eget
+GitHub-konto, aldrig för hand och aldrig av en agent ([ADR 0013](docs/adr/0013-godkannande-genom-merge.md)).
+Arbetsflödet pushar statuscommiten med en deploy-nyckel, se
+[ADR 0014](docs/adr/0014-deploy-nyckel-for-statusskrivningen.md).
 
 Gränssnitt, dokumentation och commit-meddelanden skrivs på svenska. Kod och identifierare skrivs
 på engelska, medan domänens nycklar och fältnamn behåller sin svenska stavning.
