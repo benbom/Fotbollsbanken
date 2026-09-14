@@ -39,8 +39,8 @@ aktörstyp som gick att peka ut som undantag i regeluppsättningen.
 | Skydd av `main` | Regeluppsättningen **`Skydd av main`**, id 23264498. Inget klassiskt grenskydd |
 | Regler i den | `deletion`, `non_fast_forward`, `pull_request` med noll krävda godkännanden, `required_status_checks` med `kontroll` och `godkannande` |
 | Undantag i den | **`DeployKey`, `always`**. Enda aktörstypen som gick att peka ut |
-| Nyckel | En ed25519-deploy-nyckel med skrivrätt, id 163224793, titel `godkann-omgang: skriver status efter merge` |
-| Hemlighet | Den privata nyckeln som repohemligheten `GODKANN_OMGANG_DEPLOY_KEY`. Lokala kopior raderade |
+| Nyckel | En ed25519-deploy-nyckel med skrivrätt, id 163226546, titel `godkann-omgang: skriver status efter merge (miljöhemlighet)`. Den första nyckeln, id 163224793, återkallades när hemligheten flyttades till miljön, eftersom en privat nyckel inte går att läsa ut ur en hemlighet och alltså inte kan flyttas |
+| Hemlighet | Den privata nyckeln som **miljöhemligheten** `GODKANN_OMGANG_DEPLOY_KEY` på miljön `godkannande`. Repot har inga repohemligheter. Lokala kopior raderade |
 | Miljö | `godkannande` med användaren som krävd granskare, självgranskning tillåten |
 | Hemlighetsskanning och pushskydd | Återställda efter flytten |
 
@@ -128,10 +128,11 @@ stämmer inte längre. Kedjan har nu **två** förtroendepunkter, vid sidan av v
 Skillnaden mot ADR 0013 är att den andra punkten är en **hemlighet** och inte en identitet. En
 hemlighet kan kopieras utan spår, den syns inte i någon inloggningshistorik hos GitHub på samma
 sätt som ett konto, och en push med den ser i historiken ut som vilken push som helst från
-`github-actions[bot]`, eftersom arbetsflödet sätter det namnet på commiten. Att nyckeln i dag bara
-finns som repohemlighet minskar risken men tar inte bort den: den som kan ändra ett arbetsflöde på
-`main` kan också läsa ut hemligheten i ett eget steg, och den vägen står redan beskriven i ADR 0013
-under *En pull request kan skriva om sin egen domare*.
+`github-actions[bot]`, eftersom arbetsflödet sätter det namnet på commiten. Att nyckeln bara finns
+som miljöhemlighet minskar risken men tar inte bort den: den som kan ändra ett arbetsflöde på
+`main` kan lägga till ett jobb med `environment: godkannande` och läsa ut hemligheten där. Skillnaden
+mot en repohemlighet är att ett sådant jobb måste passera användarens andra klick först. Vägen står
+redan beskriven i ADR 0013 under *En pull request kan skriva om sin egen domare*.
 
 ### 5 Vad som mildrar det
 
@@ -143,13 +144,13 @@ under *En pull request kan skriva om sin egen domare*.
 | **Miljön `godkannande` kräver fortfarande användarens andra klick** innan jobbet `skriv` startar | Skrivningen är fortfarande en medveten mänsklig handling, inte en följd av mergen. Hemligheten lämnas dessutom inte ut till jobbet förrän miljön har släppt fram det | Skyddar bara det legitima arbetsflödet. Den som har nyckelns innehåll behöver ingen miljö |
 | **Nyckeln är läs- och skrivbegränsad till ett repo** | Till skillnad från ett personligt åtkomsttoken når den ingenting annat som användaren äger | Inom repot är den obegränsad |
 
-**En mildring som ännu inte är gjord.** Nyckeln ligger i dag som **repohemlighet**. En
-repohemlighet kan läsas av vilket jobb som helst i vilket arbetsflöde som helst på `main`, också
-ett jobb utan miljö. Flyttas den i stället till en **miljöhemlighet på `godkannande`** kan bara ett
-jobb som passerat användarens andra klick komma åt den, och miljögodkännandet blir en spärr framför
-själva hemligheten och inte bara framför jobbet. Det är en inställning i GitHub, inte en ändring i
-repot, och den rekommenderas. Arbetsflödet behöver inte ändras: `secrets.GODKANN_OMGANG_DEPLOY_KEY`
-läses likadant i ett jobb med `environment: godkannande`.
+**Hemligheten ligger på miljön, inte på repot.** En repohemlighet kan läsas av vilket jobb som
+helst i vilket arbetsflöde som helst på `main`, också ett jobb utan miljö. Nyckeln lades därför om
+till en **miljöhemlighet på `godkannande`**, så att bara ett jobb som passerat användarens andra
+klick kommer åt den. Miljögodkännandet är därmed en spärr framför själva hemligheten och inte bara
+framför jobbet. Arbetsflödet behövde ingen ändring: `secrets.GODKANN_OMGANG_DEPLOY_KEY` läses
+likadant i ett jobb med `environment: godkannande`. Omläggningen krävde en ny nyckel, eftersom en
+privat nyckel inte går att läsa ut ur en hemlighet för att flyttas.
 
 Kvar står alltså: allt som ADR 0013 räknar upp som teknik gäller fortfarande för vägen genom en
 pull request. Det som tillkommit är en väg vid sidan av, som bara hålls stängd av att hemligheten
@@ -187,7 +188,7 @@ körningen är kortlivad. Frågan lyfts under *Beslut som behövs*.
 
 1. Skapa ett nytt ed25519-par utanför repot: `ssh-keygen -t ed25519 -N "" -C godkann-omgang -f <sökväg utanför arbetskatalogen>`.
 2. Lägg upp den publika nyckeln som deploy-nyckel **med skrivrätt**, med titel och datum.
-3. Byt värdet i repohemligheten `GODKANN_OMGANG_DEPLOY_KEY` mot den nya privata nyckeln.
+3. Byt värdet i miljöhemligheten `GODKANN_OMGANG_DEPLOY_KEY` på miljön `godkannande` mot den nya privata nyckeln (`gh secret set … --env godkannande`).
 4. Kör en omgång och kontrollera att jobbet `skriv` pushar. Faller det: värdet i hemligheten är fel,
    inte nyckeln på repot.
 5. **Ta bort den gamla deploy-nyckeln.** Under steg 2–5 har repot två nycklar som kan förbigå
@@ -195,7 +196,7 @@ körningen är kortlivad. Frågan lyfts under *Beslut som behövs*.
 6. Radera de lokala kopiorna av båda nycklarna.
 7. Kontrollera att repots lista över deploy-nycklar innehåller **exakt en**.
 
-**Om nyckeln läcker.** Läckt är den så snart den lämnat repohemligheten: i en logg, en fil, en
+**Om nyckeln läcker.** Läckt är den så snart den lämnat miljöhemligheten: i en logg, en fil, en
 skärmdump eller en chatt.
 
 1. **Ta bort deploy-nyckeln på repot omedelbart.** Det är den enda åtgärd som stoppar skrivningen.
@@ -233,8 +234,8 @@ kontrolleras vid varje K4 med `repos/liebertech/Fotbollsbanken/rules/branches/ma
 |---|---|---|
 | Regeluppsättningen `Skydd av main` | Aktiv, med `pull_request` (noll krävda godkännanden), `required_status_checks` (`kontroll`, `godkannande`), `non_fast_forward` och `deletion` | Samma följder som i ADR 0013: antingen låser sig repot eller så är `main` oskyddad |
 | Undantag i den | `DeployKey, always`, och inget annat | Arbetsflödet kan inte pusha, och ingen omgång blir godkänd |
-| Antal deploy-nycklar med skrivrätt på repot | **Exakt en**, id 163224793 | Undantaget gäller aktörstypen, så varje ytterligare nyckel är ytterligare en väg förbi alla regler |
-| Hemligheten `GODKANN_OMGANG_DEPLOY_KEY` | Den privata halvan av just den nyckeln. Ligger i dag som repohemlighet och bör flyttas till en miljöhemlighet på `godkannande` (avsnitt 5) | Jobbet `skriv` faller, men först efter att miljön har släppt fram det. Som repohemlighet kan den dessutom läsas av varje jobb på `main` |
+| Antal deploy-nycklar med skrivrätt på repot | **Exakt en**, id 163226546 | Undantaget gäller aktörstypen, så varje ytterligare nyckel är ytterligare en väg förbi alla regler |
+| Hemligheten `GODKANN_OMGANG_DEPLOY_KEY` | Den privata halvan av just den nyckeln. Ligger som miljöhemlighet på `godkannande` (avsnitt 5) | Jobbet `skriv` faller, men först efter att miljön har släppt fram det |
 | Miljön `godkannande` | Användaren som krävd granskare | Skrivningen sker utan det andra klicket |
 | Hemlighetsskanning och pushskydd | På | En läckt nyckel i en commit upptäcks inte |
 | Förvalt `GITHUB_TOKEN`-läge | Read-only | ADR 0002 beslut 4 faller |
