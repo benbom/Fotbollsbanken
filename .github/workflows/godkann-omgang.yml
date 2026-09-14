@@ -3,6 +3,15 @@
 # pull_request_target: ett arbetsflöde som utlöses av en pull request körs från pull requestens
 # egen version av filen, och en gren skulle då kunna skriva om filen och få contents: write.
 #
+# workflow_dispatch finns för att köra om skrivningen för en omgång som redan är mergad. En
+# push-utlöst körning hämtar arbetsflödet ur den pushade commiten, så ordningen mellan mergar
+# spelar roll: en omgång som mergades före en ändring av arbetsflödet kördes med den gamla
+# filen, och en omkörning av den körningen använder samma commit och samma gamla fil
+# (ADR 0014 avsnitt 8). Vid dispatch anges intervallet och pull requesten för hand, men
+# spärrarna är desamma: pull requesten måste vara mergad och ha kommit in med just den
+# commiten, kontot i granskningsraden hämtas ur API:t och inte ur indata, och jobbet skriv
+# kräver fortfarande miljön godkannande.
+#
 # Jobb 1 läser, validerar hela banken och visar vad som skulle ändras. Jobb 2 kräver miljön
 # godkännande, som väntar på ägarens andra klick, och är det enda jobb som pushar. Båda jobben
 # kor med contents: read: GITHUB_TOKEN kan inte skriva till main. Pushen sker i stället over SSH
@@ -14,6 +23,17 @@ on:
     branches: [main]
     paths:
       - content/ovningar/**
+  workflow_dispatch:
+    inputs:
+      commit_fore:
+        description: Commiten före omgången, alltså den commit på main som omgången mergades ovanpå
+        required: true
+      commit_efter:
+        description: Commiten omgången kom in med, alltså merge-commiten på main
+        required: true
+      pull_request:
+        description: Pull requestens nummer. Den måste vara mergad och ha kommit in med commiten ovan
+        required: true
 
 permissions:
   contents: read
@@ -32,6 +52,9 @@ jobs:
       contents: read
       pull-requests: read
     outputs:
+      fore: ${{ steps.intervall.outputs.fore }}
+      efter: ${{ steps.intervall.outputs.efter }}
+      utcheckning: ${{ steps.intervall.outputs.utcheckning }}
       pr: ${{ steps.pull.outputs.nummer }}
       av: ${{ steps.pull.outputs.av }}
       antal: ${{ steps.torrkorning.outputs.antal }}
@@ -39,7 +62,8 @@ jobs:
       - name: Hämta koden
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # Båda commitarna i pushen behövs, eftersom skriptet jämför dem.
+          # Hela historiken behövs, eftersom skriptet jämför två commits. Vid en dispatch kan de
+          # ligga längre bak än pushens två.
           fetch-depth: 0
           persist-credentials: false
 
@@ -55,23 +79,89 @@ jobs:
       - name: Validera hela övningsbanken
         run: npm run validera:ovningar
 
+      - name: Bestäm intervallet
+        id: intervall
+        env:
+          HANDELSE: ${{ github.event_name }}
+          IN_FORE: ${{ inputs.commit_fore }}
+          IN_EFTER: ${{ inputs.commit_efter }}
+          PUSH_FORE: ${{ github.event.before }}
+          PUSH_EFTER: ${{ github.sha }}
+          GREN: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          if [ "$HANDELSE" = "workflow_dispatch" ]; then
+            fore=$(git rev-parse --verify "${IN_FORE}^{commit}")
+            efter=$(git rev-parse --verify "${IN_EFTER}^{commit}")
+            # Intervallet styr vilka filer som lyfts. Commiten före omgången ska därför vara
+            # merge-commitens första förälder, precis som github.event.before är i en push.
+            # Annars kan en dispatch svepa in granskade övningar ur andra omgångar.
+            forsta=$(git rev-parse --verify "${efter}^1")
+            if [ "$fore" != "$forsta" ]; then
+              echo "Commiten före omgången är $fore, men $efter har $forsta som första" >&2
+              echo "förälder. Intervallet stämmer inte med mergen. Ingenting skrivs." >&2
+              exit 1
+            fi
+            # Skrivningen pushar till grenens topp, så jobbet skriv checkar ut grenen och inte
+            # merge-commiten: pushen ska vara en snabbspolning, aldrig en omskriven historik.
+            utcheckning="$GREN"
+          else
+            fore="$PUSH_FORE"
+            efter="$PUSH_EFTER"
+            utcheckning="$PUSH_EFTER"
+          fi
+          echo "Intervall: $fore..$efter"
+          {
+            echo "fore=$fore"
+            echo "efter=$efter"
+            echo "utcheckning=$utcheckning"
+          } >> "$GITHUB_OUTPUT"
+
+      # Vem som godkände hämtas alltid ur API:t. Vid en dispatch anger den som startar körningen
+      # bara pull requestens nummer: skulle kontot komma ur indata kunde vem som helst skriva
+      # vilket namn som helst i granskningsraden.
       - name: Slå upp den mergade pull requesten
         id: pull
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
-          SHA: ${{ github.sha }}
+          HANDELSE: ${{ github.event_name }}
+          IN_PR: ${{ inputs.pull_request }}
+          EFTER: ${{ steps.intervall.outputs.efter }}
         run: |
-          nummer=$(gh api "repos/$REPO/commits/$SHA/pulls" \
-            --jq 'map(select(.merged_at != null)) | first | .number // empty')
-          if [ -z "$nummer" ]; then
-            echo "Ingen mergad pull request för $SHA. Ingenting skrivs."
-            exit 0
-          fi
-          av=$(gh api "repos/$REPO/pulls/$nummer" --jq '.merged_by.login // empty')
-          if [ -z "$av" ]; then
-            echo "Pull request #$nummer saknar merged_by. Ingenting skrivs."
-            exit 0
+          set -euo pipefail
+          if [ "$HANDELSE" = "workflow_dispatch" ]; then
+            case "$IN_PR" in
+              '' | *[!0-9]*)
+                echo "Pull requestens nummer ska vara ett tal, inte \"$IN_PR\"." >&2
+                exit 1
+                ;;
+            esac
+            nummer="$IN_PR"
+            rad=$(gh api "repos/$REPO/pulls/$nummer" \
+              --jq '[.merged_at // "", .merge_commit_sha // "", .merged_by.login // ""] | @tsv')
+            IFS=$'\t' read -r mergad merge_sha av <<< "$rad"
+            if [ -z "$mergad" ] || [ -z "$av" ]; then
+              echo "Pull request #$nummer är inte mergad. Ingenting skrivs." >&2
+              exit 1
+            fi
+            if [ "$merge_sha" != "$EFTER" ]; then
+              echo "Pull request #$nummer kom in med $merge_sha, inte med $EFTER." >&2
+              echo "Numret hör inte till den angivna commiten. Ingenting skrivs." >&2
+              exit 1
+            fi
+          else
+            nummer=$(gh api "repos/$REPO/commits/$EFTER/pulls" \
+              --jq 'map(select(.merged_at != null)) | first | .number // empty')
+            if [ -z "$nummer" ]; then
+              echo "Ingen mergad pull request för $EFTER. Ingenting skrivs."
+              exit 0
+            fi
+            av=$(gh api "repos/$REPO/pulls/$nummer" --jq '.merged_by.login // empty')
+            if [ -z "$av" ]; then
+              echo "Pull request #$nummer saknar merged_by. Ingenting skrivs."
+              exit 0
+            fi
           fi
           echo "Omgången kommer från pull request #$nummer, mergad av $av."
           echo "nummer=$nummer" >> "$GITHUB_OUTPUT"
@@ -81,8 +171,8 @@ jobs:
         id: torrkorning
         if: steps.pull.outputs.nummer != ''
         env:
-          FORE: ${{ github.event.before }}
-          EFTER: ${{ github.sha }}
+          FORE: ${{ steps.intervall.outputs.fore }}
+          EFTER: ${{ steps.intervall.outputs.efter }}
           AV: ${{ steps.pull.outputs.av }}
           PR: ${{ steps.pull.outputs.nummer }}
         run: |
@@ -95,10 +185,12 @@ jobs:
     name: Sätt godkand på omgångens granskade övningar
     needs: forbered
     # Körs inte alls när omgången inte innehåller någon granskad övning, så att miljön inte
-    # ber om ett godkännande i onödan.
+    # ber om ett godkännande i onödan. Vid en dispatch utan mergad pull request faller jobbet
+    # forbered, och då körs det här jobbet inte heller.
     if: needs.forbered.outputs.antal != '' && needs.forbered.outputs.antal != '0'
     runs-on: ubuntu-latest
-    # Miljon väntar på ägarens andra klick. Utan den skulle skrivningen följa av mergen ensam.
+    # Miljon väntar på ägarens andra klick, vid dispatch precis som vid push. Utan den skulle
+    # skrivningen följa av mergen ensam, eller av att någon startar en körning.
     environment: godkannande
     # Jobbet pushar med deploy-nyckeln, inte med GITHUB_TOKEN, så token behöver ingen skrivrätt.
     permissions:
@@ -107,7 +199,10 @@ jobs:
       - name: Hämta koden
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ github.sha }}
+          # Vid en push är det den pushade commiten. Vid en dispatch är det grenens topp, som
+          # kan ligga efter omgången. Innehållet som skrivs kommer ändå ur commiten omgången kom
+          # in med: skriptet läser filerna ur git, inte ur arbetskatalogen.
+          ref: ${{ needs.forbered.outputs.utcheckning }}
           fetch-depth: 0
           # Den inbyggda token får inte ligga kvar i git-konfigurationen: den kan ändå inte
           # pusha till main, och pushen ska ske med deploy-nyckeln.
@@ -122,10 +217,25 @@ jobs:
       - name: Installera beroenden
         run: npm ci
 
+      # Skrivningen lägger filernas innehåll ur omgångens commit på grenens topp. Har banken
+      # ändrats däremellan skulle den skriva över de ändringarna, så då skrivs ingenting alls.
+      # Vid en push är HEAD samma commit som omgången kom in med, och steget är verkningslöst.
+      - name: Kontrollera att banken står orörd sedan omgången
+        env:
+          EFTER: ${{ needs.forbered.outputs.efter }}
+        run: |
+          set -euo pipefail
+          if ! git diff --quiet "$EFTER" HEAD -- content/ovningar; then
+            echo "content/ovningar har ändrats efter $EFTER:" >&2
+            git diff --name-only "$EFTER" HEAD -- content/ovningar >&2
+            echo "Skrivningen skulle skriva över de ändringarna. Ingenting skrivs." >&2
+            exit 1
+          fi
+
       - name: Sätt godkand
         env:
-          FORE: ${{ github.event.before }}
-          EFTER: ${{ github.sha }}
+          FORE: ${{ needs.forbered.outputs.fore }}
+          EFTER: ${{ needs.forbered.outputs.efter }}
           AV: ${{ needs.forbered.outputs.av }}
           PR: ${{ needs.forbered.outputs.pr }}
         run: |
@@ -176,7 +286,8 @@ jobs:
           fi
           git commit --message "Sätt godkand på omgången från pull request #$PR"
           # Deploy-nyckeln är registrerad på liebertech/Fotbollsbanken och är den enda aktör
-          # som regeluppsättningen Skydd av main gör undantag för (ADR 0014).
+          # som regeluppsättningen Skydd av main gör undantag för (ADR 0014). Pushen sker utan
+          # --force: går den inte som snabbspolning ska den falla, inte skriva om historiken.
           git push git@github.com:liebertech/Fotbollsbanken.git "HEAD:$GREN"
 
       - name: Ta bort nyckelfilen
