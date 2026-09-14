@@ -1,0 +1,63 @@
+schema: 1
+id: en-mot-en-till-smamal
+namn: 1 mot 1 till småmål
+syfte: Spelarna ska både anfalla och försvara i tävlingsmässiga duellar en mot en.
+beskrivning: |
+  Två spelare möts i en yta om 12 x 8 meter med ett litet mål i var ände. Båda kan göra mål
+  i båda målen, och den som vinner bollen blir direkt anfallare. Extra bollar ligger vid
+  sidan av ytan så att spelarna snabbt kan starta om när bollen går ut.
+organisation: |
+  En yta per par med ett minimål i var ände. Flera ytor läggs bredvid varandra så att alla
+  par spelar samtidigt.
+fokusomraden:
+  - ett-mot-ett
+alder:
+  min: 10
+  max: 12
+spelformer:
+  - 7mot7
+niva:
+  - niva-1
+  - niva-2
+passdelar:
+  - del-ovning
+ledarbehov: 0
+spelare:
+  min: 2
+  max: 2
+grupptyp: par
+tid:
+  kortast: 6
+  rekommenderad: 10
+  langst: 15
+yta:
+  alla:
+    langd: 12
+    bredd: 8
+material:
+  - typ: boll
+    antal: 2
+    anteckning: en i spel och en i reserv vid sidan av ytan
+  - typ: minimal
+    antal: 2
+    anteckning: ett mål i var ände, två koner fungerar om minimål saknas
+  - typ: kon
+    antal: 4
+coachningspunkter:
+  - Var snabb i omställningen när du vinner bollen.
+  - Använd kroppen för att skydda bollen i närkamp.
+  - Möt anfallaren i vinkel, spring inte rakt mot bollen.
+varianter:
+  lattare: Bara en riktning att göra mål i, en spelare anfaller alltid.
+  svarare: Sänk tidsgränsen för varje duell så att tempot ökar.
+anpassning:
+  fler_spelare: Lägg till fler ytor med par bredvid varandra.
+  udda_antal: Tre spelare turas om, två spelar och en väntar med en ny boll redo.
+  ledare: Övningen sköter sig själv när paren väl har kommit igång.
+kalla: Egen övning, inspirerad av vanliga duellövningar mot småmål.
+status: granskad
+granskning:
+  - datum: 2026-09-12
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: Duellspel mot småmål är kärninnehåll för fas-10-12 och coachningspunkterna om omställning, kroppsskydd och att möta anfallaren i vinkel är korrekta. Jag rättade tre saker. Materiallistan saknade boll helt, så jag lade till två bollar per par. Ytan var 8 x 6 meter, vilket är för trångt för att växla fart och möta i vinkel och ger onödig risk att springa in i målen, så jag ökade den till 12 x 8 meter. Beskrivningen sa att nästa par rullar in nya bollar, trots att alla par spelar samtidigt, så nu ligger extra bollar vid sidan av ytan. Jag skrev också att två koner kan ersätta minimålen, eftersom sex par kräver tolv småmål.

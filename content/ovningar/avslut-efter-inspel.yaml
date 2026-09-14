@@ -1,0 +1,94 @@
+schema: 1
+id: avslut-efter-inspel
+namn: Avslut efter inspel
+syfte: Spelarna ska avsluta med precision direkt efter att ha tagit emot ett inspel.
+beskrivning: |
+  Fem till sju spelare roterar mellan rollerna passare, avslutare, målvakt och kö vid ett
+  mål. Passaren spelar in bollen från sidan, avslutaren möter bollen och skjuter på första
+  eller andra touchen från minst tio meter, och alla roterar en position efter varje försök.
+  Målvakten byts ofta och gör det frivilligt.
+organisation: |
+  En grupp om fem till sju spelare per mål, med rollerna passare, avslutare, målvakt och en
+  till fyra i kort kö. Extra bollar ligger vid målet så att gruppen själv fyller på. Kön står
+  vid sidan om målet, aldrig bakom målet och aldrig i skottlinjen. Den som vill slippa stå i
+  mål byter bort rollen direkt, och avslut sker aldrig närmare målvakten än tio meter,
+  eftersom målvakten är en utespelare utan handskar.
+fokusomraden:
+  - avslut
+  - passning-mottagning
+alder:
+  min: 10
+  max: 12
+spelformer:
+  - 7mot7
+niva:
+  - niva-2
+  - niva-3
+passdelar:
+  - del-ovning
+ledarbehov: 0
+spelare:
+  min: 5
+  max: 7
+grupptyp: fri
+tid:
+  kortast: 8
+  rekommenderad: 12
+  langst: 15
+yta:
+  alla:
+    langd: 18
+    bredd: 12
+material:
+  - typ: boll
+    antal: 6
+    anteckning: bollar att skjuta med, ligger i en hög vid målet
+  - typ: mal
+    antal: 1
+coachningspunkter:
+  - Möt bollen på väg mot mål, stå inte still.
+  - Sikta på en bestämd del av målet innan du skjuter.
+  - Använd båda fötterna över tid, inte bara den starka.
+  - Skjut aldrig hårt inifrån tio meter, målvakten saknar handskar.
+varianter:
+  lattare: Bollen läggs still av passaren i stället för att spelas in i rörelse.
+  svarare: Avslutaren får bara en touch innan skottet.
+anpassning:
+  fler_spelare: Bygg en till grupp med mål bredvid, till exempel det andra planens mål.
+  udda_antal: Ingen åtgärd behövs. Gruppen fungerar med fem, sex eller sju spelare, rotationen blir bara en position längre.
+  ledare: Med en ledare vid varje mål kan hon eller han ge snabb feedback på varje avslut.
+kalla: Egen övning, inspirerad av vanliga avslutsstationer med rotation.
+status: granskad
+granskning:
+  - datum: 2026-09-12
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: >-
+      Grundidén är bra och avslut är ett kärnområde för fas-10-12, men övningen går inte att
+      genomföra med det antal ledare och mål ett vanligt lag har. Ändra tre saker. 1. Ledarbehov 1
+      gäller per grupp, och gruppen är tre spelare. Med tolv spelare krävs då fyra ledare och fyra
+      mål samtidigt. Gör i stället gruppen större, förslagsvis 4-6 spelare vid ett mål med rollerna
+      passare, avslutare, målvakt och en eller två i kort kö, så att tolv spelare blir två grupper
+      vid de två mål en plan har. Då byts grupptypen från fast-storlek till fri och fältet
+      udda_antal_losning tas bort. 2. Ta ställning till ledarbehovet igen när gruppen är större.
+      Rotationen och bollarna klarar spelarna själva, så 0 räcker om extra bollar ligger vid målet.
+      Behåll 1 bara om ledaren verkligen behövs hela tiden, och beskriv det i ledaruppgiften.
+      3. Lägg till en rad om säkerhet i organisationen. Den som står i mål gör det frivilligt och
+      byts ofta, och avslut sker från minst tio meter, eftersom målvakten är en utespelare utan
+      handskar. Kontrollera samtidigt att antalet bollar räcker för den nya gruppstorleken.
+  - datum: 2026-09-13
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: >-
+      Alla tre anmärkningarna är åtgärdade. Grupptypen fri med en större grupp vid ett mål gör
+      att tolv spelare blir två grupper vid planens två mål, säkerhetsraden om frivillig målvakt och
+      tio meter finns i organisationen och i en coachningspunkt, och sex bollar vid målet räcker för
+      att hålla tempot uppe. Att sänka ledarbehovet till 0 fungerar här, eftersom rotationen är en
+      position i taget och bollarna ligger framme, alltså ingen styrning som kräver en vuxen. Jag
+      gjorde två egna rättelser. Största gruppen höjs från sex till sju spelare. Med max sex kunde
+      generatorn inte använda övningen alls vid tretton eller fjorton spelare, som är det vanligaste
+      antalet i ett 7 mot 7-lag: fjorton delas då i tre grupper om 5, 5 och 4, och gruppen om fyra är
+      mindre än övningens minsta antal (R-052). Med max sju blir fjorton två grupper om sju vid de
+      två mål en plan har. Sju i en grupp ger fortfarande kort kö, eftersom nästa boll läggs till rätta
+      direkt. Jag lade också till att kön står vid sidan om målet, aldrig bakom målet eller i
+      skottlinjen, och skrev om lösningen för udda antal, som blev överflödig när max höjdes.

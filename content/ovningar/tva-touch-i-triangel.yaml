@@ -1,0 +1,84 @@
+schema: 1
+id: tva-touch-i-triangel
+namn: Två touch i triangel
+syfte: Spelarna ska passa och ta emot med högst två touchar i högt tempo under press.
+beskrivning: |
+  Tre spelare bildar en triangel med sidor på 8 meter och passar bollen mellan sig med
+  högst två touchar per mottagning: en för att ta emot i rörelse och en för att spela
+  vidare. En fjärde spelare jagar i mitten och försöker sätta press eller erövra bollen
+  om en passning blir för lös. Byte sker på ett tydligt villkor som spelarna kan avgöra
+  själva: den som tappar bollen, eller vars passning går utanför triangeln eller blir
+  erövrad, byter plats med jagaren.
+organisation: |
+  En triangel per grupp om fyra spelare: tre i hörnen och en jagande i mitten. Grupperna
+  läggs bredvid varandra så att alla trianglar spelar samtidigt.
+fokusomraden:
+  - passning-mottagning
+  - spelbarhet
+alder:
+  min: 10
+  max: 12
+spelformer:
+  - 7mot7
+niva:
+  - niva-2
+  - niva-3
+passdelar:
+  - del-ovning
+ledarbehov: 0
+spelare:
+  min: 4
+  max: 4
+grupptyp: fast-storlek
+udda_antal_losning: true
+tid:
+  kortast: 6
+  rekommenderad: 10
+  langst: 15
+yta:
+  alla:
+    langd: 10
+    bredd: 10
+material:
+  - typ: boll
+    antal: 2
+    anteckning: en i spel och en i reserv vid sidan, så att spelet startar om direkt
+  - typ: kon
+    antal: 4
+    anteckning: tre till triangelns hörn och en extra om gruppen blir fem
+  - typ: vast
+    antal: 1
+    anteckning: till den som jagar i mitten
+coachningspunkter:
+  - Titta upp innan bollen kommer så du redan vet vart den ska vidare.
+  - Ta emot i rörelse mot bollen, stå inte still.
+  - Ropa var du vill ha bollen så laget hinner reagera.
+  - Byt press direkt när bollen erövras eller går ut.
+varianter:
+  lattare: Fri touch i stället för två, tills gruppen vant sig vid pressen.
+  svarare: En touch, direktspel, i stället för två.
+anpassning:
+  fler_spelare: Bygg en till triangel bredvid med egen boll.
+  udda_antal: En femte spelare tar en fjärde punkt med den extra konen, så att formen blir en kvadrat med åtta meters sidor och spelet fyra mot en.
+  ledare: Med en ledare vid varje triangel kan hen påminna om touchbegränsningen och byta jagare snabbare.
+kalla: Egen övning, inspirerad av vanliga rondoövningar med touchbegränsning.
+status: granskad
+granskning:
+  - datum: 2026-09-13
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: >-
+      Övningen fyller luckan för en Öva-övning på niva-3. Touchbegränsning och en jagare som pressar
+      är just det som gör en övning svårare för en grupp som redan klarar grunderna, och den lättare
+      varianten med fri touch gör den användbar på niva-2. Den ligger rätt som Öva och inte som
+      spelövning, eftersom motståndet är begränsat till en jagare och det varken finns riktning eller
+      mål. Syftet hänger ihop med huvudfokus passning-mottagning, och coachningspunkten om att titta
+      upp innan bollen kommer är det viktigaste i två touch. Åtta meters sidor och 10 x 10 meters yta
+      passar fas-10-12, och fyra spelare med lösning för udda antal delar sig jämnt vid tolv till
+      fjorton spelare. Tre egna rättelser. Bytesvillkoret sa "dålig passning", vilket ingen grupp kan
+      avgöra utan ledare, och är nu ett tydligt villkor: tappad boll, passning utanför triangeln
+      eller erövrad boll. Jag lade till en reservboll, eftersom bollen ofta går ut vid två touch och
+      hämtning annars äter upp aktiv tid. Lösningen för udda antal var en andra jagare, alltså tre
+      mot två i en triangel, vilket är för svårt för att bollen ska hållas i gång i den här åldern.
+      Nu blir formen i stället en kvadrat och spelet fyra mot en, som är den lättare och vanligare
+      formen, med en extra kon i materiallistan.

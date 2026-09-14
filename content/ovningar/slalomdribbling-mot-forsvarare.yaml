@@ -1,0 +1,61 @@
+schema: 1
+id: slalomdribbling-mot-forsvarare
+namn: Dribbling mot passiv försvarare
+syfte: Spelarna ska dribbla förbi en motståndare med finter och fartväxling.
+beskrivning: |
+  Två spelare bildar ett par på en yta om 15 x 10 meter med ett konmål i var ände. Den
+  ena dribblar mot försvararen som till en början rör sig passivt, och de byter roll efter
+  varje försök. När paret lyckats flera gånger höjs försvararens intensitet.
+organisation: |
+  Ett par per yta, med två koner som mål i var ände. Paret byter roll efter varje försök
+  och höjer försvararens intensitet när dribblingen lyckas flera gånger i rad.
+fokusomraden:
+  - dribbling
+  - ett-mot-ett
+alder:
+  min: 10
+  max: 12
+spelformer:
+  - 7mot7
+niva:
+  - niva-2
+passdelar:
+  - del-ovning
+ledarbehov: 0
+spelare:
+  min: 2
+  max: 2
+grupptyp: par
+tid:
+  kortast: 6
+  rekommenderad: 10
+  langst: 15
+yta:
+  alla:
+    langd: 15
+    bredd: 10
+material:
+  - typ: boll
+    antal: 1
+    anteckning: en per par
+  - typ: kon
+    antal: 8
+    anteckning: fyra till ytans hörn och två till varje konmål
+coachningspunkter:
+  - Använd en fint innan du sätter fart förbi försvararen.
+  - Skydda bollen med kroppen när försvararen är nära.
+  - Byt fart, gå inte i samma tempo hela vägen.
+varianter:
+  lattare: Försvararen står helt still under hela övningen.
+  svarare: Försvararen får försöka vinna bollen aktivt från start.
+anpassning:
+  fler_spelare: Lägg till fler ytor med par bredvid varandra.
+  udda_antal: En trea roterar, två dribblar och byter mot den tredje efter varje försök.
+  ledare: Med en ledare i närheten kan hen ropa ut för alla par samtidigt när intensiteten ska höjas.
+kalla: Egen övning, inspirerad av allmänt känd 1 mot 1-träning med stigande motstånd.
+status: granskad
+granskning:
+  - datum: 2026-09-12
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: Stigande motstånd från passiv till aktiv försvarare är rätt sätt att öva dribbling i fas-10-12, och coachningspunkterna om fint, kroppsskydd och fartväxling är korrekta. Jag ändrade ledarbehovet från 1 till 0, eftersom 1 gäller per grupp och tolv spelare då hade krävt sex ledare. Att ropa när intensiteten höjs klarar en ledare för alla par samtidigt, vilket nu står i organisationen. Jag skrev också om målen till konmål, eftersom materiallistan bara har koner, och angav hur många koner som behövs.

@@ -1,0 +1,62 @@
+schema: 1
+id: passningsruta-i-rorelse
+namn: Passningsruta i rörelse
+syfte: Spelarna ska passa med rätt kraft och riktning och röra sig direkt till en ny fri yta efter passningen.
+beskrivning: |
+  Fyra spelare rör sig fritt i en ruta på 10 x 10 meter och håller igång en boll med
+  passningar. Efter varje passning rör sig spelaren till en ny öppen del av rutan i
+  stället för att stå still. Ingen motståndare är med.
+organisation: |
+  En ruta om fyra spelare, markerad med koner i hörnen. Fler rutor läggs bredvid varandra
+  vid fler spelare.
+fokusomraden:
+  - passning-mottagning
+  - spelbarhet
+alder:
+  min: 10
+  max: 12
+spelformer:
+  - 7mot7
+niva:
+  - niva-1
+  - niva-2
+passdelar:
+  - del-ovning
+ledarbehov: 0
+spelare:
+  min: 4
+  max: 4
+grupptyp: fast-storlek
+udda_antal_losning: true
+tid:
+  kortast: 8
+  rekommenderad: 12
+  langst: 15
+yta:
+  alla:
+    langd: 10
+    bredd: 10
+material:
+  - typ: boll
+    antal: 1
+    anteckning: en per grupp
+  - typ: kon
+    antal: 4
+coachningspunkter:
+  - Passa till en spelare som rör sig mot en öppen yta.
+  - Ta emot bollen med första touchen riktad framåt.
+  - Rör dig direkt efter passningen, stå inte still.
+varianter:
+  lattare: Stå i fasta hörn och passa i ett fast mönster.
+  svarare: Tillåt bara två toucher per spelare innan bollen ska passas vidare.
+anpassning:
+  fler_spelare: Lägg till fler rutor med fyra spelare i varje bredvid varandra.
+  udda_antal: Den femte spelaren går in i rutan, en vilar och byter in efter någon minut.
+  ledare: Utan ledare klarar sig övningen själv när den väl är igång.
+kalla: Egen övning, inspirerad av allmänt känd passningsövning i rörlig ruta.
+status: granskad
+granskning:
+  - datum: 2026-09-12
+    av: fotbollsexpert
+    roll: fotbollsexpert
+    kommentar: Godkänd utan ändringar. Syftet, huvudfokus passning-mottagning och innehållet hänger ihop, och första touchen och rörelsen efter passningen är rätt innehåll för fas-10-12. Fyra spelare och en boll på 10 x 10 meter ger många bollkontakter utan kö, övningen är självgående när den är igång, och de båda varianterna är verkliga steg i svårighet. Lösningen för udda antal med en femte spelare som byter in fungerar.
